@@ -57,6 +57,49 @@ class ButtonPrimary {
 }
 
 /**
+ * Button Control component. Uses positioning and modifier classes to adjust its view.
+ */
+class ButtonControl {
+  /**
+   * @param {Icon} icon - The allowed type of the button icon
+   * @return string
+   */
+  static #getIcon(icon) {
+    if (icon === 'plus') return html`<i class="fa-solid fa-plus"></i>`;
+    if (icon === 'minus') return html`<i class="fa-solid fa-minus"></i>`;
+    return html`<></>`;
+  }
+
+  /**
+   * @typedef {"plus" | "minus"} Icon
+   */
+
+  /**
+   * @param {Icon} icon the allowed type of the button icon
+   * @param {string} classPositioning class to adjust positioning
+   * @param {string[]} classModifiers modifier names to adjust button appearance
+   * @return string
+   */
+  static render(icon, classPositioning = '', classModifiers = ['']) {
+    const className = 'product-count-button';
+
+    const classModifiersList = classModifiers
+      .map((modifier) =>
+        !classModifiers.length ? '' : `${className}--${modifier}`
+      )
+      .join(' ');
+
+    const buttonBody = html` <button
+      class="${classPositioning} ${className} ${classModifiersList}"
+    >
+      ${this.#getIcon(icon)}
+    </button>`;
+
+    return buttonBody;
+  }
+}
+
+/**
  * Product model
  */
 class ProductModel {
@@ -143,7 +186,7 @@ class ProductCatalogComponent {
         .map(
           (product) => html`
             <li class="product-card">${this.renderProductCardBody(product)}</li>
-            `
+          `
         )
         .join('')}
 		`;
@@ -267,18 +310,17 @@ class ProductCatalogComponent {
   /**
    * @return string
    */
-  renderProductCount() {
-    return `
+  renderProductCountPanel() {
+    const incrementButton = ButtonControl.render('plus');
+    const decrementButton = ButtonControl.render('minus');
+
+    return html`
       <div class="product-card-info__count">
-        <label
-          for="product-count"
-          class="product-card-info__count-label"
-        >Количество
+        <label for="product-count" class="product-card-info__count-label"
+          >Количество
         </label>
         <div class="count-control">
-          <button class="product-count-button">
-            <i class="fa-solid fa-minus"></i>
-          </button>
+          ${decrementButton}
           <input
             placeholder="1"
             type="text"
@@ -287,9 +329,34 @@ class ProductCatalogComponent {
             class="product-count-input"
             readonly
           />
-          <button class="product-count-button">
-            <i class="fa-solid fa-plus"></i>
-          </button>
+          ${incrementButton}
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * @return string
+   */
+  renderControlButton() {
+    const incrementButton = ButtonControl.render('plus');
+    const decrementButton = ButtonControl.render('minus');
+    return html`
+      <div class="product-card-info__count">
+        <label for="product-count" class="product-card-info__count-label"
+          >Количество
+        </label>
+        <div class="count-control">
+          ${decrementButton}
+          <input
+            placeholder="1"
+            type="text"
+            id="product-count"
+            name="product-count"
+            class="product-count-input"
+            readonly
+          />
+          ${incrementButton}
         </div>
       </div>
     `;
