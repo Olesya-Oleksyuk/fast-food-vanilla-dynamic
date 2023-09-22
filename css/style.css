@@ -1,4 +1,5 @@
 @import "../components/productCatalog/style.css";
+@import "../components/productNav/style.css";
 @import "../components/buttons/primary/style.css";
 @import "../components/buttons/control/style.css";
 
@@ -81,61 +82,6 @@ body {
   text-transform: uppercase;
   color: var(--dark-gray);
 }
-
-
-/* Navigation */
-
-.category-nav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  min-width: 250px;
-  padding: 1rem 0;
-  background-color: var(--white);
-  font-size: 1.4rem;
-  font-weight: 700;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
-.category-nav__item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 3.2rem;
-  width: 100%;
-  color: var(--dark-gray);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.category-nav__item input[type=radio] {
-  -webkit-appearance: none;
-  appearance: none;
-  /* For iOS < 15 to remove gradient background */
-  background-color: #fff;
-  /* Not removed via appearance */
-  margin: 0;
-}
-
-.category-nav__item label {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  line-height: 3.2rem;
-  cursor: inherit;
-}
-
-.category-nav__item input[type=radio]:checked + label {
-  background-color: var(--yellow);
-  color: var(--white);
-}
-
-.category-nav__item a {
-  color: inherit;
-}
-
 
 /* Cart */
 
@@ -226,29 +172,6 @@ body {
   font-size: 1.2rem;
 }
 
-/* Button
-
-.button-primary {
-  outline: 0;
-  border: 0;
-  border-bottom: 1px solid black;
-  border-radius: 3px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: white;
-  text-transform: uppercase;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-}
-
-.button-primary--yellow {
-  background-color: #f5c300;
-}
-
-.button-primary--grey {
-  background-color: #807979;
-} */
-
-/* Util classes */
 
 .visually-hidden:not(:focus):not(:active),
 input[type="checkbox"].visually-hidden,

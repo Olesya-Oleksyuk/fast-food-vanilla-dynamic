@@ -8,7 +8,6 @@ class App {
    * @return ProductCatalogComponent
    */
   constructor() {
-    debugger;
     this.fetchData().then((data) => {
       const sandwichesData = data.menu.filter(
         (item) => item.category === 'sandwiches'
@@ -16,6 +15,7 @@ class App {
 
       this.markets = new Markets(data.markets);
       this.renderProductCatalog(sandwichesData, this.markets);
+      this.renderProductNav(data.menu);
     });
   }
 
@@ -34,6 +34,28 @@ class App {
       products,
       containerElement: productCatalog,
       markets,
+    });
+  }
+
+  renderProductNav(products) {
+    const productNav = document.querySelector('[data-container="product-nav"]');
+
+    const allProductCategories = products.reduce((categories, product) => {
+      const currCategory = product.category;
+      if (!categories.includes(currCategory)) {
+        categories.push(currCategory);
+      }
+      return categories;
+    }, []);
+
+    const orderedCategories = sortAndFilterDuplicates(
+      allProductCategories,
+      correctlyOrderedCategories
+    );
+
+    new ProductNavComponent({
+      categories: orderedCategories,
+      containerElement: productNav,
     });
   }
 }
