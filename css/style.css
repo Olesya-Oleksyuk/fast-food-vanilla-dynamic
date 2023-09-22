@@ -222,6 +222,7 @@ body {
 .product-card-info__ingredients {
   flex-grow: 1;
   width: 100%;
+  text-align: center;
   padding: 0.4rem 0 0.6rem;
   border-top: var(--dark-gray) solid 3px;
   border-bottom: var(--dark-gray) solid 3px;
