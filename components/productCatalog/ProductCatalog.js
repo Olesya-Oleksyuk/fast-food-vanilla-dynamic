@@ -8,7 +8,7 @@
  */
 class ProductCatalogComponent {
   /**
-   * @param {{products: ProductModel[], containerElement: Node, markets: Markets}} obj author data
+   * @param {{products: ProductModel[], containerElement: Node, markets: Markets}} obj product catalog data
    * @return ProductCatalogComponent
    */
   constructor(obj) {
