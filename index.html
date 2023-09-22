@@ -70,35 +70,13 @@
         </section>
       </main>
     </div>
-
-    <script type="application/javascript" src="js/application.js"></script>
-    <script type="application/javascript">
-      const getDataFromJson = async () => {
-        const response = await fetch('../data/data.json');
-        const data = await response.json();
-        return data;
-      };
-
-      const renderProductCatalog = (products, markets) => {
-        const productCatalog = document.querySelector(
-          '[data-container="product-catalogue"]'
-        );
-
-        new ProductCatalogComponent({
-          products,
-          containerElement: productCatalog,
-          markets,
-        });
-      };
-
-      getDataFromJson().then((data) => {
-        const sandwichesData = data.menu.filter(
-          (item) => item.category === 'sandwiches'
-        );
-
-        const markets = new Markets(data.markets);
-        renderProductCatalog(sandwichesData, markets);
-      });
-    </script>
+    <script type="application/javascript" src="js/app.js"></script>
+    <script
+      type="application/javascript"
+      src="js/products/productCatalog.js"
+    ></script>
+    <script type="application/javascript" src="js/products/product.js"></script>
+    <script type="application/javascript" src="js/products/markets.js"></script>
+    <script type="application/javascript" src="js/buttons.js"></script>
   </body>
 </html>
