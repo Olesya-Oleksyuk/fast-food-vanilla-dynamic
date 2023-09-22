@@ -1,4 +1,5 @@
 ('use strict');
+const html = String.raw;
 
 /**
  * Markets model
