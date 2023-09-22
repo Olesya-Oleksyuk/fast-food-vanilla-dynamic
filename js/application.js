@@ -45,9 +45,9 @@ class ButtonPrimary {
       .map((modifier) => `${className}--${modifier}`)
       .join(' ');
 
-    return `
+    return html`
       <button
-        class="${classPositioning} button-primary ${classModifiersList}"
+        class="${classPositioning} ${className} ${classModifiersList}"
         type="submit"
       >
         ${text}
@@ -137,14 +137,12 @@ class ProductCatalogComponent {
   }
 
   renderProductCards() {
-    // map() will loop the fields property and create product card fields
+    if (!this.productListElement) return;
     this.productListElement.innerHTML = `
 			${this.products
         .map(
-          (product) => `
-            <li class="product-card">
-            ${this.renderProductCardBody(product)}
-            </li>
+          (product) => html`
+            <li class="product-card">${this.renderProductCardBody(product)}</li>
             `
         )
         .join('')}
@@ -156,31 +154,34 @@ class ProductCatalogComponent {
    * @return string
    */
   renderProductCardBody(product) {
-    const productMarket = this.renderProductMarket(product.market);
-    const productPhoto = this.renderProductPhoto(product.image, product.name);
-    const productName = this.renderProductName(product.name);
-    const productInfo = this.renderProductCardInfo(
+    this.productMarketMarkup = this.renderProductMarket(product.market);
+    this.productPhotoMarkup = this.renderProductPhoto(
+      product.image,
+      product.name
+    );
+    this.productNameMarkup = this.renderProductName(product.name);
+    this.productInfoMarkup = this.renderProductCardInfo(
       product.description,
       product.price
     );
 
-    const productToCartButton = ButtonPrimary.render(
+    this.productToCartButtonMarkup = ButtonPrimary.render(
       'В корзину',
       'product-card-info__to-cart-button',
       ['yellow']
     );
 
     return (
-      productMarket +
-      productPhoto +
-      productName +
-      productInfo +
-      productToCartButton
+      this.productMarketMarkup +
+      this.productPhotoMarkup +
+      this.productNameMarkup +
+      this.productInfoMarkup +
+      this.productToCartButtonMarkup
     );
   }
 
   /**
-   * @param {string} market
+   * @param {string} product market
    * @return string
    */
   renderProductMarket(market) {
@@ -188,11 +189,8 @@ class ProductCatalogComponent {
     productMarket.classList.add('product-card__market');
     const productImgSrc = this.markets.getMarketLogo(market);
 
-    productMarket.innerHTML = `
-      <img
-        src="${productImgSrc}"
-        alt="${market} лого"
-      />
+    productMarket.innerHTML = html`
+      <img src="${productImgSrc}" alt="${market} лого" />
     `;
     return productMarket.outerHTML;
   }
@@ -208,11 +206,8 @@ class ProductCatalogComponent {
     const productPhotoContent = document.createElement('div');
     productPhotoContent.classList.add('product-card__photo-inner');
 
-    productPhotoContent.innerHTML = `
-      <img
-        src="${imageSrc}"
-        alt="${name} фото"
-      />
+    productPhotoContent.innerHTML = html`
+      <img src="${imageSrc}" alt="${name} фото" />
     `;
 
     productPhoto.appendChild(productPhotoContent);
@@ -224,7 +219,7 @@ class ProductCatalogComponent {
    * @return string
    */
   renderProductName(name) {
-    return `
+    return html`
       <h3 class="product-card__title">
         <span class="product-card__name">${name}</span>
       </h3>
@@ -239,7 +234,7 @@ class ProductCatalogComponent {
   renderProductCardInfo(description, price) {
     const productDescription = this.renderProductDescription(description);
     const productPrice = this.renderProductPrice(price);
-    const productCount = this.renderProductCount();
+    const productCount = this.renderProductCountPanel();
 
     return productDescription + productPrice + productCount;
   }
@@ -249,11 +244,9 @@ class ProductCatalogComponent {
    * @return string
    */
   renderProductDescription(description) {
-    return `
+    return html`
       <p class="product-card-info__ingredients">
-        <span class="product-ingredient">
-          ${description}
-        </span>
+        <span class="product-ingredient"> ${description} </span>
       </p>
     `;
   }
@@ -263,7 +256,7 @@ class ProductCatalogComponent {
    * @return string
    */
   renderProductPrice(price) {
-    return `
+    return html`
       <span class="product-card-info__price">
         Цена:
         <b>${price} руб.</b>
