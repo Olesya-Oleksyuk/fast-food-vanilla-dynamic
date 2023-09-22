@@ -1,0 +1,12 @@
+.product-count-button {
+  border-radius: 50%;
+  border: var(--light-gray-2) 2px solid;
+  color: var(--light-gray-2);
+  background-color: var(--white);
+  font-size: 1.2rem;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  line-height: 19px;
+  cursor: pointer;
+}

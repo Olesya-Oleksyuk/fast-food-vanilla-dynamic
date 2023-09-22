@@ -1,0 +1,19 @@
+.button-primary {
+  outline: 0;
+  border: 0;
+  border-bottom: 1px solid black;
+  border-radius: 3px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.button-primary--yellow {
+  background-color: #f5c300;
+}
+
+.button-primary--grey {
+  background-color: #807979;
+}
