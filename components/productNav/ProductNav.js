@@ -4,11 +4,13 @@
  */
 class ProductNavComponent {
   /**
-   * @param {{categories: string[], containerElement: Node}} obj navigation data
+   * @param {{categories: string[], currentCategory: string, containerElement: Node, handleProductCategoryChange: () => void}} obj navigation data
    * @return ProductNavComponent
    */
   constructor(obj) {
     this.containerElement = obj.containerElement;
+    this.currentCategory = obj.currentCategory;
+    this.handleProductCategoryChange = obj.handleProductCategoryChange;
     this.categoryNameMapper = this.createProductCategoryMapper();
     this.updateProperties(obj);
     this.buildDOMElements();
@@ -41,8 +43,9 @@ class ProductNavComponent {
               <input
                 id="${category}"
                 type="radio"
-                name="radio"
+                name="category"
                 value="${category}"
+                ${category === this.currentCategory ? 'checked' : ''}
               />
               <label for="${category}"
                 >${this.categoryNameMapper.getCategory(category)}</label
@@ -55,18 +58,8 @@ class ProductNavComponent {
   }
 
   createProductCategoryMapper() {
-    const dictionary = {
-      sandwiches: 'сэндвичи',
-      shaurma: 'шаурма',
-      burgers: 'бургеры',
-      chicken: 'курица & картофель',
-      salads: 'тортилья & салаты',
-      drinks: 'напитки & десерты',
-      pizza: 'пицца',
-    };
-
     function getCategory(key) {
-      return dictionary[key];
+      return categoriesDictionary[key];
     }
 
     return { getCategory };
@@ -76,5 +69,14 @@ class ProductNavComponent {
     this.renderNavItems();
     this.containerElement.innerHTML = '';
     this.containerElement.appendChild(this.productNavElement);
+    const radios = document.querySelectorAll(
+      'input[type="radio"][name="category"]'
+    );
+
+    radios.forEach((radio) =>
+      radio.addEventListener('change', () =>
+        this.handleProductCategoryChange(radio.value)
+      )
+    );
   }
 }

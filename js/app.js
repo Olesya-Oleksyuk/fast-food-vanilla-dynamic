@@ -8,14 +8,37 @@ class App {
    * @return ProductCatalogComponent
    */
   constructor() {
+    this.currCategory = PRODUCT_CATEGORIES.SANDWICHES;
     this.fetchData().then((data) => {
-      const sandwichesData = data.menu.filter(
-        (item) => item.category === 'sandwiches'
-      );
+      this.porductCollection = this.createProductCollection(data.menu);
+      this.filterProductsByCategory(this.currCategory);
 
       this.markets = new Markets(data.markets);
-      this.renderProductCatalog(sandwichesData, this.markets);
-      this.renderProductNav(data.menu);
+      this.renderApp();
+    });
+  }
+
+  renderApp() {
+    this.renderProductCatalog(this.currCategoryProducts, this.markets);
+    this.renderProductNav(this.porductCollection, this.currCategoryProducts);
+  }
+
+  /**
+   * @param {Product[]} products author data
+   * @return ProductModel[]
+   */
+  createProductCollection(products) {
+    return products.map((item) => {
+      return new ProductModel({
+        description: item.description,
+        image: item.image,
+        category: item.category,
+        market: item.market,
+        name: item.name,
+        price: item.price,
+        type: item.type,
+        weight: item.weight,
+      });
     });
   }
 
@@ -25,6 +48,23 @@ class App {
     return data;
   }
 
+  /**
+   * @param {string} category
+   * @return void
+   */
+  filterProductsByCategory(category) {
+    if (!category) return;
+    this.currCategory = category;
+    this.currCategoryProducts = this.porductCollection.filter(
+      (item) => item.category === this.currCategory
+    );
+  }
+
+  /**
+   * @param { ProductModel[]} products
+   * @param {MarketsModel} markets
+   * @return ProductCatalogComponent
+   */
   renderProductCatalog(products, markets) {
     const productCatalog = document.querySelector(
       '[data-container="product-catalogue"]'
@@ -37,8 +77,16 @@ class App {
     });
   }
 
+  /**
+   * @param { ProductModel[]} products
+   * @return void
+   */
   renderProductNav(products) {
     const productNav = document.querySelector('[data-container="product-nav"]');
+    const handleProductCategoryChange = (newCategory) => {
+      this.filterProductsByCategory(newCategory);
+      this.renderProductCatalog(this.currCategoryProducts, this.markets);
+    };
 
     const allProductCategories = products.reduce((categories, product) => {
       const currCategory = product.category;
@@ -56,6 +104,8 @@ class App {
     new ProductNavComponent({
       categories: orderedCategories,
       containerElement: productNav,
+      handleProductCategoryChange: handleProductCategoryChange,
+      currentCategory: this.currCategory,
     });
   }
 }
