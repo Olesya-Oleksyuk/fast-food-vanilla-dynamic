@@ -82,6 +82,7 @@ class ProductCatalogComponent {
    * @return string
    */
   renderProductMarket(market) {
+    if (!market) return '';
     const productMarket = document.createElement('span');
     productMarket.classList.add('product-card__market');
     const productImgSrc = this.markets.getMarketLogo(market);

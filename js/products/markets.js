@@ -23,6 +23,7 @@ class Markets {
    * @return string market logo source url
    */
   getMarketLogo(marketName) {
+    if (!marketName) return;
     return this.list[marketName].image;
   }
 }
