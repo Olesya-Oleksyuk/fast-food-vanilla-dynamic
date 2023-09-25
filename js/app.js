@@ -10,8 +10,10 @@ class App {
   constructor() {
     this.currCategory = PRODUCT_CATEGORIES.SANDWICHES;
     this.fetchData().then((data) => {
-      this.porductCollection = this.createProductCollection(data.menu);
-      this.filterProductsByCategory(this.currCategory);
+      this.porductCollection = new ProductCollectionModel(
+        data.menu,
+        PRODUCT_CATEGORIES.SANDWICHES
+      );
 
       this.markets = new Markets(data.markets);
       this.renderApp();
@@ -19,8 +21,8 @@ class App {
   }
 
   renderApp() {
-    this.renderProductCatalog(this.currCategoryProducts, this.markets);
-    this.renderProductNav(this.porductCollection, this.currCategoryProducts);
+    this.renderProductCatalog(this.porductCollection, this.markets);
+    this.renderProductNav(this.porductCollection);
   }
 
   /**
@@ -49,18 +51,6 @@ class App {
   }
 
   /**
-   * @param {string} category
-   * @return void
-   */
-  filterProductsByCategory(category) {
-    if (!category) return;
-    this.currCategory = category;
-    this.currCategoryProducts = this.porductCollection.filter(
-      (item) => item.category === this.currCategory
-    );
-  }
-
-  /**
    * @param { ProductModel[]} products
    * @param {MarketsModel} markets
    * @return ProductCatalogComponent
@@ -78,23 +68,28 @@ class App {
   }
 
   /**
-   * @param { ProductModel[]} products
+   * @param {ProductCollectionModel} products
    * @return void
    */
   renderProductNav(products) {
     const productNav = document.querySelector('[data-container="product-nav"]');
     const handleProductCategoryChange = (newCategory) => {
-      this.filterProductsByCategory(newCategory);
-      this.renderProductCatalog(this.currCategoryProducts, this.markets);
+      this.porductCollection.setCategoryFilter(newCategory);
     };
 
-    const allProductCategories = products.reduce((categories, product) => {
-      const currCategory = product.category;
-      if (!categories.includes(currCategory)) {
-        categories.push(currCategory);
-      }
-      return categories;
-    }, []);
+    const subscribeToProductCollection = (fn) => {
+      products.subscribe(fn);
+    };
+
+    const allProductCategories = products
+      .getAllProducts()
+      .reduce((categories, product) => {
+        const currCategory = product.category;
+        if (!categories.includes(currCategory)) {
+          categories.push(currCategory);
+        }
+        return categories;
+      }, []);
 
     const orderedCategories = sortAndFilterDuplicates(
       allProductCategories,

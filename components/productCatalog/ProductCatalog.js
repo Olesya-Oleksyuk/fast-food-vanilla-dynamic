@@ -25,7 +25,11 @@ class ProductCatalogComponent {
    * @return void
    */
   updateProperties(obj) {
-    this.products = obj.products;
+    this.products = obj.products.getFilteredProducts();
+    obj.products.subscribe(() => {
+      this.products = obj.products.getFilteredProducts();
+      this.render();
+    });
   }
 
   buildDOMElements() {

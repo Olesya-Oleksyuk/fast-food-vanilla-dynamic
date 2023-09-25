@@ -4,7 +4,7 @@
  */
 class ProductNavComponent {
   /**
-   * @param {{categories: string[], currentCategory: string, containerElement: Node, handleProductCategoryChange: () => void}} obj navigation data
+   * @param {{categories: string[], currentCategory: string, containerElement: Node, handleProductCategoryChange: () => void, subscribeToProductCollection: (fn: Function) => void}} obj navigation data
    * @return ProductNavComponent
    */
   constructor(obj) {
