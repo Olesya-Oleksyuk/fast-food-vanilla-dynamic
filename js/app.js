@@ -77,10 +77,6 @@ class App {
       this.porductCollection.setCategoryFilter(newCategory);
     };
 
-    const subscribeToProductCollection = (fn) => {
-      products.subscribe(fn);
-    };
-
     const allProductCategories = products
       .getAllProducts()
       .reduce((categories, product) => {
