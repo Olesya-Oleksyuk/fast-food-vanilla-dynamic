@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastFood Vanilla Dynamic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/f907397b57.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="home-page" id="root">
+    <header class="home-page__header">
+      <h1 class="header__text">Сделайте заказ напрямую из ресторана</h1>
+    </header>
+    <div data-container="product-nav"></div>
+    <section class="home-page__cart" data-container="cart">
+      <!-- <div class="cart">
+        <h2 class="cart__title">
+          <span class="cart-logo">
+            <img src="../public/i/others/cart-logo.png" alt="Корзина" />
+          </span>
+          <span class="cart-title__text">Корзина</span>
+        </h2>
+        <div class="cart__content">
+          <table class="cart-table">
+            <tr class="cart-table__header">
+              <th class="cart-table__name">Название</th>
+              <th class="cart-table__count">Количество</th>
+            </tr>
+          </table>
+          <span class="cart-table__cart-overall">
+            Итого:&nbsp;<b class="cart-overall__price">0</b>&nbsp;руб.
+          </span>
+          <button type="submit" class="cart__checkout-button button-primary button-primary--grey">
+            Оформить заказ
+          </button>
+        </div>
+      </div> -->
+    </section>
+    <main class="home-page__content">
+      <section class="product-catalogue">
+        <h2 class="visually-hidden">Каталог продуктов</h2>
+        <div data-container="product-catalogue"></div>
+      </section>
+    </main>
+  </div>
+  <script src="bundle.js"></script>
+</body>
+
+</html>
