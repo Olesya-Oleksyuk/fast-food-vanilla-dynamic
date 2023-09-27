@@ -98,16 +98,15 @@ export default class ProductCatalogComponent {
    * @return string
    */
   renderProductMarket(market) {
-    return ''
-    // if (!market) return '';
-    // const productMarket = document.createElement('span');
-    // productMarket.classList.add('product-card__market');
-    // const productImgSrc = this.markets.getMarketLogo(market);
+    if (!market) return '';
+    const productMarket = document.createElement('span');
+    productMarket.classList.add('product-card__market');
+    const productImgSrc = this.markets.getMarketLogo(market);
 
-    // productMarket.innerHTML = html`
-    //   <img src="${productImgSrc}" alt="${market} лого" />
-    // `;
-    // return productMarket.outerHTML;
+    productMarket.innerHTML = html`
+      <img src="${productImgSrc}" alt="${market} лого" />
+    `;
+    return productMarket.outerHTML;
   }
 
   /**
@@ -124,7 +123,7 @@ export default class ProductCatalogComponent {
     // А так работает:
     productPhotoContent.innerHTML = html`
       <img
-        src="${require(`/src/public/i/salads/salad.png`)}"
+        src="${imageSrc}"
         alt="${name}
       фото"
       />

@@ -7,7 +7,7 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist/'),
     publicPath: '/',
-    assetModuleFilename: 'images/[name][ext][query]',
+    assetModuleFilename: 'i/[name][ext][query]',
   },
   devServer: {
     static: {
