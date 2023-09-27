@@ -1,5 +1,6 @@
 'use strict';
 
+import Store from "../../store/store";
 import Markets from "../../products/markets";
 import ProductModel from "../../products/product";
 import ProductCollectionModel from "../../products/productCollection";
@@ -20,16 +21,32 @@ import './style.css';
  */
 export default class ProductCatalogComponent {
   /**
-   * @param {{products: ProductCollectionModel, containerElement: Element, markets: Markets}} obj product catalog data
+   * @param {{products: ProductCollectionModel, containerElement: Element, markets: Markets, store: Store}} obj product catalog data
    * @return ProductCatalogComponent
    */
   constructor(obj) {
     this.containerElement = obj.containerElement;
+    this.store = obj.store;
+    this.currentCategoryFilter = this.store.getState().categoryFilter;
+    
     this.fields = ProductModel.getFields();
     this.markets = obj.markets;
-    this.updateProperties(obj);
+
+    this.store.subscribeValue("categoryFilter", (category) => {
+      this.currentCategoryFilter = category;
+      this.products = this.filterPorductsByCategory()
+    });
+    // this.updateProperties(obj);
+    this.products = this.filterPorductsByCategory();
     this.buildDOMElements();
     this.render();
+  }
+
+  filterPorductsByCategory() {
+    console.log('filteredByCategoryList', this.store.getState().products);
+    this.filteredByCategoryList = this.store
+      .getState()
+      .products.map(product => product.category === this.currentCategoryFilter);
   }
 
   /**
@@ -37,11 +54,11 @@ export default class ProductCatalogComponent {
    * @return void
    */
   updateProperties(obj) {
-    this.products = obj.products.getFilteredProducts();
-    obj.products.subscribe(() => {
-      this.products = obj.products.getFilteredProducts();
-      this.render();
-    });
+    // this.products = obj.products.getFilteredProducts();
+    // obj.products.subscribe(() => {
+    //   this.products = obj.products.getFilteredProducts();
+    //   this.render();
+    // });
   }
 
   buildDOMElements() {

@@ -1,5 +1,7 @@
 'use strict';
 
+import { setProductCategoryFilter } from "../../store/actions";
+import Store from "../../store/store";
 import { html } from "../../utils/utils";
 import { categoriesDictionary } from "./constants";
 import './style.css';
@@ -10,15 +12,15 @@ import './style.css';
 export default class ProductNavComponent {
   /**
    * @param {{categories: string[],
-   *  currentCategory: string, 
+   *  currentCategory: string,
    *  containerElement: Node,
-   *  handleProductCategoryChange: () => void }} obj navigation data
+   *  store: Store }} obj navigation data
    * @return ProductNavComponent
    */
   constructor(obj) {
+    this.store = obj.store;
     this.containerElement = obj.containerElement;
     this.currentCategory = obj.currentCategory;
-    this.handleProductCategoryChange = obj.handleProductCategoryChange;
     this.categoryNameMapper = this.createProductCategoryMapper();
     this.updateProperties(obj);
     this.buildDOMElements();
@@ -71,6 +73,10 @@ export default class ProductNavComponent {
     }
 
     return { getCategory };
+  }
+
+  handleProductCategoryChange(category) {
+    this.store.dispatch(setProductCategoryFilter(category));
   }
 
   render() {
