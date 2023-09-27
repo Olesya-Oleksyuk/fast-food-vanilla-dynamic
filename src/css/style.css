@@ -1,0 +1,101 @@
+/* @import "../components/productCatalog/style.css";
+@import "../components/productNav/style.css";
+@import "../components/buttons/primary/style.css";
+@import "../components/buttons/control/style.css";  */
+
+/* Global */
+:root {
+  --light-gray: #eae9e7;
+  --light-gray-2: #bebcba;
+  --gray: #808080;
+  --dark-gray: #3f3e3e;
+  --yellow: #f5c300;
+  --light-yellow: #f6d846;
+  --blue: #0265bb;
+  --orange: #d96b4c;
+  --white: #fcfcfc;
+}
+
+* {
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+body {
+  background-image: url("/src/public/i/others/app-background-plate.png");
+  background-repeat: repeat;
+  font-family: 'Roboto Condensed', sans-serif;
+  list-style-type: none;
+}
+
+/* Page laoyout*/
+
+.home-page {
+  display: grid;
+  grid-template-areas:
+    "home-page__header home-page__header"
+    "home-page__nav home-page__content"
+    "cart home-page__content";
+  grid-template-columns: minmax(max-content, 20%) 1fr;
+  grid-template-rows: auto auto 1fr;
+  padding: 2rem 1rem;
+}
+
+.home-page__header {
+  grid-area: home-page__header;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.home-page__nav {
+  grid-area: home-page__nav;
+  justify-self: center;
+  height: fit-content;
+}
+
+.home-page__cart {
+  grid-area: cart;
+  justify-self: center;
+  height: fit-content;
+  margin-top: 3rem;
+}
+
+.home-page__content {
+  grid-area: home-page__content;
+  padding: 0.5rem 2rem;
+}
+
+/* Header */
+
+.header__text {
+  display: inline;
+  width: fit-content;
+
+  font-size: 2.4rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--dark-gray);
+}
+
+
+.visually-hidden:not(:focus):not(:active),
+input[type="checkbox"].visually-hidden,
+input[type="radio"].visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  -webkit-clip-path: inset(100%);
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
