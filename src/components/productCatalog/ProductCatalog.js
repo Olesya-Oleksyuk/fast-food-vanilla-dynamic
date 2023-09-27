@@ -116,19 +116,22 @@ export default class ProductCatalogComponent {
    * @return string
    */
   renderProductPhoto(imageSrc, name) {
-    return '';
+    const productPhoto = document.createElement('div');
+    productPhoto.classList.add('product-card__photo');
+    const productPhotoContent = document.createElement('div');
+    productPhotoContent.classList.add('product-card__photo-inner');
 
-    // const productPhoto = document.createElement('div');
-    // productPhoto.classList.add('product-card__photo');
-    // const productPhotoContent = document.createElement('div');
-    // productPhotoContent.classList.add('product-card__photo-inner');
+    // А так работает:
+    productPhotoContent.innerHTML = html`
+      <img
+        src="${require(`/src/public/i/salads/salad.png`)}"
+        alt="${name}
+      фото"
+      />
+    `;
 
-    // productPhotoContent.innerHTML = html`
-    //   <img src="${imageSrc}" alt="${name} фото" />
-    // `;
-
-    // productPhoto.appendChild(productPhotoContent);
-    // return productPhoto.outerHTML;
+    productPhoto.appendChild(productPhotoContent);
+    return productPhoto.outerHTML;
   }
 
   /**

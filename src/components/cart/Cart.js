@@ -2,7 +2,7 @@
 
 import { html } from '../../utils/utils';
 import './style.css';
-import BackgroundPlate from '/src/public/i/others/app-background-plate.png';
+import BackgroundPlate from '/src/public/i/others/cart-logo.png';
  
 /**
  * Cart component.
@@ -32,10 +32,7 @@ export default class CartComponent {
     this.cartElement.innerHTML = html`
       <h2 class="cart__title">
         <span class="cart-logo">
-          <img
-            src="${require('/src/public/i/others/cart-logo.png')}"
-            alt="Корзина"
-          />
+          <img src="${BackgroundPlate}" alt="Корзина" />
         </span>
         <span class="cart-title__text">Корзина</span>
       </h2>
