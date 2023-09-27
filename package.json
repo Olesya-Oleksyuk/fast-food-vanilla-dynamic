@@ -1,4 +1,9 @@
 {
+  "name": "FastFood app",
+  "version": "1.0.0",
+  "repository": {
+    "url": "git+https://github.com/Olesya-Oleksyuk/fast-food-vanilla-dynamic.git"
+  },
   "devDependencies": {
     "@babel/core": "^7.23.0",
     "@babel/preset-env": "^7.22.20",
@@ -11,6 +16,11 @@
   },
   "scripts": {
     "build": "webpack watch",
-    "dev": "webpack serve --config ./webpack.config.js"
+    "dev": "webpack serve --config ./webpack.config.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "gh-pages": "^6.0.0"
   }
 }

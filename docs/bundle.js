@@ -18,7 +18,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(21);
 
 
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8;
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -110,16 +110,12 @@ var ProductCatalogComponent = /*#__PURE__*/function () {
   }, {
     key: "renderProductMarket",
     value: function renderProductMarket(market) {
-      return '';
-      // if (!market) return '';
-      // const productMarket = document.createElement('span');
-      // productMarket.classList.add('product-card__market');
-      // const productImgSrc = this.markets.getMarketLogo(market);
-
-      // productMarket.innerHTML = html`
-      //   <img src="${productImgSrc}" alt="${market} лого" />
-      // `;
-      // return productMarket.outerHTML;
+      if (!market) return '';
+      var productMarket = document.createElement('span');
+      productMarket.classList.add('product-card__market');
+      var productImgSrc = this.markets.getMarketLogo(market);
+      productMarket.innerHTML = (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n      <img src=\"", "\" alt=\"", " \u043B\u043E\u0433\u043E\" />\n    "])), productImgSrc, market);
+      return productMarket.outerHTML;
     }
 
     /**
@@ -136,7 +132,7 @@ var ProductCatalogComponent = /*#__PURE__*/function () {
       productPhotoContent.classList.add('product-card__photo-inner');
 
       // А так работает:
-      productPhotoContent.innerHTML = (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n      <img\n        src=\"", "\"\n        alt=\"", "\n      \u0444\u043E\u0442\u043E\"\n      />\n    "])), imageSrc, name);
+      productPhotoContent.innerHTML = (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n      <img\n        src=\"", "\"\n        alt=\"", "\n      \u0444\u043E\u0442\u043E\"\n      />\n    "])), imageSrc, name);
       productPhoto.appendChild(productPhotoContent);
       return productPhoto.outerHTML;
     }
@@ -148,7 +144,7 @@ var ProductCatalogComponent = /*#__PURE__*/function () {
   }, {
     key: "renderProductName",
     value: function renderProductName(name) {
-      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n      <h3 class=\"product-card__title\">\n        <span class=\"product-card__name\">", "</span>\n      </h3>\n    "])), name);
+      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n      <h3 class=\"product-card__title\">\n        <span class=\"product-card__name\">", "</span>\n      </h3>\n    "])), name);
     }
 
     /**
@@ -172,7 +168,7 @@ var ProductCatalogComponent = /*#__PURE__*/function () {
   }, {
     key: "renderProductDescription",
     value: function renderProductDescription(description) {
-      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n      <p class=\"product-card-info__ingredients\">\n        <span class=\"product-ingredient\"> ", " </span>\n      </p>\n    "])), description);
+      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n      <p class=\"product-card-info__ingredients\">\n        <span class=\"product-ingredient\"> ", " </span>\n      </p>\n    "])), description);
     }
 
     /**
@@ -182,7 +178,7 @@ var ProductCatalogComponent = /*#__PURE__*/function () {
   }, {
     key: "renderProductPrice",
     value: function renderProductPrice(price) {
-      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n      <span class=\"product-card-info__price\">\n        \u0426\u0435\u043D\u0430:\n        <b>", " \u0440\u0443\u0431.</b>\n      </span>\n    "])), price);
+      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n      <span class=\"product-card-info__price\">\n        \u0426\u0435\u043D\u0430:\n        <b>", " \u0440\u0443\u0431.</b>\n      </span>\n    "])), price);
     }
 
     /**
@@ -193,7 +189,7 @@ var ProductCatalogComponent = /*#__PURE__*/function () {
     value: function renderProductCountPanel() {
       var incrementButton = _buttons_control_Control__WEBPACK_IMPORTED_MODULE_4__["default"].render('plus');
       var decrementButton = _buttons_control_Control__WEBPACK_IMPORTED_MODULE_4__["default"].render('minus');
-      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n      <div class=\"product-card-info__count\">\n        <label for=\"product-count\" class=\"product-card-info__count-label\"\n          >\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E\n        </label>\n        <div class=\"count-control\">\n          ", "\n          <input\n            placeholder=\"1\"\n            type=\"text\"\n            id=\"product-count\"\n            name=\"product-count\"\n            class=\"product-count-input\"\n            readonly\n          />\n          ", "\n        </div>\n      </div>\n    "])), decrementButton, incrementButton);
+      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\n      <div class=\"product-card-info__count\">\n        <label for=\"product-count\" class=\"product-card-info__count-label\"\n          >\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E\n        </label>\n        <div class=\"count-control\">\n          ", "\n          <input\n            placeholder=\"1\"\n            type=\"text\"\n            id=\"product-count\"\n            name=\"product-count\"\n            class=\"product-count-input\"\n            readonly\n          />\n          ", "\n        </div>\n      </div>\n    "])), decrementButton, incrementButton);
     }
 
     /**
@@ -204,7 +200,7 @@ var ProductCatalogComponent = /*#__PURE__*/function () {
     value: function renderControlButton() {
       var incrementButton = _buttons_control_Control__WEBPACK_IMPORTED_MODULE_4__["default"].render('plus');
       var decrementButton = _buttons_control_Control__WEBPACK_IMPORTED_MODULE_4__["default"].render('minus');
-      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\n      <div class=\"product-card-info__count\">\n        <label for=\"product-count\" class=\"product-card-info__count-label\"\n          >\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E\n        </label>\n        <div class=\"count-control\">\n          ", "\n          <input\n            placeholder=\"1\"\n            type=\"text\"\n            id=\"product-count\"\n            name=\"product-count\"\n            class=\"product-count-input\"\n            readonly\n          />\n          ", "\n        </div>\n      </div>\n    "])), decrementButton, incrementButton);
+      return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["\n      <div class=\"product-card-info__count\">\n        <label for=\"product-count\" class=\"product-card-info__count-label\"\n          >\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E\n        </label>\n        <div class=\"count-control\">\n          ", "\n          <input\n            placeholder=\"1\"\n            type=\"text\"\n            id=\"product-count\"\n            name=\"product-count\"\n            class=\"product-count-input\"\n            readonly\n          />\n          ", "\n        </div>\n      </div>\n    "])), decrementButton, incrementButton);
     }
   }, {
     key: "render",
