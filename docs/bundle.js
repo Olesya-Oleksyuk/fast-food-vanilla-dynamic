@@ -1912,7 +1912,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
-/* harmony import */ var _src_public_i_others_cart_logo_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(34);
 
 
 var _templateObject;
@@ -1923,7 +1922,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-
 
 
 
@@ -1938,7 +1936,6 @@ var CartComponent = /*#__PURE__*/function () {
    */
   function CartComponent(obj) {
     _classCallCheck(this, CartComponent);
-    console.log('BackPic', _src_public_i_others_cart_logo_png__WEBPACK_IMPORTED_MODULE_2__);
     this.containerElement = obj.containerElement;
     this.buildDOMElements();
     this.render();
@@ -1953,7 +1950,8 @@ var CartComponent = /*#__PURE__*/function () {
     key: "renderCartBody",
     value: function renderCartBody() {
       if (!this.cartElement) return;
-      this.cartElement.innerHTML = (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <h2 class=\"cart__title\">\n        <span class=\"cart-logo\">\n          <img src=\"", "\" alt=\"\u041A\u043E\u0440\u0437\u0438\u043D\u0430\" />\n        </span>\n        <span class=\"cart-title__text\">\u041A\u043E\u0440\u0437\u0438\u043D\u0430</span>\n      </h2>\n      <div class=\"cart__content\">\n        <table class=\"cart-table\">\n          <tr class=\"cart-table__header\">\n            <th class=\"cart-table__name\">\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435</th>\n            <th class=\"cart-table__count\">\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E</th>\n          </tr>\n        </table>\n        <span class=\"cart-table__cart-overall\">\n          \u0418\u0442\u043E\u0433\u043E:&nbsp;<b class=\"cart-overall__price\">0</b>&nbsp;\u0440\u0443\u0431.\n        </span>\n        <button\n          type=\"submit\"\n          class=\"cart__checkout-button button-primary button-primary--grey\"\n        >\n          \u041E\u0444\u043E\u0440\u043C\u0438\u0442\u044C \u0437\u0430\u043A\u0430\u0437\n        </button>\n      </div>\n    "])), _src_public_i_others_cart_logo_png__WEBPACK_IMPORTED_MODULE_2__);
+      var cartImgSrc = 'i/others/cart-logo.png';
+      this.cartElement.innerHTML = (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <h2 class=\"cart__title\">\n        <span class=\"cart-logo\">\n          <img src=\"", "\" alt=\"\u041A\u043E\u0440\u0437\u0438\u043D\u0430\" />\n        </span>\n        <span class=\"cart-title__text\">\u041A\u043E\u0440\u0437\u0438\u043D\u0430</span>\n      </h2>\n      <div class=\"cart__content\">\n        <table class=\"cart-table\">\n          <tr class=\"cart-table__header\">\n            <th class=\"cart-table__name\">\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435</th>\n            <th class=\"cart-table__count\">\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E</th>\n          </tr>\n        </table>\n        <span class=\"cart-table__cart-overall\">\n          \u0418\u0442\u043E\u0433\u043E:&nbsp;<b class=\"cart-overall__price\">0</b>&nbsp;\u0440\u0443\u0431.\n        </span>\n        <button\n          type=\"submit\"\n          class=\"cart__checkout-button button-primary button-primary--grey\"\n        >\n          \u041E\u0444\u043E\u0440\u043C\u0438\u0442\u044C \u0437\u0430\u043A\u0430\u0437\n        </button>\n      </div>\n    "])), cartImgSrc);
     }
   }, {
     key: "render",
@@ -2125,12 +2123,6 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* Cart */
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
-
-/***/ }),
-/* 34 */
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "i/cart-logo.png";
 
 /***/ })
 /******/ 	]);
