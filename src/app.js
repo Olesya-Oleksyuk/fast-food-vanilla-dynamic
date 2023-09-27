@@ -14,6 +14,9 @@ import jsonData from './data/data.json';
 import CartComponent from './components/cart/Cart';
 import Markets from './products/markets';
 import markets from './products/markets';
+import reducer from './store/reducer.js';
+import Store from './store/store.js';
+import store from './store/store.js';
 
 /**
  * App entry point
@@ -27,18 +30,29 @@ export default class App {
     console.log('jsonData', jsonData);
     this.fullData = jsonData;
 
-    this.porductCollection = new ProductCollectionModel(
+    this.productCollection = new ProductCollectionModel(
       this.fullData.menu,
       PRODUCT_CATEGORIES.SANDWICHES
     );
 
+    const prouctCollection = new ProductCollectionModel(this.fullData.menu);
+
+    const initalState = {
+      products: prouctCollection,
+      categoryFilter: PRODUCT_CATEGORIES.SANDWICHES,
+    };
+
+    const store = new Store(reducer, initalState);
+    console.log('store', store.getState().products.getAllProducts());
+    
+
     this.markets = new Markets(this.fullData.markets);
-    this.renderApp();
+    this.renderApp(store);
   }
 
-  renderApp() {
-    this.renderProductCatalog(this.porductCollection, this.markets);
-    this.renderProductNav(this.porductCollection);
+  renderApp(store) {
+    this.renderProductCatalog(this.productCollection, this.markets, store);
+    this.renderProductNav(this.productCollection, store);
     this.renderCart();
   }
 
@@ -53,7 +67,7 @@ export default class App {
    * @param {Markets} markets
    * @return ProductCatalogComponent
    */
-  renderProductCatalog(products, markets) {
+  renderProductCatalog(products, markets, store) {
     const productCatalog = document.querySelector(
       '[data-container="product-catalogue"]'
     );
@@ -62,6 +76,7 @@ export default class App {
       products,
       containerElement: productCatalog,
       markets,
+      store,
     });
   }
 
@@ -80,11 +95,11 @@ export default class App {
    * @param {ProductCollectionModel} products
    * @return void
    */
-  renderProductNav(products) {
+  renderProductNav(products, store) {
     const productNav = document.querySelector('[data-container="product-nav"]');
-    const handleProductCategoryChange = newCategory => {
-      this.porductCollection.setCategoryFilter(newCategory);
-    };
+    // const handleProductCategoryChange = newCategory => {
+      // this.prouctCollection.setCategoryFilter(newCategory);
+    // };
 
     const allProductCategories = products
       .getAllProducts()
@@ -104,8 +119,8 @@ export default class App {
     new ProductNavComponent({
       categories: orderedCategories,
       containerElement: productNav,
-      handleProductCategoryChange: handleProductCategoryChange,
       currentCategory: this.currCategory,
+      store,
     });
   }
 }
