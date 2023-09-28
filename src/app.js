@@ -1,22 +1,14 @@
 'use strict';
 
+import CartComponent from './components/cart/Cart';
 import ProductCatalogComponent from './components/productCatalog/ProductCatalog.js';
 import ProductNavComponent from './components/productNav/ProductNav.js';
-import {
-  PRODUCT_CATEGORIES,
-  correctlyOrderedCategories,
-} from './components/productNav/constants';
-import ProductModel from './products/product';
-import ProductCollectionModel from './products/productCollection';
-import { sortAndFilterDuplicates } from './utils/utils';
 import './css/style.css';
 import jsonData from './data/data.json';
-import CartComponent from './components/cart/Cart';
 import Markets from './products/markets';
-import markets from './products/markets';
+import { PRODUCT_CATEGORIES } from './store/constants.js';
 import reducer from './store/reducer.js';
 import Store from './store/store.js';
-import store from './store/store.js';
 
 /**
  * App entry point
@@ -27,32 +19,23 @@ export default class App {
    */
   constructor() {
     this.currCategory = PRODUCT_CATEGORIES.SANDWICHES;
-    console.log('jsonData', jsonData);
     this.fullData = jsonData;
 
-    this.productCollection = new ProductCollectionModel(
-      this.fullData.menu,
-      PRODUCT_CATEGORIES.SANDWICHES
-    );
-
-    const prouctCollection = new ProductCollectionModel(this.fullData.menu);
-
     const initalState = {
-      products: prouctCollection,
+      products: this.fullData.menu,
+      markets: new Markets(this.fullData.markets),
       categoryFilter: PRODUCT_CATEGORIES.SANDWICHES,
     };
 
     const store = new Store(reducer, initalState);
-    console.log('store', store.getState().products.getAllProducts());
-    
 
     this.markets = new Markets(this.fullData.markets);
     this.renderApp(store);
   }
 
   renderApp(store) {
-    this.renderProductCatalog(this.productCollection, this.markets, store);
-    this.renderProductNav(this.productCollection, store);
+    this.renderProductCatalog(store);
+    this.renderProductNav(store);
     this.renderCart();
   }
 
@@ -63,19 +46,16 @@ export default class App {
   }
 
   /**
-   * @param { ProductCollectionModel} products
-   * @param {Markets} markets
+   * @param { Store } store
    * @return ProductCatalogComponent
    */
-  renderProductCatalog(products, markets, store) {
+  renderProductCatalog(store) {
     const productCatalog = document.querySelector(
       '[data-container="product-catalogue"]'
     );
 
     new ProductCatalogComponent({
-      products,
       containerElement: productCatalog,
-      markets,
       store,
     });
   }
@@ -92,34 +72,14 @@ export default class App {
   }
 
   /**
-   * @param {ProductCollectionModel} products
+   * @param {Store} store
    * @return void
    */
-  renderProductNav(products, store) {
+  renderProductNav(store) {
     const productNav = document.querySelector('[data-container="product-nav"]');
-    // const handleProductCategoryChange = newCategory => {
-      // this.prouctCollection.setCategoryFilter(newCategory);
-    // };
-
-    const allProductCategories = products
-      .getAllProducts()
-      .reduce((categories, product) => {
-        const currCategory = product.category;
-        if (!categories.includes(currCategory)) {
-          categories.push(currCategory);
-        }
-        return categories;
-      }, []);
-
-    const orderedCategories = sortAndFilterDuplicates(
-      allProductCategories,
-      correctlyOrderedCategories
-    );
 
     new ProductNavComponent({
-      categories: orderedCategories,
       containerElement: productNav,
-      currentCategory: this.currCategory,
       store,
     });
   }

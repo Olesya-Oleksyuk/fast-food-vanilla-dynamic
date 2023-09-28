@@ -1,16 +1,12 @@
 'use strict';
 
-import Store from "../../store/store";
-import Markets from "../../products/markets";
-import ProductModel from "../../products/product";
-import ProductCollectionModel from "../../products/productCollection";
-import { html } from "../../utils/utils";
-import ButtonControl from "../buttons/control/Control";
-import ButtonPrimary from "../buttons/primary/Primary";
+import ProductModel from '../../products/product';
+import Store from '../../store/store';
+import { html } from '../../utils/utils';
+import ButtonControl from '../buttons/control/Control';
+import ButtonPrimary from '../buttons/primary/Primary';
 import './style.css';
 
-
-// const html = String.raw;
 
 /**
  * Product Catalog component. We call this a component as its behaviour is a
@@ -21,44 +17,50 @@ import './style.css';
  */
 export default class ProductCatalogComponent {
   /**
-   * @param {{products: ProductCollectionModel, containerElement: Element, markets: Markets, store: Store}} obj product catalog data
+   * @param {{
+   * containerElement: Element,
+   * store: Store
+   * }} obj product catalog data
    * @return ProductCatalogComponent
    */
   constructor(obj) {
     this.containerElement = obj.containerElement;
     this.store = obj.store;
-    this.currentCategoryFilter = this.store.getState().categoryFilter;
-    
-    this.fields = ProductModel.getFields();
-    this.markets = obj.markets;
 
-    this.store.subscribeValue("categoryFilter", (category) => {
-      this.currentCategoryFilter = category;
-      this.products = this.filterPorductsByCategory()
-    });
-    // this.updateProperties(obj);
-    this.products = this.filterPorductsByCategory();
+    this.updateProperties();
     this.buildDOMElements();
     this.render();
   }
 
   filterPorductsByCategory() {
-    console.log('filteredByCategoryList', this.store.getState().products);
     this.filteredByCategoryList = this.store
       .getState()
-      .products.map(product => product.category === this.currentCategoryFilter);
+      .products.filter(
+        (product) => product.category === this.currentCategoryFilter
+      );
   }
 
   /**
-   * @param {{products: ProductCollectionModel, containerElement: Element}} obj author data
+   * Update component state & subscribe to store updates
    * @return void
    */
-  updateProperties(obj) {
-    // this.products = obj.products.getFilteredProducts();
-    // obj.products.subscribe(() => {
-    //   this.products = obj.products.getFilteredProducts();
-    //   this.render();
-    // });
+  updateProperties() {
+    this.currentCategoryFilter = this.store.getState().categoryFilter;
+    this.products = this.filterPorductsByCategory();
+    this.markets = this.store.getState().markets;
+
+    this.store.subscribeValue('categoryFilter', (category) => {
+      this.currentCategoryFilter = category;
+      this.products = this.filterPorductsByCategory();
+      this.buildDOMElements();
+      this.render();
+    });
+
+    this.store.subscribeValue('products', () => {
+      this.products = this.filterPorductsByCategory();
+      this.buildDOMElements();
+      this.render();
+    });
   }
 
   buildDOMElements() {
@@ -69,9 +71,9 @@ export default class ProductCatalogComponent {
   renderProductCards() {
     if (!this.productListElement) return;
     this.productListElement.innerHTML = `
-			${this.products
+			${this.filteredByCategoryList
         .map(
-          product => html`
+          (product) => html`
             <li class="product-card">${this.renderProductCardBody(product)}</li>
           `
         )
@@ -80,7 +82,7 @@ export default class ProductCatalogComponent {
   }
 
   /**
-   * @param {{name: String, description: String, image: String, price: Number, market: String, type: String, weight: Number}} product data
+   * @param {ProductModel} product data
    * @return string
    */
   renderProductCardBody(product) {

@@ -4,7 +4,8 @@
  */
 export default class Markets {
   /**
-   * @param {[{name: String, image: String}]} obj market data list
+   * @typedef {{name: String, image: String}} Market
+   * @param {Object.<string, Market>} obj market data list
    * @return MarketsModel
    */
   constructor(obj) {

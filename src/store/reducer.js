@@ -1,8 +1,8 @@
-import Action from "./actions";
-import { BrightnessTheme } from "./enums";
+import Action from './actions';
 
 const initialState = {
   products: [],
+  markets: [],
   categoryFilter: '',
 };
 

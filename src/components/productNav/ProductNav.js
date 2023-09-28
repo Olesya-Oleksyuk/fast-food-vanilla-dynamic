@@ -1,38 +1,87 @@
 'use strict';
 
-import { setProductCategoryFilter } from "../../store/actions";
-import Store from "../../store/store";
-import { html } from "../../utils/utils";
-import { categoriesDictionary } from "./constants";
+import { setProductCategoryFilter } from '../../store/actions';
+import Store from '../../store/store';
+import { Component, html, sortAndFilterDuplicates } from '../../utils/utils';
+import { categoriesDictionary, correctlyOrderedCategories } from './constants';
 import './style.css';
 
 /**
  * Product Navigation component.
  */
-export default class ProductNavComponent {
+export default class ProductNavComponent extends Component {
   /**
-   * @param {{categories: string[],
-   *  currentCategory: string,
-   *  containerElement: Node,
-   *  store: Store }} obj navigation data
+   * @param {{
+   *  containerElement: Element,
+   *  store: Store
+   * }} obj navigation data
    * @return ProductNavComponent
    */
   constructor(obj) {
+    super();
     this.store = obj.store;
     this.containerElement = obj.containerElement;
-    this.currentCategory = obj.currentCategory;
     this.categoryNameMapper = this.createProductCategoryMapper();
-    this.updateProperties(obj);
+
+    this.updateProperties();
     this.buildDOMElements();
     this.render();
   }
 
   /**
-   * @param {{categories: string[], containerElement: Node}} obj navigation data
+   * Get properly ordered product category list
    * @return void
    */
-  updateProperties(obj) {
-    this.categories = obj.categories;
+  getCategoryList(products) {
+    console.log('products 11', products);
+
+    const allProductCategories = products.reduce((categories, product) => {
+      const currCategory = product.category;
+      if (!categories.includes(currCategory)) {
+        categories.push(currCategory);
+      }
+      return categories;
+    }, []);
+
+    const orderedCategories = sortAndFilterDuplicates(
+      allProductCategories,
+      correctlyOrderedCategories
+    );
+
+    return orderedCategories;
+  }
+
+  /**
+   * Update component state & subscribe to store updates
+   * @return void
+   */
+  updateProperties() {
+    const [getCategoryFilter, setCategoryFilter] = this.useState(
+      this.store.getState().categoryFilter
+    );
+
+    this.currentCategory = getCategoryFilter();
+    this.setCategoryFilter = setCategoryFilter;
+
+    const [getCategoryList, setCategoryList] = this.useState(
+      this.getCategoryList(this.store.getState().products)
+    );
+
+    this.categories = getCategoryList();
+    this.setCategoryList = setCategoryList;
+
+    this.store.subscribeValue('categoryFilter', (category) => {
+      this.currentCategory = category;
+      this.getCategoryList(this.store.getState().products);
+      this.buildDOMElements();
+      this.render();
+    });
+
+    this.store.subscribeValue('products', () => {
+      this.getCategoryList(this.store.getState().products);
+      this.buildDOMElements();
+      this.render();
+    });
   }
 
   buildDOMElements() {
@@ -48,7 +97,7 @@ export default class ProductNavComponent {
     this.productNavElement.firstChild.innerHTML = `
 			${this.categories
         .map(
-          category => html`
+          (category) => html`
             <li class="category-nav__item">
               <input
                 id="${category}"
@@ -87,7 +136,7 @@ export default class ProductNavComponent {
       'input[type="radio"][name="category"]'
     );
 
-    radios.forEach(radio =>
+    radios.forEach((radio) =>
       radio.addEventListener('change', () =>
         this.handleProductCategoryChange(radio.value)
       )
