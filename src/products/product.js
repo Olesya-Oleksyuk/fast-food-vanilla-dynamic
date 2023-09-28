@@ -4,13 +4,10 @@
  */
 export default class ProductModel {
   /**
-   * @typedef {{name: String, description: String, image: String, price: Number, category: String, market: String, type: String, weight: Number}} Product
-   */
-
-  /**
-   * @param {Product} obj product data
+   * @param {import("../jsdocs/typedef").Product} obj product data
    * @return ProductModel
    */
+
   constructor(obj) {
     this.updateProperties(obj);
   }
@@ -18,7 +15,7 @@ export default class ProductModel {
   /**
    * Map properties to this instance
    *
-   * @param {Product} obj product data
+   * @param {import("../jsdocs/typedef").Product} obj product data
    * @return void
    */
   updateProperties(obj) {
@@ -35,7 +32,7 @@ export default class ProductModel {
   /**
    * Get a list of properties for this class
    *
-   * @returns {string[]}
+   * @returns string[]
    */
   static getFields() {
     return [
