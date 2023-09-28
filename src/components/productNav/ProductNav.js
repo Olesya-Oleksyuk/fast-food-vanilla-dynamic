@@ -33,8 +33,6 @@ export default class ProductNavComponent extends Component {
    * @return void
    */
   getCategoryList(products) {
-    console.log('products 11', products);
-
     const allProductCategories = products.reduce((categories, product) => {
       const currCategory = product.category;
       if (!categories.includes(currCategory)) {

@@ -25,23 +25,29 @@ export default class ButtonControl {
    * @param {Icon} icon the allowed type of the button icon
    * @param {string} classPositioning class to adjust positioning
    * @param {string[]} classModifiers modifier names to adjust button appearance
-   * @return string
+   * @return Element
    */
-  static render(icon, classPositioning = '', classModifiers = ['']) {
-    const className = 'product-count-button';
+  static render(
+    icon,
+    classPositioning = '',
+    classModifiers = []
+  ) {
+    const mainClassName = 'product-count-button';
 
     const classModifiersList = classModifiers
       .map((modifier) =>
-        !classModifiers.length ? '' : `${className}--${modifier}`
+        !classModifiers.length ? '' : `${mainClassName}--${modifier}`
       )
       .join(' ');
 
-    const buttonBody = html` <button
-      class="${classPositioning} ${className} ${classModifiersList}"
-    >
-      ${this.#getIcon(icon)}
-    </button>`;
+    const fullClassName =
+      `${classPositioning} ${mainClassName} ${classModifiersList}`.trim();
 
-    return buttonBody;
+    this.buttonElement = document.createElement('button');
+    this.buttonElement.classList.add(fullClassName);
+
+    this.buttonElement.innerHTML = this.#getIcon(icon);
+
+    return this.buttonElement;
   }
 }
