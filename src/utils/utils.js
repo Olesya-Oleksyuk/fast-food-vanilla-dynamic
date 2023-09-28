@@ -11,7 +11,7 @@ export function sortAndFilterDuplicates(arr, order) {
   const uniqueArray = [];
   const seen = new Set();
 
-  sortedArray.forEach(item => {
+  sortedArray.forEach((item) => {
     if (!seen.has(item)) {
       uniqueArray.push(item);
       seen.add(item);
@@ -21,38 +21,26 @@ export function sortAndFilterDuplicates(arr, order) {
   return uniqueArray;
 }
 
-export class Observable {
-  constructor() {
-    this.subscribers = [];
-  }
+export class Component {
+  constructor() {}
 
   /**
-   * Subscribe for changes
-   * Add a function you want to be executed whenever this model changes.
+   * useState
    *
-   * @param {Function} fn
-   * @return null
+   * @param {any} defaultValue
+   * @return [function, function]
    */
-  subscribe(fn) {
-    this.subscribers.push(fn);
+  useState(defaultValue) {
+    let value = defaultValue;
+    const getValue = () => {
+      return value;
+    };
+    const setValue = (newValue) => {
+      value = newValue;
+      this.render();
+    };
+    return [getValue, setValue];
   }
 
-  /**
-   * Unsubscribe from being notified when this model changes.
-   *
-   * @param {Function} fn
-   * @return null
-   */
-  unsubscribe(fn) {
-    this.subscribers = this.subscribers.filter(item => item !== fn);
-  }
-
-  /**
-   * Notify subscribers
-   *
-   * @return null
-   */
-  notifySubscribers() {
-    this.subscribers.forEach(fn => fn());
-  }
+  render() {}
 }
