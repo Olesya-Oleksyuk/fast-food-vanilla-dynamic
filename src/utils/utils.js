@@ -11,7 +11,7 @@ export function sortAndFilterDuplicates(arr, order) {
   const uniqueArray = [];
   const seen = new Set();
 
-  sortedArray.forEach(item => {
+  sortedArray.forEach((item) => {
     if (!seen.has(item)) {
       uniqueArray.push(item);
       seen.add(item);
@@ -21,38 +21,39 @@ export function sortAndFilterDuplicates(arr, order) {
   return uniqueArray;
 }
 
-export class Observable {
-  constructor() {
-    this.subscribers = [];
-  }
+export class Component {
+  constructor() {}
 
   /**
-   * Subscribe for changes
-   * Add a function you want to be executed whenever this model changes.
-   *
-   * @param {Function} fn
-   * @return null
+   * @callback getValue
+   * @return {any} value
    */
-  subscribe(fn) {
-    this.subscribers.push(fn);
-  }
 
   /**
-   * Unsubscribe from being notified when this model changes.
-   *
-   * @param {Function} fn
-   * @return null
+   * @callback setValue
+   * @param {any} newValue - The new value to set the state to
    */
-  unsubscribe(fn) {
-    this.subscribers = this.subscribers.filter(item => item !== fn);
-  }
 
   /**
-   * Notify subscribers
+   * useState
    *
-   * @return null
+   * @param {any} defaultValue - The default value for the state
+   * @return {[getValue, setValue]} - An array containing the getter and setter functions for the state
    */
-  notifySubscribers() {
-    this.subscribers.forEach(fn => fn());
+
+  useState(defaultValue) {
+    let value = defaultValue;
+
+    const getValue = () => {
+      return value;
+    };
+
+    const setValue = (newValue) => {
+      value = newValue;
+      this.render();
+    };
+    return [getValue, setValue];
   }
+
+  render() {}
 }
