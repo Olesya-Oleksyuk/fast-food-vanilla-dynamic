@@ -1,6 +1,6 @@
 'use strict';
 
-import { html } from '../../../utils/utils';
+import { composeClassList, html } from '../../../utils/utils';
 import './style.css';
 
 /**
@@ -14,18 +14,16 @@ export default class ButtonPrimary {
    * @return string
    */
   static render(text, classPositioning, classModifiers) {
-    const className = 'button-primary';
-    const classModifiersList = classModifiers
-      .map((modifier) => `${className}--${modifier}`)
-      .join(' ');
+    const classBlockName = 'button-primary';
+
+    const fullClassSelectorsString = composeClassList({
+      classBlockName,
+      classModifiers,
+      classPositioning,
+    });
 
     return html`
-      <button
-        class="${classPositioning} ${className} ${classModifiersList}"
-        type="submit"
-      >
-        ${text}
-      </button>
+      <button class="${fullClassSelectorsString}" type="submit">${text}</button>
     `;
   }
 }

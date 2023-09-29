@@ -1,6 +1,6 @@
 'use strict';
 
-import { html } from '../../../utils/utils';
+import { composeClassList, html } from '../../../utils/utils';
 import './style.css';
 
 /**
@@ -22,31 +22,32 @@ export default class ButtonControl {
    */
 
   /**
-   * @param {Icon} icon the allowed type of the button icon
-   * @param {boolean} isDisabled modifier
-   * @param {string} classPositioning class to adjust positioning
-   * @param {string[]} classModifiers modifier names to adjust button appearance
-   * @return Element
+   * Renders the object as a button element with the specified icon, disabled state, positioning class, and modifiers.
+   *
+   * @param {Object} obj - The object containing the properties for rendering the button.
+   * @param {Icon} obj.icon - The icon to be displayed on the button.
+   * @param {boolean} [obj.isDisabled=false] - Indicates whether the button is disabled.
+   * @param {string} [obj.classPositioning=''] - The positioning class for the button.
+   * @param {Array<string>} [obj.classModifiers=[]] - The list of class modifiers for the button.
+   * @return {HTMLElement} - The rendered button element.
    */
-  static render(
-    icon,
-    isDisabled = false,
-    classPositioning = '',
-    classModifiers = []
-  ) {
-    const mainClassName = 'product-count-button';
+  static render(obj) {
+    const {
+      icon,
+      isDisabled = false,
+      classPositioning = '',
+      classModifiers = [],
+    } = obj;
+    const classBlockName = 'product-count-button';
 
-    const classModifiersList = classModifiers
-      .map((modifier) =>
-        !classModifiers.length ? '' : `${mainClassName}--${modifier}`
-      )
-      .join(' ');
-
-    const fullClassName =
-      `${classPositioning} ${mainClassName} ${classModifiersList}`.trim();
+    const fullClassSelectorsString = composeClassList({
+      classBlockName,
+      classModifiers,
+      classPositioning,
+    });
 
     this.buttonElement = document.createElement('button');
-    this.buttonElement.classList.add(fullClassName);
+    this.buttonElement.setAttribute('class', fullClassSelectorsString);
 
     this.buttonElement.innerHTML = this.#getIcon(icon);
 

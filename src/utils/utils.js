@@ -57,3 +57,33 @@ export class Component {
 
   render() {}
 }
+
+/**
+ * Generates a class selectors list string
+ *
+ * @param {Object} obj
+ * @param {string} obj.classPositioning - The positioning class.
+ * @param {string} obj.classBlockName - The block name class.
+ * @param {Array} obj.classModifiers - The array of class modifiers.
+ * @return {string} The generated class list string.
+ */
+export const composeClassList = (obj) => {
+  const {
+    classPositioning = '',
+    classBlockName = '',
+    classModifiers = [],
+  } = obj;
+
+  const hasModifiers =
+    Boolean(classBlockName) && Boolean(classModifiers.length);
+
+  const classModifiersList = hasModifiers
+    ? classModifiers
+        .map((modifier) => `${classBlockName}--${modifier}`)
+        .join(' ')
+    : '';
+
+  const fullClassName =
+    `${classPositioning} ${classBlockName} ${classModifiersList}`.trim();
+  return fullClassName;
+};
