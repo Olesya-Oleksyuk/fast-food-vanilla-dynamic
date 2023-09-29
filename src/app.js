@@ -1,6 +1,7 @@
 'use strict';
 
 import CartComponent from './components/cart/Cart';
+import ProductModalComponent from './components/modal/Modal';
 import ProductCatalogComponent from './components/productCatalog/ProductCatalog.js';
 import ProductNavComponent from './components/productNav/ProductNav.js';
 import './css/style.css';
@@ -28,7 +29,7 @@ export default class App {
     };
 
     const store = new Store(reducer, initalState);
-    
+
     this.markets = new Markets(this.fullData.markets);
     this.renderApp(store);
   }
@@ -68,6 +69,20 @@ export default class App {
 
     new CartComponent({
       containerElement: cartSection,
+    });
+  }
+
+  /**
+   * @return ModalComponent
+   */
+  renderProductModal(store) {
+    const productModalElement = document.querySelector(
+      '[data-container="product-modal"]'
+    );
+
+    new ProductModalComponent({
+      containerElement: productModalElement,
+      store,
     });
   }
 
