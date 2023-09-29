@@ -1,6 +1,8 @@
+@import url('./reset.css');
+
 /* Global */
 :root {
-  --light-gray: #eae9e7;
+  --light-gray: #e0e0e0;
   --light-gray-2: #bebcba;
   --gray: #808080;
   --dark-gray: #3f3e3e;
@@ -20,6 +22,7 @@ button {
   cursor: pointer;
   font-family: inherit;
 }
+
 
 body {
   background-image: url("/src/public/i/others/app-background-plate.png");
@@ -77,6 +80,85 @@ body {
   text-transform: uppercase;
   color: var(--dark-gray);
 }
+
+/* Modal */
+
+.product-modal {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 2;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-modal__opened {
+  display: flex;
+}
+
+.product-modal__container {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  height: 80%;
+  background-color: var(--light-gray);
+  border-radius: 6px;
+}
+
+.product-modal__header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+  background-color: var(--yellow);
+  color: var(--white);
+}
+
+.product-modal__header h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  height: fit-content;
+}
+
+.product-modal__close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.product-modal__content {
+  flex-grow: 1;
+}
+
+.product-modal__footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+  background-color: var(--white);
+  color: var(--orange);
+}
+
+.product-modal__footer h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  height: fit-content;
+}
+
+.product-modal-nav {}
+
+.product-modal-nav__list {}
+
+.product-modal-nav__item {}
+
+.product-modal-nav__item--active {}
 
 
 .visually-hidden:not(:focus):not(:active),
