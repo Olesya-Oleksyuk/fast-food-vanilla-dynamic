@@ -201,8 +201,9 @@ export default class ProductCardComponent extends Component {
    * @return string
    */
   renderProductCountPanel() {
+    const isDecrementDisabled = this.getProductCount() <= 1;
     const incrementButton = ButtonControl.render('plus');
-    const decrementButton = ButtonControl.render('minus');
+    const decrementButton = ButtonControl.render('minus', isDecrementDisabled);
 
     return html`
       <div class="product-card-info__count">

@@ -23,12 +23,14 @@ export default class ButtonControl {
 
   /**
    * @param {Icon} icon the allowed type of the button icon
+   * @param {boolean} isDisabled modifier
    * @param {string} classPositioning class to adjust positioning
    * @param {string[]} classModifiers modifier names to adjust button appearance
    * @return Element
    */
   static render(
     icon,
+    isDisabled = false,
     classPositioning = '',
     classModifiers = []
   ) {
@@ -47,6 +49,10 @@ export default class ButtonControl {
     this.buttonElement.classList.add(fullClassName);
 
     this.buttonElement.innerHTML = this.#getIcon(icon);
+
+    if (isDisabled) {
+      this.buttonElement.setAttribute('disabled', '');
+    }
 
     return this.buttonElement;
   }
