@@ -4,6 +4,7 @@ import Store from '../../store/store';
 import { Component, html } from '../../utils/utils';
 import ButtonControl from '../buttons/control/Control';
 import ButtonPrimary from '../buttons/primary/Primary';
+import './style.css';
 
 /**
  * Product Card component
