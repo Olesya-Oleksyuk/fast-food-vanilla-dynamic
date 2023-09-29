@@ -28,7 +28,7 @@ export default class App {
     };
 
     const store = new Store(reducer, initalState);
-
+    
     this.markets = new Markets(this.fullData.markets);
     this.renderApp(store);
   }
