@@ -40,13 +40,13 @@ export default class ButtonControl {
     } = obj;
     const classBlockName = 'product-count-button';
 
+    this.buttonElement = document.createElement('button');
+
     const fullClassSelectorsString = composeClassList({
       classBlockName,
       classModifiers,
       classPositioning,
     });
-
-    this.buttonElement = document.createElement('button');
     this.buttonElement.setAttribute('class', fullClassSelectorsString);
 
     this.buttonElement.innerHTML = this.#getIcon(icon);

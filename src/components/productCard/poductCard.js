@@ -38,10 +38,6 @@ export default class ProductCardComponent extends Component {
       '.count-control__increment'
     );
 
-    this.countInputElement = this.productElement.querySelector(
-      '.product-count-input'
-    );
-
     const incrementProductCount = () => {
       this.setProductCount(this.getProductCount() + 1);
     };
@@ -50,7 +46,9 @@ export default class ProductCardComponent extends Component {
       this.setProductCount(this.getProductCount() - 1);
     };
 
-    decrementButtonElement.addEventListener('click', decrementProductCount);
+    if (!this.isDecrementDisabled) {
+      decrementButtonElement.addEventListener('click', decrementProductCount);
+    }
     incrementButtonElement.addEventListener('click', incrementProductCount);
   }
 
@@ -202,16 +200,15 @@ export default class ProductCardComponent extends Component {
    * @return string
    */
   renderProductCountPanel() {
-    const isDecrementDisabled = this.getProductCount() <= 1;
+    this.isDecrementDisabled = this.getProductCount() <= 1;
     const incrementButton = ButtonControl.render({
       icon: 'plus',
     });
     const decrementButton = ButtonControl.render({
       icon: 'minus',
-      isDisabled: isDecrementDisabled,
     });
 
-    return html`
+     return html`
       <div class="product-card-info__count">
         <label for="product-count" class="product-card-info__count-label"
           >Количество
