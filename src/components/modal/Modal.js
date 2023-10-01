@@ -20,9 +20,16 @@ export default class ProductModalComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
+    this.useInternalState();
 
     this.buildDOMElements();
     this.render();
+  }
+
+  useInternalState() {
+    const [getStep, setStep] = this.useState(0);
+    this.getStep = getStep;
+    this.setStep = setStep;
   }
 
   buildDOMElements() {
@@ -54,40 +61,52 @@ export default class ProductModalComponent extends Component {
   }
 
   buildContent() {
-    const modalContentElement = document.createElement('div');
-    modalContentElement.classList.add('product-modal__content');
+    this.modalContentElement = document.createElement('div');
+    this.modalContentElement.classList.add('product-modal__content');
 
-    return modalContentElement;
+    return this.modalContentElement;
   }
 
   renderContent() {
-    const modalContentElement = document.querySelector(
-      'product-modal__content'
-    );
+    if (!this.modalContentElement) return;
 
-    modalContentElement.innerHTML = html`
-      <ul class="product-modal-nav__list">
-        <li
-          class="product-modal-nav__item product-modal-nav__item--active"
-          id="edit-nav-step-1"
-        >
-          Размер
-        </li>
-        <li class="product-modal-nav__item" id="edit-nav-step-2">Хлеб</li>
-        <li class="product-modal-nav__item" id="edit-nav-step-3">Овощи</li>
-        <li class="product-modal-nav__item" id="edit-nav-step-4">Соусы</li>
-        <li class="product-modal-nav__item" id="edit-nav-step-5">Начинка</li>
-        <li class="product-modal-nav__item" id="edit-nav-step-6">Готово!</li>
-      </ul>
-    `;
+    const navStepListElement = document.createElement('ul');
+    navStepListElement.classList.add('product-modal-nav__list');
 
-    // this.containerElement.innerHTML = '';
-    // this.containerElement.appendChild(this.productListElement);
+    const sandwichEditingSteps = {
+      'edit-nav-step-1': 'Размер',
+      'edit-nav-step-2': 'Хлеб',
+      'edit-nav-step-3': 'Овощи',
+      'edit-nav-step-4': 'Соусы',
+      'edit-nav-step-5': 'Начинка',
+      'edit-nav-step-6': 'Готово!',
+    };
+
+    const stepIds = Object.keys(sandwichEditingSteps);
+
+    stepIds.forEach(id => {
+      navStepListElement.appendChild(
+        this.buildNavigationStep(id, sandwichEditingSteps[id])
+      );
+    });
+
+    this.modalContentElement.innerHTML = '';
+    this.modalContentElement.appendChild(navStepListElement);
+  }
+
+  buildNavigationStep(id, name) {
+    const itemElement = document.createElement('li');
+    itemElement.classList.add('product-modal-nav__item');
+    itemElement.innerText = name;
+    itemElement.setAttribute('id', id);
+    itemElement.addEventListener('click', () => this.setStep(id));
+
+    return itemElement;
   }
 
   render() {
     this.renderContent();
-    // this.containerElement.innerHTML = '';
-    // this.containerElement.appendChild(this.productListElement);
+    this.containerElement.innerHTML = '';
+    this.containerElement.appendChild(this.modalContainerElement);
   }
 }

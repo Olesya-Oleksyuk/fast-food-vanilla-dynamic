@@ -38,6 +38,7 @@ export default class App {
     this.renderProductCatalog(store);
     this.renderProductNav(store);
     this.renderCart();
+    this.renderProductModal(store);
   }
 
   async fetchData() {
