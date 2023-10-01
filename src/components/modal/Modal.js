@@ -23,6 +23,7 @@ export default class ProductModalComponent extends Component {
     this.useInternalState();
 
     this.buildDOMElements();
+
     this.render();
   }
 
@@ -63,11 +64,12 @@ export default class ProductModalComponent extends Component {
   buildContent() {
     this.modalContentElement = document.createElement('div');
     this.modalContentElement.classList.add('product-modal__content');
+    this.buildNavigationPanel();
 
     return this.modalContentElement;
   }
 
-  renderContent() {
+  buildNavigationPanel() {
     if (!this.modalContentElement) return;
 
     const navStepListElement = document.createElement('ul');
@@ -94,12 +96,57 @@ export default class ProductModalComponent extends Component {
     this.modalContentElement.appendChild(navStepListElement);
   }
 
-  buildNavigationStep(id, name) {
+  renderContent() {
+    if (!this.modalContentElement) return;
+
+    this.navStepListElement = document.createElement('ul');
+    this.navStepListElement.classList.add('product-modal-nav__list');
+
+    const sandwichEditingSteps = {
+      'edit-nav-step-1': 'Размер',
+      'edit-nav-step-2': 'Хлеб',
+      'edit-nav-step-3': 'Овощи',
+      'edit-nav-step-4': 'Соусы',
+      'edit-nav-step-5': 'Начинка',
+      'edit-nav-step-6': 'Готово!',
+    };
+
+    const stepIds = Object.keys(sandwichEditingSteps);
+
+    stepIds.forEach((id, index) => {
+      const isActive = index === this.getStep();
+      this.navStepListElement.appendChild(
+        this.buildNavigationStep(id, sandwichEditingSteps[id], isActive)
+      );
+    });
+
+    this.modalContentElement.innerHTML = '';
+    this.modalContentElement.appendChild(this.navStepListElement);
+  }
+
+  buildNavigationStep(id, name, isActive = false) {
+    const activeItemClass = 'product-modal-nav__item--active';
+
     const itemElement = document.createElement('li');
     itemElement.classList.add('product-modal-nav__item');
+    if (isActive) {
+      itemElement.classList.add(activeItemClass);
+    }
     itemElement.innerText = name;
     itemElement.setAttribute('id', id);
-    itemElement.addEventListener('click', () => this.setStep(id));
+    itemElement.addEventListener('click', () => {
+      console.log('this.navStepListElement', this.navStepListElement);
+
+      const prevSelectedItem = this.navStepListElement.querySelector(
+        `.${activeItemClass}`
+      );
+
+      console.log('prevSelectedItem', prevSelectedItem);
+
+      prevSelectedItem.classList.remove(activeItemClass);
+      itemElement.classList.add(activeItemClass);
+      this.setStep(id);
+    });
 
     return itemElement;
   }
