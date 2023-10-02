@@ -49,6 +49,7 @@ export class Component {
     };
 
     const setValue = (newValue) => {
+      if (value === newValue) return;
       value = newValue;
       this.render();
     };
