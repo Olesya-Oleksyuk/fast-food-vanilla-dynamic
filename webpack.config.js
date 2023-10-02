@@ -9,6 +9,7 @@ module.exports = {
     publicPath: '/',
     assetModuleFilename: 'i/[name][ext][query]',
   },
+  devtool: 'eval-source-map',
   devServer: {
     static: {
       directory: path.join(__dirname, 'dist'),
