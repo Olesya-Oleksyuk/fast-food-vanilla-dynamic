@@ -11,7 +11,7 @@ export function sortAndFilterDuplicates(arr, order) {
   const uniqueArray = [];
   const seen = new Set();
 
-  sortedArray.forEach((item) => {
+  sortedArray.forEach(item => {
     if (!seen.has(item)) {
       uniqueArray.push(item);
       seen.add(item);
@@ -48,7 +48,7 @@ export class Component {
       return value;
     };
 
-    const setValue = (newValue) => {
+    const setValue = newValue => {
       if (value === newValue) return;
       value = newValue;
       this.render();
@@ -68,7 +68,7 @@ export class Component {
  * @param {Array} obj.classModifiers - The array of class modifiers.
  * @return {string} The generated class list string.
  */
-export const composeClassList = (obj) => {
+export const composeClassList = obj => {
   const {
     classPositioning = '',
     classBlockName = '',
@@ -79,12 +79,16 @@ export const composeClassList = (obj) => {
     Boolean(classBlockName) && Boolean(classModifiers.length);
 
   const classModifiersList = hasModifiers
-    ? classModifiers
-        .map((modifier) => `${classBlockName}--${modifier}`)
-        .join(' ')
+    ? classModifiers.map(modifier => `${classBlockName}--${modifier}`).join(' ')
     : '';
 
   const fullClassName =
     `${classPositioning} ${classBlockName} ${classModifiersList}`.trim();
   return fullClassName;
 };
+
+export const capitalize = string =>
+  (string &&
+    typeof string === 'string' &&
+    string[0].toUpperCase() + string.slice(1)) ||
+  '';

@@ -1,5 +1,5 @@
 import Store from '../../store/store';
-import { Component, html } from '../../utils/utils';
+import { Component, capitalize, html } from '../../utils/utils';
 import ProductViewComponent from '../productView/productView';
 import {
   EDITING_HEADERS_STEPS,
@@ -71,12 +71,12 @@ export default class ProductModalComponent extends Component {
 
   renderHeader() {
     const modalHeaderElement = this.modalContainerElement.querySelector(
-      'product-modal__header'
+      '.product-modal__header'
     );
 
     modalHeaderElement.innerHTML = '';
     modalHeaderElement.innerHTML = html`
-      <h2>${EDITING_HEADERS_STEPS[this.getStep()]}</h2>
+      <h2>${capitalize(EDITING_HEADERS_STEPS[this.getStep()])}</h2>
       <button type="button" class="product-modal__close-button">Close</button>
     `;
   }
@@ -178,7 +178,7 @@ export default class ProductModalComponent extends Component {
     }
     itemElement.innerText = name;
     itemElement.setAttribute('id', id);
-    itemElement.addEventListener('click', (event) => {
+    itemElement.addEventListener('click', event => {
       const isSameSelected =
         event.currentTarget.classList.contains(activeItemClass);
       if (isSameSelected) return;
