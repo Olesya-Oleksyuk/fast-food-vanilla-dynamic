@@ -14,7 +14,6 @@ export default class CartComponent {
    * @return CartComponent
    */
   constructor(obj) {
-    console.log('BackPic', BackgroundPlate);
     
     this.containerElement = obj.containerElement;
     this.buildDOMElements();

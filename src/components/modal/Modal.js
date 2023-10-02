@@ -122,21 +122,14 @@ export default class ProductModalComponent extends Component {
               product: value,
               variant: 'short',
             });
-            console.log('optionElement li', optionElement);
 
             optionList.appendChild(optionElement);
           }
         );
       }
 
-      console.log('optionList ul', optionList);
-
       modalFieldset.appendChild(optionList);
       this.modalOptionsSection.appendChild(modalFieldset);
-      console.log(
-        'this.modalOptionsSection after append',
-        this.modalOptionsSection
-      );
     }
 
     this.modalContentElement.appendChild(this.modalOptionsSection);
@@ -213,7 +206,6 @@ export default class ProductModalComponent extends Component {
   render() {
     // this.renderOptionsScreen();
     // this.containerElement.innerHTML = '';
-    console.log('current step', this.getStep());
     this.modalOptionsSection
       .querySelector('.options-fieldset--active')
       .classList.remove('options-fieldset--active');
