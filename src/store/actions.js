@@ -2,7 +2,10 @@ export const Action = {
   SetCategoryFilter: 'setCategoryFilter',
 };
 
-export const setProductCategoryFilter = payload => ({
+/**
+ * @param {string} payload
+ */
+export const setProductCategoryFilter = (payload) => ({
   type: Action.SetCategoryFilter,
   payload,
 });

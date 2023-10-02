@@ -104,8 +104,8 @@ body {
 .product-modal__container {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  width: fit-content;
+  overflow-y: auto;
+  width: 850px;
   height: 80%;
   background-color: var(--light-gray);
   border-radius: 0.5rem;
@@ -157,14 +157,20 @@ body {
   display: flex;
   overflow: hidden;
   background-color: var(--white);
-  width: 100%;
+  width: fit-content;
   height: fit-content;
+  margin: 0 auto;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
 }
 
+.product-modal-options {
+  margin-top: 2rem;
+}
+
 .product-modal-nav__item {
   cursor: pointer;
+  text-transform: capitalize;
   font-size: 1.4rem;
   font-weight: 700;
   padding: 1rem 2rem;
@@ -174,6 +180,48 @@ body {
 .product-modal-nav__item--active {
   background-color: var(--orange);
   color: var(--white);
+}
+
+.options-fieldset {
+  display: none;
+}
+
+.options-fieldset--active {
+  display: block;
+}
+
+.options-fieldset__list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.options-fieldset__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  gap: 0.8rem;
+}
+
+.options-fieldset__item--selected {
+  background: var(--yellow);
+}
+
+.options-fieldset__item--selected .product-card__photo {
+  box-shadow: none;
+}
+
+
+.product-card-info__divider {
+  border-top: 3px solid var(--gray);
+  width: 100%;
+  margin: 0;
 }
 
 .visually-hidden:not(:focus):not(:active),

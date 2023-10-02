@@ -1,6 +1,11 @@
 import Store from '../../store/store';
 import { Component, html } from '../../utils/utils';
-import { EDITING_NAV_STEPS } from './constants';
+import ProductViewComponent from '../productView/productView';
+import {
+  EDITING_HEADERS_STEPS,
+  EDITING_NAV_STEPS,
+  EDITING_NAV_STEPS_DICTIONARY,
+} from './constants';
 
 /**
  * Product Modal component. We call this a component as its behaviour is a
@@ -21,7 +26,9 @@ export default class ProductModalComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
+    this.productSupplements = this.store.getState().productSupplements;
     this.useInternalState();
+    this.stepMapper = this.createStepMapper();
 
     this.buildDOMElements();
 
@@ -32,6 +39,14 @@ export default class ProductModalComponent extends Component {
     const [getStep, setStep] = this.useState(Object.keys(EDITING_NAV_STEPS)[0]);
     this.getStep = getStep;
     this.setStep = setStep;
+  }
+
+  createStepMapper() {
+    function getStepName(key) {
+      return EDITING_NAV_STEPS_DICTIONARY[key];
+    }
+
+    return { getStepName };
   }
 
   buildDOMElements() {
@@ -47,11 +62,23 @@ export default class ProductModalComponent extends Component {
     const modalHeaderElement = document.createElement('header');
     modalHeaderElement.classList.add('product-modal__header');
     modalHeaderElement.innerHTML = html`
-      <h2>Хедер</h2>
+      <h2>${EDITING_HEADERS_STEPS[this.getStep()]}</h2>
       <button type="button" class="product-modal__close-button">Close</button>
     `;
 
     return modalHeaderElement;
+  }
+
+  renderHeader() {
+    const modalHeaderElement = this.modalContainerElement.querySelector(
+      'product-modal__header'
+    );
+
+    modalHeaderElement.innerHTML = '';
+    modalHeaderElement.innerHTML = html`
+      <h2>${EDITING_HEADERS_STEPS[this.getStep()]}</h2>
+      <button type="button" class="product-modal__close-button">Close</button>
+    `;
   }
 
   buildFooter() {
@@ -67,26 +94,78 @@ export default class ProductModalComponent extends Component {
     this.modalContentElement.classList.add('product-modal__content');
     this.buildNavigationPanel();
 
+    this.modalContentElement.appendChild(this.navStepElement);
+
+    this.modalOptionsSection = document.createElement('form');
+    this.modalOptionsSection.classList.add('product-modal-options');
+
+    for (let [key, value] of Object.entries(EDITING_NAV_STEPS)) {
+      const modalFieldset = document.createElement('fieldset');
+      modalFieldset.classList.add('options-fieldset');
+
+      modalFieldset.setAttribute('name', value);
+      if (key === this.getStep()) {
+        modalFieldset.classList.add('options-fieldset--active');
+      }
+
+      const optionList = document.createElement('ul');
+      optionList.classList.add('options-fieldset__list');
+
+      const isLastStep = key === Object.keys(EDITING_NAV_STEPS).pop();
+      if (!isLastStep) {
+        Object.entries(this.productSupplements[value]).forEach(
+          ([item, value]) => {
+            const optionElement = document.createElement('li');
+            optionElement.classList.add('options-fieldset__item');
+            new ProductViewComponent({
+              containerElement: optionElement,
+              product: value,
+              variant: 'short',
+            });
+            console.log('optionElement li', optionElement);
+
+            optionList.appendChild(optionElement);
+          }
+        );
+      }
+
+      console.log('optionList ul', optionList);
+
+      modalFieldset.appendChild(optionList);
+      this.modalOptionsSection.appendChild(modalFieldset);
+      console.log(
+        'this.modalOptionsSection after append',
+        this.modalOptionsSection
+      );
+    }
+
+    this.modalContentElement.appendChild(this.modalOptionsSection);
     return this.modalContentElement;
   }
 
   buildNavigationPanel() {
     if (!this.modalContentElement) return;
 
-    this.navStepListElement = document.createElement('ul');
-    this.navStepListElement.classList.add('product-modal-nav__list');
+    this.navStepElement = document.createElement('nav');
+    const navStepListElement = document.createElement('ul');
+    navStepListElement.classList.add('product-modal-nav__list');
 
     const stepIds = Object.keys(EDITING_NAV_STEPS);
 
     stepIds.forEach((id, index) => {
       const isFirstStep = index === 0;
-      this.navStepListElement.appendChild(
-        this.buildNavigationStep(id, EDITING_NAV_STEPS[id], isFirstStep)
+      navStepListElement.appendChild(
+        this.buildNavigationStep(
+          id,
+          this.stepMapper.getStepName(EDITING_NAV_STEPS[id]),
+          isFirstStep
+        )
       );
     });
 
     this.modalContentElement.innerHTML = '';
-    this.modalContentElement.appendChild(this.navStepListElement);
+    this.navStepElement.appendChild(navStepListElement);
+    return this.navStepElement;
   }
 
   buildNavigationStep(id, name, isActive = false) {
@@ -100,9 +179,10 @@ export default class ProductModalComponent extends Component {
     itemElement.innerText = name;
     itemElement.setAttribute('id', id);
     itemElement.addEventListener('click', (event) => {
-      const isSameSelected = event.currentTarget.classList.contains(activeItemClass);
+      const isSameSelected =
+        event.currentTarget.classList.contains(activeItemClass);
       if (isSameSelected) return;
-      const prevSelectedItem = this.navStepListElement.querySelector(
+      const prevSelectedItem = this.navStepElement.querySelector(
         `.${activeItemClass}`
       );
 
@@ -114,9 +194,34 @@ export default class ProductModalComponent extends Component {
     return itemElement;
   }
 
+  renderOptionsScreen() {
+    if (!this.modalContentElement) return;
+
+    // this.navStepListElement = document.createElement('section');
+    // this.navStepListElement.classList.add('product-modal-options');
+
+    for (const [id, name] of Object.entries(EDITING_NAV_STEPS)) {
+      this.navStepElement.appendChild(
+        this.buildNavigationStep(id, name, this.getStep() === id)
+      );
+    }
+
+    // this.modalContentElement.innerHTML = '';
+    this.modalContentElement.appendChild(this.navStepListElement);
+  }
+
   render() {
-    // this.renderContent();
-    this.containerElement.innerHTML = '';
-    this.containerElement.appendChild(this.modalContainerElement);
+    // this.renderOptionsScreen();
+    // this.containerElement.innerHTML = '';
+    console.log('current step', this.getStep());
+    this.modalOptionsSection
+      .querySelector('.options-fieldset--active')
+      .classList.remove('options-fieldset--active');
+
+    this.modalOptionsSection[EDITING_NAV_STEPS[this.getStep()]].classList.add(
+      'options-fieldset--active'
+    );
+
+    this.renderHeader();
   }
 }

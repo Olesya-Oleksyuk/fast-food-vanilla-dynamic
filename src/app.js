@@ -24,6 +24,13 @@ export default class App {
 
     const initalState = {
       products: this.fullData.menu,
+      productSupplements: {
+        breads: this.fullData.breads,
+        sizes: this.fullData.sizes,
+        sauces: this.fullData.sauces,
+        vegetables: this.fullData.vegetables,
+        fillings: this.fullData.fillings,
+      },
       markets: new Markets(this.fullData.markets),
       categoryFilter: PRODUCT_CATEGORIES.SANDWICHES,
     };

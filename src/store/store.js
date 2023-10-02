@@ -20,7 +20,7 @@ export default class Store {
   }
 
   /**
-   * Adds a value and a listener to the list of value listeners. 
+   * Adds a value and a listener to the list of value listeners.
    * Listener to the specific value change and when it has been changed =>
    * pass in the new value as an argument to the listener function
    *
@@ -32,14 +32,18 @@ export default class Store {
   }
 
   /**
+   *  @typedef {{ type: string; payload: string; }} Action
+   */
+
+  /**
    * Dispatches an action to update the state of the object.
    * And triggers the listeners
    *
-   * @param {function} action - the action to be dispatched
+   * @param {Action} action - the action to be dispatched
    */
   dispatch(action) {
     this.state = this.reducer(this.state, action);
-    this.listeners.forEach(listener => listener());
+    this.listeners.forEach((listener) => listener());
     this.valueListeners.forEach(({ value, listener }) =>
       listener(this.state[value] || null)
     );

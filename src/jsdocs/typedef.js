@@ -12,6 +12,14 @@
  */
 
 /**
+ * @typedef {Object} ProductView
+ * @property {string} image
+ * @property {string} [name]
+ * @property {string} [description]
+ * @property {number} [price]
+ */
+
+/**
  * @typedef {Object} Components
  * @property {Object} size
  * @property {string} bread
