@@ -2,7 +2,7 @@
 
 import Store from '../../store/store';
 import { Component } from '../../utils/utils';
-import ProductCardComponent from '../productCard/poductCard';
+import ProductCardComponent from '../productCard/productCard';
 import './style.css';
 
 /**

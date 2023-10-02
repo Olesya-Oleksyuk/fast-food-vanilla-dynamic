@@ -135,7 +135,6 @@ export default class ProductCardComponent extends Component {
     const productPhotoContent = document.createElement('div');
     productPhotoContent.classList.add('product-card__photo-inner');
 
-    // А так работает:
     productPhotoContent.innerHTML = html`
       <img
         src="${imageSrc}"
