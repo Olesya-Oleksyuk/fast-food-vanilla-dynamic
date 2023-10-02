@@ -1,5 +1,6 @@
 import Store from '../../store/store';
 import { Component, html } from '../../utils/utils';
+import { EDITING_NAV_STEPS } from './constants';
 
 /**
  * Product Modal component. We call this a component as its behaviour is a
@@ -28,7 +29,7 @@ export default class ProductModalComponent extends Component {
   }
 
   useInternalState() {
-    const [getStep, setStep] = this.useState(0);
+    const [getStep, setStep] = this.useState(Object.keys(EDITING_NAV_STEPS)[0]);
     this.getStep = getStep;
     this.setStep = setStep;
   }
@@ -72,51 +73,15 @@ export default class ProductModalComponent extends Component {
   buildNavigationPanel() {
     if (!this.modalContentElement) return;
 
-    const navStepListElement = document.createElement('ul');
-    navStepListElement.classList.add('product-modal-nav__list');
-
-    const sandwichEditingSteps = {
-      'edit-nav-step-1': 'Размер',
-      'edit-nav-step-2': 'Хлеб',
-      'edit-nav-step-3': 'Овощи',
-      'edit-nav-step-4': 'Соусы',
-      'edit-nav-step-5': 'Начинка',
-      'edit-nav-step-6': 'Готово!',
-    };
-
-    const stepIds = Object.keys(sandwichEditingSteps);
-
-    stepIds.forEach(id => {
-      navStepListElement.appendChild(
-        this.buildNavigationStep(id, sandwichEditingSteps[id])
-      );
-    });
-
-    this.modalContentElement.innerHTML = '';
-    this.modalContentElement.appendChild(navStepListElement);
-  }
-
-  renderContent() {
-    if (!this.modalContentElement) return;
-
     this.navStepListElement = document.createElement('ul');
     this.navStepListElement.classList.add('product-modal-nav__list');
 
-    const sandwichEditingSteps = {
-      'edit-nav-step-1': 'Размер',
-      'edit-nav-step-2': 'Хлеб',
-      'edit-nav-step-3': 'Овощи',
-      'edit-nav-step-4': 'Соусы',
-      'edit-nav-step-5': 'Начинка',
-      'edit-nav-step-6': 'Готово!',
-    };
-
-    const stepIds = Object.keys(sandwichEditingSteps);
+    const stepIds = Object.keys(EDITING_NAV_STEPS);
 
     stepIds.forEach((id, index) => {
-      const isActive = index === this.getStep();
+      const isFirstStep = index === 0;
       this.navStepListElement.appendChild(
-        this.buildNavigationStep(id, sandwichEditingSteps[id], isActive)
+        this.buildNavigationStep(id, EDITING_NAV_STEPS[id], isFirstStep)
       );
     });
 
@@ -134,14 +99,12 @@ export default class ProductModalComponent extends Component {
     }
     itemElement.innerText = name;
     itemElement.setAttribute('id', id);
-    itemElement.addEventListener('click', () => {
-      console.log('this.navStepListElement', this.navStepListElement);
-
+    itemElement.addEventListener('click', (event) => {
+      const isSameSelected = event.currentTarget.classList.contains(activeItemClass);
+      if (isSameSelected) return;
       const prevSelectedItem = this.navStepListElement.querySelector(
         `.${activeItemClass}`
       );
-
-      console.log('prevSelectedItem', prevSelectedItem);
 
       prevSelectedItem.classList.remove(activeItemClass);
       itemElement.classList.add(activeItemClass);
@@ -152,7 +115,7 @@ export default class ProductModalComponent extends Component {
   }
 
   render() {
-    this.renderContent();
+    // this.renderContent();
     this.containerElement.innerHTML = '';
     this.containerElement.appendChild(this.modalContainerElement);
   }
