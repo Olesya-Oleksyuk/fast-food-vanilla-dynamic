@@ -105,10 +105,16 @@ body {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  width: 850px;
-  height: 80%;
+  overflow-x: clip;
+  width: 870px;
+  max-height: 90vh;
+  margin-top: 10vh;
   background-color: var(--light-gray);
   border-radius: 0.5rem;
+}
+
+.product-modal__container::-webkit-scrollbar {
+  display: none;
 }
 
 .product-modal__header,
@@ -216,7 +222,6 @@ body {
 .options-fieldset__item--selected .product-card__photo {
   box-shadow: none;
 }
-
 
 .product-card-info__divider {
   border-top: 3px solid var(--gray);
