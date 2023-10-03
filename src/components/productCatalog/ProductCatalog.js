@@ -25,7 +25,6 @@ export default class ProductCatalogComponent extends Component {
     this.containerElement = obj.containerElement;
     this.store = obj.store;
     this.handleCartButtonClick = () => {
-      console.log('handleCartButtonClick');
 
       document
         .querySelector('[data-container="product-modal"]')

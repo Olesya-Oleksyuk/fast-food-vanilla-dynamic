@@ -5,6 +5,7 @@ import { html } from '../../utils/utils';
 import { Component } from '../baseComponent/baseComponent';
 import ButtonControl from '../buttons/control/Control';
 import ButtonPrimary from '../buttons/primary/Primary';
+import ProductViewComponent from '../productView/productView';
 import './style.css';
 
 /**
@@ -81,21 +82,20 @@ export default class ProductCardComponent extends Component {
 
   renderProductCard() {
     if (!this.productElement) return;
-    this.productElement.innerHTML = this.renderProductCardBody();
-  }
-
-  renderProductCardBody() {
     const product = this.getProduct();
     this.productMarketMarkup = this.renderProductMarket(product.market);
-    this.productPhotoMarkup = this.renderProductPhoto(
-      product.image,
-      product.name
-    );
-    this.productNameMarkup = this.renderProductName(product.name);
-    this.productInfoMarkup = this.renderProductCardInfo(
-      product.description,
-      product.price
-    );
+
+    this.productElement.innerHTML = this.productMarketMarkup;
+
+    new ProductViewComponent({
+      containerElement: this.productElement,
+      variant: 'with-description',
+      product: product,
+    });
+
+    const productCountMarkup = this.renderProductCountPanel();
+
+    this.productElement.insertAdjacentHTML('beforeend', productCountMarkup);
 
     this.productToCartButtonMarkup = ButtonPrimary.render(
       'В корзину',
@@ -103,13 +103,29 @@ export default class ProductCardComponent extends Component {
       ['yellow']
     );
 
-    return (
-      this.productMarketMarkup +
-      this.productPhotoMarkup +
-      this.productNameMarkup +
-      this.productInfoMarkup +
+    this.productElement.insertAdjacentHTML(
+      'beforeend',
       this.productToCartButtonMarkup
     );
+  }
+
+  renderProductCardBody() {
+    const product = this.getProduct();
+    this.productMarketMarkup = this.renderProductMarket(product.market);
+
+    new ProductViewComponent({
+      containerElement: this.productElement,
+      variant: 'with-description',
+      product: product,
+    });
+
+    this.productToCartButtonMarkup = ButtonPrimary.render(
+      'В корзину',
+      'product-card-info__to-cart-button',
+      ['yellow']
+    );
+
+    return this.productMarketMarkup + this.productToCartButtonMarkup;
   }
 
   /**

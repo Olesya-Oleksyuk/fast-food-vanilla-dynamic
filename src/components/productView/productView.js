@@ -32,14 +32,9 @@ export default class ProductViewComponent {
     if (this.variant === 'with-description') {
       this.description = obj.product.description;
     }
-
-    this.buildDOMElements();
     this.render();
   }
 
-  buildDOMElements() {
-    this.containerElement.classList.add('product-view');
-  }
 
   buildPhoto(image, name) {
     const productPhoto = document.createElement('div');
@@ -65,9 +60,9 @@ export default class ProductViewComponent {
 
     const productHeader = document.createElement('h3');
     productHeader.classList.add('product-card__title');
+    productHeader.classList.add(`product-card__title--${this.variant}`);
 
     const headerText = document.createElement('span');
-    // headerText.classList.add('product-card__name');
     headerText.setAttribute(
       'class',
       composeClassList({
@@ -110,8 +105,6 @@ export default class ProductViewComponent {
   }
 
   render() {
-    this.containerElement.innerHTML = '';
-
     this.containerElement.appendChild(this.buildPhoto(this.image, this.name));
     if (this.variant === 'short') {
       this.containerElement.appendChild(this.buildName(this.name));
@@ -129,7 +122,5 @@ export default class ProductViewComponent {
       );
       this.containerElement.appendChild(this.buildPrice(this.price));
     }
-
-    // this.containerElement.appendChild(this.containerElement);
   }
 }
