@@ -7,6 +7,7 @@ import {
   EDITING_HEADERS_STEPS,
   EDITING_NAV_STEPS,
   EDITING_NAV_STEPS_DICTIONARY,
+  radiosSteps,
 } from './constants';
 import './style.css';
 
@@ -96,26 +97,15 @@ export default class ProductModalComponent extends Component {
     const headerTitle = modalHeaderElement.querySelector('h2');
     headerTitle.innerText = '';
     headerTitle.innerText = capitalize(EDITING_HEADERS_STEPS[this.getStep()]);
-
-    // modalHeaderElement.appendChild(headerTitle);
-    // modalHeaderElement.innerHTML = '';
-    // modalHeaderElement.innerHTML = html`
-    //   <h2>${capitalize(EDITING_HEADERS_STEPS[this.getStep()])}</h2>
-    //   <button type="button" class="product-modal__close-button">Close</button>
-    // `;
   }
 
   buildCloseButton() {
-    // const closeModalButton = document.createElement('button');
-    // closeModalButton.classList.add('product-modal__close-button');
-
     const crossButton = ButtonControl.render({
       icon: 'x-mark',
       classBlockName: 'close-button',
       classPositioning: 'product-modal__close-button',
     });
 
-    // closeModalButton.innerText = 'Close';
     return crossButton;
   }
 
@@ -138,30 +128,33 @@ export default class ProductModalComponent extends Component {
     this.modalOptionsSection.classList.add('product-modal-options');
 
     for (let [key, value] of Object.entries(EDITING_NAV_STEPS)) {
+      const inputsType = radiosSteps.includes(key) ? 'radio' : 'checkbox';
+      const currentStepName = value;
+      const activeStep = this.getStep();
+
       const modalFieldset = document.createElement('fieldset');
       modalFieldset.classList.add('options-fieldset');
 
-      modalFieldset.setAttribute('name', value);
-      if (key === this.getStep()) {
+      modalFieldset.setAttribute('id', key);
+
+      if (key === activeStep) {
         modalFieldset.classList.add('options-fieldset--active');
       }
 
-      const optionList = document.createElement('ul');
+      const optionList = document.createElement('div');
       optionList.classList.add('options-fieldset__list');
 
       const isLastStep = key === Object.keys(EDITING_NAV_STEPS).pop();
       if (!isLastStep) {
         Object.entries(this.productSupplements[value]).forEach(
           ([item, value]) => {
-            const optionElement = document.createElement('li');
-            optionElement.classList.add('options-fieldset__item');
-            new ProductViewComponent({
-              containerElement: optionElement,
-              product: value,
-              variant: 'short',
-            });
-
-            optionList.appendChild(optionElement);
+            const optionCard = this.buildOptionCard(
+              item,
+              currentStepName,
+              value,
+              inputsType
+            );
+            optionList.appendChild(optionCard);
           }
         );
       }
@@ -172,6 +165,32 @@ export default class ProductModalComponent extends Component {
 
     this.modalContentElement.appendChild(this.modalOptionsSection);
     return this.modalContentElement;
+  }
+
+  buildOptionCard(inputValue, inputName, product, type = 'radio') {
+    const labelElement = document.createElement('label');
+
+    const inputElement = document.createElement('input');
+    inputElement.type = type;
+    inputElement.value = inputValue;
+
+    inputElement.name = inputName;
+    inputElement.classList.add('option-card-input--hidden');
+
+    labelElement.appendChild(inputElement);
+
+    const cardInput = document.createElement('div');
+
+    cardInput.classList.add('options-fieldset__item');
+
+    new ProductViewComponent({
+      containerElement: cardInput,
+      product,
+      variant: 'short',
+    });
+
+    labelElement.appendChild(cardInput);
+    return labelElement;
   }
 
   buildNavigationPanel() {
@@ -208,7 +227,6 @@ export default class ProductModalComponent extends Component {
       itemElement.classList.add(activeItemClass);
     }
     itemElement.innerText = name;
-    itemElement.setAttribute('id', id);
     itemElement.addEventListener('click', (event) => {
       const isSameSelected =
         event.currentTarget.classList.contains(activeItemClass);
@@ -219,6 +237,11 @@ export default class ProductModalComponent extends Component {
 
       prevSelectedItem.classList.remove(activeItemClass);
       itemElement.classList.add(activeItemClass);
+
+      this.modalOptionsSection
+        .querySelector('.options-fieldset--active')
+        .classList.remove('options-fieldset--active');
+
       this.setStep(id);
     });
 
@@ -237,20 +260,13 @@ export default class ProductModalComponent extends Component {
       );
     }
 
-    // this.modalContentElement.innerHTML = '';
     this.modalContentElement.appendChild(this.navStepListElement);
   }
 
   render() {
-    // this.renderOptionsScreen();
-    // this.containerElement.innerHTML = '';
-    this.modalOptionsSection
-      .querySelector('.options-fieldset--active')
-      .classList.remove('options-fieldset--active');
-
-    this.modalOptionsSection[EDITING_NAV_STEPS[this.getStep()]].classList.add(
-      'options-fieldset--active'
-    );
+    document
+      .getElementById(this.getStep())
+      .classList.add('options-fieldset--active');
 
     this.renderHeader();
   }

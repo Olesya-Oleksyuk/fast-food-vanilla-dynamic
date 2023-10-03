@@ -7,6 +7,8 @@ export const EDITING_NAV_STEPS = {
   'edit-nav-step-6': 'ready',
 };
 
+export const radiosSteps = ['edit-nav-step-1', 'edit-nav-step-2'];
+
 export const EDITING_NAV_STEPS_DICTIONARY = {
   sizes: 'размер',
   breads: 'хлеб',
@@ -15,7 +17,6 @@ export const EDITING_NAV_STEPS_DICTIONARY = {
   fillings: 'начинка',
   ready: 'готово',
 };
-
 
 export const EDITING_HEADERS_STEPS = {
   'edit-nav-step-1': 'выберите размер сендвича',
