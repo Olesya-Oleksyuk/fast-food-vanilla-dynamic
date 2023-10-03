@@ -170,10 +170,6 @@ body {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
 }
 
-.product-modal-options {
-  margin-top: 2rem;
-}
-
 .product-modal-nav__item {
   cursor: pointer;
   text-transform: capitalize;

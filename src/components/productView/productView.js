@@ -69,7 +69,10 @@ export default class ProductViewComponent {
     return productHeader;
   }
 
-  buildDescription() {}
+  buildDescription() {
+
+  }
+  
   buildPrice(price) {
     const priceElement = document.createElement('span');
     priceElement.classList.add('product-card-info__price');
