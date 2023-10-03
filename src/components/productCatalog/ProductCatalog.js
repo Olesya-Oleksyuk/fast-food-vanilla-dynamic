@@ -24,6 +24,14 @@ export default class ProductCatalogComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
+    this.handleCartButtonClick = () => {
+      console.log('handleCartButtonClick');
+
+      document
+        .querySelector('[data-container="product-modal"]')
+        .classList.remove('product-modal--closed');
+      // this.store.dispatch({ type: 'ADD_TO_CART' });
+    };
 
     this.updateProperties();
     this.buildDOMElements();
@@ -74,6 +82,7 @@ export default class ProductCatalogComponent extends Component {
         containerElement: this.productListElement,
         product: product,
         store: this.store,
+        onCartButtonClick: this.handleCartButtonClick,
       });
     });
   }

@@ -88,9 +88,14 @@ export default class App {
       '[data-container="product-modal"]'
     );
 
+    const closeModalHandler = () => {
+      productModalElement.classList.add('product-modal--closed');
+    };
+
     new ProductModalComponent({
       containerElement: productModalElement,
       store,
+      onCloseModal: closeModalHandler,
     });
   }
 

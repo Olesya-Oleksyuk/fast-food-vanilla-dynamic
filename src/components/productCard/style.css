@@ -24,12 +24,21 @@
 }
 
 .product-card__name {
-  font-size: 1.6rem;
-  font-weight: 700;
   color: var(--dark-gray);
-  text-transform: capitalize;
   text-align: center;
 }
+
+.product-card__name--short {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.product-card__name--with-description {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
 
 
 .product-card-info {
@@ -111,11 +120,21 @@
 
 .product-card-info__price {
   width: fit-content;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.product-card-info__price--short {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.product-card-info__price--with-description {
   margin-top: 0.5rem;
   font-weight: 700;
   font-size: 1.3rem;
-  color: var(--orange);
 }
+
 
 .product-card-info__count {
   margin-bottom: 0.5rem;

@@ -16,6 +16,7 @@ export default class ProductCardComponent extends Component {
    * product: import('../../jsdocs/typedef').Product
    * containerElement: Element,
    * store: Store,
+   * onCartButtonClick: EventListenerOrEventListenerObject
    * }} obj product catalog data
    * @return ProductCatalogComponent
    */
@@ -23,6 +24,7 @@ export default class ProductCardComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
+    this.onCartButtonClick = obj.onCartButtonClick;
     this.updateProperties(obj);
     this.buildDOMElements();
     this.render();
@@ -39,8 +41,8 @@ export default class ProductCardComponent extends Component {
       '.count-control__increment'
     );
 
-    this.countInputElement = this.productElement.querySelector(
-      '.product-count-input'
+    const cartButton = this.productElement.querySelector(
+      '.product-card-info__to-cart-button'
     );
 
     const incrementProductCount = () => {
@@ -53,6 +55,7 @@ export default class ProductCardComponent extends Component {
 
     decrementButtonElement.addEventListener('click', decrementProductCount);
     incrementButtonElement.addEventListener('click', incrementProductCount);
+    cartButton.addEventListener('click', this.onCartButtonClick);
   }
 
   /**
@@ -203,11 +206,16 @@ export default class ProductCardComponent extends Component {
    */
   renderProductCountPanel() {
     const isDecrementDisabled = this.getProductCount() <= 1;
+    const countButtonClass = 'product-count-button';
+
     const incrementButton = ButtonControl.render({
       icon: 'plus',
+      classBlockName: countButtonClass,
     });
+
     const decrementButton = ButtonControl.render({
       icon: 'minus',
+      classBlockName: countButtonClass,
       isDisabled: isDecrementDisabled,
     });
 

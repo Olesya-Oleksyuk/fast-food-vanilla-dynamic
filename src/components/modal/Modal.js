@@ -1,12 +1,14 @@
 import Store from '../../store/store';
 import { capitalize, html } from '../../utils/utils';
 import { Component } from '../baseComponent/baseComponent';
+import ButtonControl from '../buttons/control/Control';
 import ProductViewComponent from '../productView/productView';
 import {
   EDITING_HEADERS_STEPS,
   EDITING_NAV_STEPS,
   EDITING_NAV_STEPS_DICTIONARY,
 } from './constants';
+import './style.css';
 
 /**
  * Product Modal component. We call this a component as its behaviour is a
@@ -19,7 +21,8 @@ export default class ProductModalComponent extends Component {
   /**
    * @param {{
    * containerElement: Element,
-   * store: Store
+   * store: Store,
+   * onCloseModal: Function
    * }} obj product modal data
    * @return ProductModalComponent
    */
@@ -27,6 +30,7 @@ export default class ProductModalComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
+    this.onCloseModal = obj.onCloseModal;
     this.productSupplements = this.store.getState().productSupplements;
     this.useInternalState();
     this.stepMapper = this.createStepMapper();
@@ -34,12 +38,17 @@ export default class ProductModalComponent extends Component {
     this.buildDOMElements();
 
     this.render();
+    this.addEventListeners();
   }
 
   useInternalState() {
     const [getStep, setStep] = this.useState(Object.keys(EDITING_NAV_STEPS)[0]);
     this.getStep = getStep;
     this.setStep = setStep;
+
+    const [getIsClosed, setIsClosed] = this.useState(false);
+    this.getIsClosed = getIsClosed;
+    this.setIsClosed = setIsClosed;
   }
 
   createStepMapper() {
@@ -59,14 +68,23 @@ export default class ProductModalComponent extends Component {
     this.modalContainerElement.appendChild(this.buildFooter());
   }
 
+  addEventListeners() {
+    this.closeModalButton = this.containerElement.querySelector(
+      '.product-modal__close-button'
+    );
+
+    this.closeModalButton.addEventListener('click', () => {
+      this.onCloseModal();
+    });
+  }
+
   buildHeader() {
     const modalHeaderElement = document.createElement('header');
     modalHeaderElement.classList.add('product-modal__header');
-    modalHeaderElement.innerHTML = html`
-      <h2>${EDITING_HEADERS_STEPS[this.getStep()]}</h2>
-      <button type="button" class="product-modal__close-button">Close</button>
-    `;
 
+    const headerTitleElement = document.createElement('h2');
+    modalHeaderElement.appendChild(headerTitleElement);
+    modalHeaderElement.appendChild(this.buildCloseButton());
     return modalHeaderElement;
   }
 
@@ -75,11 +93,30 @@ export default class ProductModalComponent extends Component {
       '.product-modal__header'
     );
 
-    modalHeaderElement.innerHTML = '';
-    modalHeaderElement.innerHTML = html`
-      <h2>${capitalize(EDITING_HEADERS_STEPS[this.getStep()])}</h2>
-      <button type="button" class="product-modal__close-button">Close</button>
-    `;
+    const headerTitle = modalHeaderElement.querySelector('h2');
+    headerTitle.innerText = '';
+    headerTitle.innerText = capitalize(EDITING_HEADERS_STEPS[this.getStep()]);
+
+    // modalHeaderElement.appendChild(headerTitle);
+    // modalHeaderElement.innerHTML = '';
+    // modalHeaderElement.innerHTML = html`
+    //   <h2>${capitalize(EDITING_HEADERS_STEPS[this.getStep()])}</h2>
+    //   <button type="button" class="product-modal__close-button">Close</button>
+    // `;
+  }
+
+  buildCloseButton() {
+    // const closeModalButton = document.createElement('button');
+    // closeModalButton.classList.add('product-modal__close-button');
+
+    const crossButton = ButtonControl.render({
+      icon: 'x-mark',
+      classBlockName: 'close-button',
+      classPositioning: 'product-modal__close-button',
+    });
+
+    // closeModalButton.innerText = 'Close';
+    return crossButton;
   }
 
   buildFooter() {

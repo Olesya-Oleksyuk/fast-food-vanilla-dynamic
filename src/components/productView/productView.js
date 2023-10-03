@@ -1,5 +1,7 @@
 'use strict';
 
+import { composeClassList, html } from '../../utils/utils';
+
 /**
  * Cart component.
  */
@@ -59,23 +61,45 @@ export default class ProductViewComponent {
   }
 
   buildName(name) {
+    const classBlockName = 'product-card__name';
+
     const productHeader = document.createElement('h3');
     productHeader.classList.add('product-card__title');
 
     const headerText = document.createElement('span');
-    headerText.classList.add('product-card__name');
+    // headerText.classList.add('product-card__name');
+    headerText.setAttribute(
+      'class',
+      composeClassList({
+        classBlockName,
+        classModifiers: [this.variant],
+      })
+    );
     headerText.innerText = name;
     productHeader.appendChild(headerText);
     return productHeader;
   }
 
-  buildDescription() {
+  buildDescription(description) {
+    const productDesription = document.createElement('p');
+    productDesription.classList.add('product-card-info__ingredients');
+    productDesription.innerHTML = html`<span class="product-ingredient">
+      ${description}
+    </span>`;
 
+    return productDesription;
   }
-  
+
   buildPrice(price) {
+    const classBlockName = 'product-card-info__price';
     const priceElement = document.createElement('span');
-    priceElement.classList.add('product-card-info__price');
+    priceElement.setAttribute(
+      'class',
+      composeClassList({
+        classBlockName,
+        classModifiers: [this.variant],
+      })
+    );
     priceElement.innerText = `Цена: ${price} руб`;
     return priceElement;
   }
@@ -91,12 +115,19 @@ export default class ProductViewComponent {
     this.containerElement.appendChild(this.buildPhoto(this.image, this.name));
     if (this.variant === 'short') {
       this.containerElement.appendChild(this.buildName(this.name));
-      this.containerElement.appendChild(this.buildDivider());
-      this.containerElement.appendChild(this.buildPrice(this.price));
+
+      const infoWrapper = document.createElement('div');
+      infoWrapper.classList.add('product-card-info__wrapper');
+      infoWrapper.appendChild(this.buildDivider());
+      infoWrapper.appendChild(this.buildPrice(this.price));
+      this.containerElement.appendChild(infoWrapper);
     }
     if (this.variant === 'with-description') {
-      // this.containerElement.appendChild(this.buildName(this.name));
-      // this.containerElement.appendChild(this.buildPrice(this.price));
+      this.containerElement.appendChild(this.buildName(this.name));
+      this.containerElement.appendChild(
+        this.buildDescription(this.description)
+      );
+      this.containerElement.appendChild(this.buildPrice(this.price));
     }
 
     // this.containerElement.appendChild(this.containerElement);

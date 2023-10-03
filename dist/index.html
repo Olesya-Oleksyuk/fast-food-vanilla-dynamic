@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastFood Vanilla Dynamic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/f907397b57.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FastFood Vanilla Dynamic</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/f907397b57.js" crossorigin="anonymous"></script>
-</head>
-
-<body>
-  <div class="home-page" id="root">
-    <header class="home-page__header">
-      <h1 class="header__text">Сделайте заказ напрямую из ресторана</h1>
-    </header>
-    <div data-container="product-nav"></div>
-    <section class="home-page__cart" data-container="cart"></section>
-    <main class="home-page__content">
-      <section class="product-catalogue">
-        <h2 class="visually-hidden">Каталог продуктов</h2>
-        <div data-container="product-catalogue"></div>
-      </section>
-    </main>
-    <div class="product-modal product-modal__opened" data-container="product-modal">
-      <!-- <div class="product-modal__container">
+  <body>
+    <div class="home-page" id="root">
+      <header class="home-page__header">
+        <h1 class="header__text">Сделайте заказ напрямую из ресторана</h1>
+      </header>
+      <div data-container="product-nav"></div>
+      <section class="home-page__cart" data-container="cart"></section>
+      <main class="home-page__content">
+        <section class="product-catalogue">
+          <h2 class="visually-hidden">Каталог продуктов</h2>
+          <div data-container="product-catalogue"></div>
+        </section>
+      </main>
+      <div
+        class="product-modal product-modal--closed"
+        data-container="product-modal"
+      >
+        <!-- <div class="product-modal__container">
         <header class="product-modal__header">
           <h2>Хедер</h2>
           <button type="button" class="product-modal__close-button">
@@ -59,9 +67,8 @@
         </div>
         <footer class="product-modal__footer"><span>в корзину</span></footer>
       </div> -->
+      </div>
     </div>
-  </div>
-  <script src="bundle.js"></script>
-</body>
-
+    <script src="bundle.js"></script>
+  </body>
 </html>
