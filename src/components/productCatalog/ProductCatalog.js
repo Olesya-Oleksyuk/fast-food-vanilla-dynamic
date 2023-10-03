@@ -1,7 +1,7 @@
 'use strict';
 
 import Store from '../../store/store';
-import { Component } from '../../utils/utils';
+import { Component } from '../baseComponent/baseComponent';
 import ProductCardComponent from '../productCard/productCard';
 import './style.css';
 

@@ -1,7 +1,8 @@
 'use strict';
 
 import Store from '../../store/store';
-import { Component, html } from '../../utils/utils';
+import { html } from '../../utils/utils';
+import { Component } from '../baseComponent/baseComponent';
 import ButtonControl from '../buttons/control/Control';
 import ButtonPrimary from '../buttons/primary/Primary';
 import './style.css';

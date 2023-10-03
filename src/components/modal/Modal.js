@@ -1,5 +1,6 @@
 import Store from '../../store/store';
-import { Component, capitalize, html } from '../../utils/utils';
+import { capitalize, html } from '../../utils/utils';
+import { Component } from '../baseComponent/baseComponent';
 import ProductViewComponent from '../productView/productView';
 import {
   EDITING_HEADERS_STEPS,
@@ -171,7 +172,7 @@ export default class ProductModalComponent extends Component {
     }
     itemElement.innerText = name;
     itemElement.setAttribute('id', id);
-    itemElement.addEventListener('click', event => {
+    itemElement.addEventListener('click', (event) => {
       const isSameSelected =
         event.currentTarget.classList.contains(activeItemClass);
       if (isSameSelected) return;

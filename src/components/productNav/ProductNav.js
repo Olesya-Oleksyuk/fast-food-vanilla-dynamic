@@ -2,7 +2,8 @@
 
 import { setProductCategoryFilter } from '../../store/actions';
 import Store from '../../store/store';
-import { Component, html, sortAndFilterDuplicates } from '../../utils/utils';
+import { html, sortAndFilterDuplicates } from '../../utils/utils';
+import { Component } from '../baseComponent/baseComponent';
 import { categoriesDictionary, correctlyOrderedCategories } from './constants';
 import './style.css';
 
