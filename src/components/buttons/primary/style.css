@@ -9,9 +9,24 @@
 }
 
 .button-primary--yellow {
-  background-color: #f5c300;
+  background-color: var(--yellow)
 }
 
 .button-primary--grey {
-  background-color: #807979;
+  background-color: var(--light-gray-2);
+}
+
+.button-primary--orange {
+  background-color: var(--orange);
+  border-bottom: none;
+  width: 150px;
+  height: 35px;
+}
+
+.button-primary--single-forward {
+  margin-left: auto;
+}
+
+.button-primary--single-back {
+  display: none;
 }

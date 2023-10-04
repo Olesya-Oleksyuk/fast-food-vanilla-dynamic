@@ -18,7 +18,6 @@
   display: none;
 }
 
-
 .product-modal__container {
   display: flex;
   flex-direction: column;
@@ -38,7 +37,6 @@
   display: none;
 }
 
-
 .close-button {
   color: var(--dark-gray);
   opacity: 0.4;
@@ -47,6 +45,18 @@
   height: 40px;
   line-height: 40px;
 }
+
+.product-modal-nav {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.product-modal-nav__back-forward {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
 
 .product-modal__header,
 .product-modal__footer {

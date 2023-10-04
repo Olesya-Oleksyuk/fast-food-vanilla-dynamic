@@ -2,6 +2,7 @@ import Store from "../../store/store";
 import { capitalize } from "../../utils/utils";
 import Component from "../baseComponent/baseComponent";
 import ButtonControl from "../buttons/control/Control";
+import ButtonPrimary from "../buttons/primary/Primary";
 import ProductViewComponent from "../productView/productView";
 import {
   EDITING_HEADERS_STEPS,
@@ -35,6 +36,34 @@ export default class ProductModalComponent extends Component {
     });
 
     return crossButton;
+  }
+
+  // type = 'forward' | 'back'
+  static buildNavigationButton(type, isSingle = true) {
+    const getModifiers = (buttonType) => {
+      const modifiers = ["orange"];
+      if (isSingle) {
+        modifiers.push(`single-${buttonType}`);
+        return modifiers;
+      }
+      return modifiers;
+    };
+
+    if (type === "back") {
+      return ButtonPrimary.render(
+        "< Назад",
+        "product-modal__back-button",
+        getModifiers(type),
+      );
+    }
+    if (type === "forward") {
+      return ButtonPrimary.render(
+        "Вперед >",
+        "product-modal__forward-button",
+        getModifiers(type),
+      );
+    }
+    return null;
   }
 
   static buildHeader() {
@@ -192,6 +221,7 @@ export default class ProductModalComponent extends Component {
     if (!this.modalContentElement) return;
 
     this.navStepElement = document.createElement("nav");
+    this.navStepElement.classList.add("product-modal-nav");
     const navStepListElement = document.createElement("ul");
     navStepListElement.classList.add("product-modal-nav__list");
 
@@ -210,6 +240,10 @@ export default class ProductModalComponent extends Component {
 
     this.modalContentElement.innerHTML = "";
     this.navStepElement.appendChild(navStepListElement);
+
+    this.modalBackForwardNav = document.createElement("div");
+    this.modalBackForwardNav.classList.add("product-modal-nav__back-forward");
+    this.navStepElement.appendChild(this.modalBackForwardNav);
     // eslint-disable-next-line consistent-return
     return this.navStepElement;
   }
@@ -225,7 +259,6 @@ export default class ProductModalComponent extends Component {
     itemElement.innerText = name;
     itemElement.addEventListener("click", (event) => {
       const isSameSelected =
-        // @ts-ignore
         event.currentTarget.classList.contains(activeItemClass);
       if (isSameSelected) return;
       const prevSelectedItem = this.navStepElement.querySelector(
@@ -255,6 +288,30 @@ export default class ProductModalComponent extends Component {
     headerTitle.innerText = capitalize(EDITING_HEADERS_STEPS[this.getStep()]);
   }
 
+  renderBackForwardNav() {
+    const modalHeaderElement = this.modalContainerElement.querySelector(
+      ".product-modal-nav__back-forward",
+    );
+
+    modalHeaderElement.innerHTML = "";
+
+    if (this.getStep() === "edit-nav-step-1") {
+      modalHeaderElement.innerHTML =
+        ProductModalComponent.buildNavigationButton("forward", true);
+      return;
+    }
+
+    if (this.getStep() === "edit-nav-step-6") {
+      modalHeaderElement.innerHTML =
+        ProductModalComponent.buildNavigationButton("back", true);
+      return;
+    }
+
+    modalHeaderElement.innerHTML =
+      ProductModalComponent.buildNavigationButton("back", false) +
+      ProductModalComponent.buildNavigationButton("forward", false);
+  }
+
   /**
    * Renders the footer of the modal with the given price.
    *
@@ -275,5 +332,6 @@ export default class ProductModalComponent extends Component {
       .classList.add("options-fieldset--active");
 
     this.renderHeader();
+    this.renderBackForwardNav();
   }
 }
