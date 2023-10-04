@@ -1,19 +1,18 @@
-import Action from './actions';
-
-
+import { Action } from "./actions";
 /**
- * The initial state of the application. 
+ * The initial state of the application.
  * @constant {Object}
  * @property {Array} products - The list of products.
  * @property {Array} markets - The list of markets.
- * @property {string} categoryFilter - The category filter. 
+ * @property {string} categoryFilter - The category filter.
  * */
 const initialState = {
   products: [],
   markets: [],
-  categoryFilter: '',
+  categoryFilter: "",
 };
 
+// eslint-disable-next-line default-param-last
 const reducer = (state = initialState, action) => {
   switch (action?.type) {
     case Action.SetCategoryFilter:

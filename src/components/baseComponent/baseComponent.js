@@ -1,6 +1,4 @@
-export class Component {
-  constructor() {}
-
+export default class Component {
   /**
    * @callback getValue
    * @return {any} value
@@ -18,9 +16,7 @@ export class Component {
   useState(defaultValue) {
     let value = defaultValue;
 
-    const getValue = () => {
-      return value;
-    };
+    const getValue = () => value;
 
     const setValue = (newValue) => {
       if (value === newValue) return;

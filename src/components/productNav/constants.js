@@ -1,13 +1,13 @@
-import { PRODUCT_CATEGORIES } from '../../store/constants';
+import { PRODUCT_CATEGORIES } from "../../store/constants";
 
 export const categoriesDictionary = {
-  sandwiches: 'сэндвичи',
-  shaurma: 'шаурма',
-  burgers: 'бургеры',
-  chicken: 'курица & картофель',
-  salads: 'тортилья & салаты',
-  drinks: 'напитки & десерты',
-  pizza: 'пицца',
+  sandwiches: "сэндвичи",
+  shaurma: "шаурма",
+  burgers: "бургеры",
+  chicken: "курица & картофель",
+  salads: "тортилья & салаты",
+  drinks: "напитки & десерты",
+  pizza: "пицца",
 };
 
 export const correctlyOrderedCategories = [

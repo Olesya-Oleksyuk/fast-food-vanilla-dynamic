@@ -11,6 +11,7 @@
  * @property {Components} [components]
  */
 
+
 /**
  * @typedef {Object} ProductView
  * @property {string} image
@@ -27,3 +28,4 @@
  * @property {string} sauce
  * @property {Array.<*>} filling
  */
+

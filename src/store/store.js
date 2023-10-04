@@ -45,7 +45,7 @@ export default class Store {
     this.state = this.reducer(this.state, action);
     this.listeners.forEach((listener) => listener());
     this.valueListeners.forEach(({ value, listener }) =>
-      listener(this.state[value] || null)
+      listener(this.state[value] || null),
     );
   }
 }

@@ -1,5 +1,5 @@
 export const Action = {
-  SetCategoryFilter: 'setCategoryFilter',
+  SetCategoryFilter: "setCategoryFilter",
 };
 
 /**
@@ -9,5 +9,3 @@ export const setProductCategoryFilter = (payload) => ({
   type: Action.SetCategoryFilter,
   payload,
 });
-
-export default Action;

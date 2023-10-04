@@ -1,7 +1,5 @@
-'use strict';
-
-import { composeClassList, html } from '../../../utils/utils';
-import './style.css';
+import { composeClassList, html } from "../../../utils/utils";
+import "./style.css";
 
 /**
  * Button Primary component. Uses positioning and modifier classes to adjust its view.
@@ -14,7 +12,7 @@ export default class ButtonPrimary {
    * @return string
    */
   static render(text, classPositioning, classModifiers) {
-    const classBlockName = 'button-primary';
+    const classBlockName = "button-primary";
 
     const fullClassSelectorsString = composeClassList({
       classBlockName,

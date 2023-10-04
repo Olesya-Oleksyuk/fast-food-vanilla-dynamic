@@ -1,7 +1,5 @@
-'use strict';
-
-import { composeClassList, html } from '../../../utils/utils';
-import './style.css';
+import { composeClassList, html } from "../../../utils/utils";
+import "./style.css";
 
 /**
  * Button Control component. Uses positioning and modifier classes to adjust its view.
@@ -12,9 +10,9 @@ export default class ButtonControl {
    * @return string
    */
   static #getIcon(icon) {
-    if (icon === 'plus') return html`<i class="fa-solid fa-plus"></i>`;
-    if (icon === 'minus') return html`<i class="fa-solid fa-minus"></i>`;
-    if (icon === 'x-mark') return html`<i class="fa-solid fa-xmark"></i>`;
+    if (icon === "plus") return html`<i class="fa-solid fa-plus"></i>`;
+    if (icon === "minus") return html`<i class="fa-solid fa-minus"></i>`;
+    if (icon === "x-mark") return html`<i class="fa-solid fa-xmark"></i>`;
     return html`<></>`;
   }
   /**
@@ -37,7 +35,7 @@ export default class ButtonControl {
       icon,
       isDisabled = false,
       classBlockName,
-      classPositioning = '',
+      classPositioning = "",
       classModifiers = [],
     } = obj;
 
@@ -47,13 +45,13 @@ export default class ButtonControl {
       classPositioning,
     });
 
-    this.buttonElement = document.createElement('button');
-    this.buttonElement.setAttribute('class', fullClassSelectorsString);
+    this.buttonElement = document.createElement("button");
+    this.buttonElement.setAttribute("class", fullClassSelectorsString);
 
     this.buttonElement.innerHTML = this.#getIcon(icon);
 
     if (isDisabled) {
-      this.buttonElement.setAttribute('disabled', '');
+      this.buttonElement.setAttribute("disabled", "");
     }
 
     return this.buttonElement;

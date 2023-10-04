@@ -32,8 +32,8 @@ export function sortAndFilterDuplicates(arr, order) {
  */
 export const composeClassList = (obj) => {
   const {
-    classPositioning = '',
-    classBlockName = '',
+    classPositioning = "",
+    classBlockName = "",
     classModifiers = [],
   } = obj;
 
@@ -43,8 +43,8 @@ export const composeClassList = (obj) => {
   const classModifiersList = hasModifiers
     ? classModifiers
         .map((modifier) => `${classBlockName}--${modifier}`)
-        .join(' ')
-    : '';
+        .join(" ")
+    : "";
 
   const fullClassName =
     `${classPositioning} ${classBlockName} ${classModifiersList}`.trim();
@@ -53,6 +53,6 @@ export const composeClassList = (obj) => {
 
 export const capitalize = (string) =>
   (string &&
-    typeof string === 'string' &&
+    typeof string === "string" &&
     string[0].toUpperCase() + string.slice(1)) ||
-  '';
+  "";

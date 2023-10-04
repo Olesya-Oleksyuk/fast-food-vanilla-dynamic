@@ -1,9 +1,7 @@
-'use strict';
-
-import Store from '../../store/store';
-import { Component } from '../baseComponent/baseComponent';
-import ProductCardComponent from '../productCard/productCard';
-import './style.css';
+import Store from "../../store/store";
+import Component from "../baseComponent/baseComponent";
+import ProductCardComponent from "../productCard/productCard";
+import "./style.css";
 
 /**
  * Product Catalog component. We call this a component as its behaviour is a
@@ -25,10 +23,9 @@ export default class ProductCatalogComponent extends Component {
     this.containerElement = obj.containerElement;
     this.store = obj.store;
     this.handleCartButtonClick = () => {
-
       document
         .querySelector('[data-container="product-modal"]')
-        .classList.remove('product-modal--closed');
+        .classList.remove("product-modal--closed");
       // this.store.dispatch({ type: 'ADD_TO_CART' });
     };
 
@@ -41,7 +38,7 @@ export default class ProductCatalogComponent extends Component {
     this.filteredByCategoryList = this.store
       .getState()
       .products.filter(
-        (product) => product.category === this.currentCategoryFilter
+        (product) => product.category === this.currentCategoryFilter,
       );
   }
 
@@ -51,35 +48,34 @@ export default class ProductCatalogComponent extends Component {
    */
   updateProperties() {
     this.currentCategoryFilter = this.store.getState().categoryFilter;
-    this.products = this.filterPorductsByCategory();
-    this.markets = this.store.getState().markets;
+    this.filterPorductsByCategory();
 
-    this.store.subscribeValue('categoryFilter', (category) => {
+    this.store.subscribeValue("categoryFilter", (category) => {
       this.currentCategoryFilter = category;
-      this.products = this.filterPorductsByCategory();
+      this.filterPorductsByCategory();
       this.buildDOMElements();
       this.render();
     });
 
-    this.store.subscribeValue('products', () => {
-      this.products = this.filterPorductsByCategory();
+    this.store.subscribeValue("products", () => {
+      this.filterPorductsByCategory();
       this.buildDOMElements();
       this.render();
     });
   }
 
   buildDOMElements() {
-    this.productListElement = document.createElement('ul');
-    this.productListElement.classList.add('product-catalogue__list');
+    this.productListElement = document.createElement("ul");
+    this.productListElement.classList.add("product-catalogue__list");
   }
 
   renderProductCards() {
     if (!this.productListElement) return;
 
-    this.filteredByCategoryList.map((product) => {
+    this.filteredByCategoryList.forEach((product) => {
       new ProductCardComponent({
         containerElement: this.productListElement,
-        product: product,
+        product,
         store: this.store,
         onCartButtonClick: this.handleCartButtonClick,
       });
@@ -88,7 +84,7 @@ export default class ProductCatalogComponent extends Component {
 
   render() {
     this.renderProductCards();
-    this.containerElement.innerHTML = '';
+    this.containerElement.innerHTML = "";
     this.containerElement.appendChild(this.productListElement);
   }
 }

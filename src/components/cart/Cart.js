@@ -1,9 +1,6 @@
-'use strict';
+import { html } from "../../utils/utils";
+import "./style.css";
 
-import { html } from '../../utils/utils';
-import './style.css';
-import BackgroundPlate from '/src/public/i/others/cart-logo.png';
- 
 /**
  * Cart component.
  */
@@ -14,24 +11,22 @@ export default class CartComponent {
    * @return CartComponent
    */
   constructor(obj) {
-    
     this.containerElement = obj.containerElement;
     this.buildDOMElements();
     this.render();
   }
 
   buildDOMElements() {
-    this.cartElement = document.createElement('div');
-    this.cartElement.classList.add('cart');
+    this.cartElement = document.createElement("div");
+    this.cartElement.classList.add("cart");
   }
-
 
   renderCartBody() {
     if (!this.cartElement) return;
     this.cartElement.innerHTML = html`
       <h2 class="cart__title">
         <span class="cart-logo">
-          <img src="${BackgroundPlate}" alt="Корзина" />
+          <img src="i/others/cart-logo.png" alt="Корзина" />
         </span>
         <span class="cart-title__text">Корзина</span>
       </h2>
@@ -57,7 +52,7 @@ export default class CartComponent {
 
   render() {
     this.renderCartBody();
-    this.containerElement.innerHTML = '';
+    this.containerElement.innerHTML = "";
     this.containerElement.appendChild(this.cartElement);
   }
 }
