@@ -7,10 +7,10 @@
  * @property {string} category,
  * @property {string} market,
  * @property {string} type,
- * @property {number} weight
+ * @property {number} weight,
+ * @property {number} [count],
  * @property {Components} [components]
  */
-
 
 /**
  * @typedef {Object} ProductView
@@ -28,4 +28,3 @@
  * @property {string} sauce
  * @property {Array.<*>} filling
  */
-

@@ -1,5 +1,5 @@
 import Store from "../../store/store";
-import { capitalize, html } from "../../utils/utils";
+import { capitalize } from "../../utils/utils";
 import Component from "../baseComponent/baseComponent";
 import ButtonControl from "../buttons/control/Control";
 import ProductViewComponent from "../productView/productView";
@@ -50,7 +50,6 @@ export default class ProductModalComponent extends Component {
   static buildFooter() {
     const modalFooterElement = document.createElement("footer");
     modalFooterElement.classList.add("product-modal__footer");
-    modalFooterElement.innerHTML = html`<span>в корзину</span>`;
 
     return modalFooterElement;
   }
@@ -93,6 +92,15 @@ export default class ProductModalComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
+
+    this.store.subscribeValue("modal", (modal) => {
+      const currProductInModal = this.store.getState().currentProductInModal;
+      const productInModalInfo = modal[currProductInModal];
+      if (!productInModalInfo) return;
+
+      this.renderFooter(productInModalInfo.price);
+    });
+
     this.onCloseModal = obj.onCloseModal;
     this.productSupplements = this.store.getState().productSupplements;
     this.useInternalState();
@@ -245,6 +253,20 @@ export default class ProductModalComponent extends Component {
     const headerTitle = modalHeaderElement.querySelector("h2");
     headerTitle.innerText = "";
     headerTitle.innerText = capitalize(EDITING_HEADERS_STEPS[this.getStep()]);
+  }
+
+  /**
+   * Renders the footer of the modal with the given price.
+   *
+   * @param {number} price - The price to be displayed in the footer
+   */
+  renderFooter(price) {
+    const modalFooterElement = this.modalContainerElement.querySelector(
+      ".product-modal__footer",
+    );
+
+    modalFooterElement.innerText = "";
+    modalFooterElement.innerText = `Итого: ${price} руб.`;
   }
 
   render() {

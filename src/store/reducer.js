@@ -20,6 +20,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         categoryFilter: action.payload,
       };
+    case Action.AddToModal:
+      return {
+        ...state,
+        modal: {
+          ...state.modal,
+          [action.payload.productName]: action.payload.productData,
+        },
+      };
+    case Action.SetCurrentProductInModal:
+      return {
+        ...state,
+        currentProductInModal: action.payload,
+      };
     default:
       return state;
   }

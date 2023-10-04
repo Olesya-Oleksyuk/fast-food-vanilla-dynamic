@@ -31,6 +31,8 @@ export default class App {
       },
       markets: new Markets(this.fullData.markets),
       categoryFilter: PRODUCT_CATEGORIES.SANDWICHES,
+      modal: {},
+      currentProductInModal: null,
     };
 
     const store = new Store(reducer, initalState);

@@ -1,3 +1,4 @@
+import { addToModal, setCurrentProductInModal } from "../../store/actions";
 import Store from "../../store/store";
 import Component from "../baseComponent/baseComponent";
 import ProductCardComponent from "../productCard/productCard";
@@ -22,11 +23,20 @@ export default class ProductCatalogComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
-    this.handleCartButtonClick = () => {
+
+    /**
+     * Handles the click event of the cart button.
+     * @param {import('../../jsdocs/typedef').Product} productData
+     */
+    this.handleCartButtonClick = (productData) => {
       document
         .querySelector('[data-container="product-modal"]')
         .classList.remove("product-modal--closed");
-      // this.store.dispatch({ type: 'ADD_TO_CART' });
+
+      this.store.dispatch(setCurrentProductInModal(productData.name));
+      this.store.dispatch(
+        addToModal({ productName: productData.name, productData }),
+      );
     };
 
     this.updateProperties();

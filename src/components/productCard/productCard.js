@@ -55,8 +55,12 @@ export default class ProductCardComponent extends Component {
 
     decrementButtonElement.addEventListener("click", decrementProductCount);
     incrementButtonElement.addEventListener("click", incrementProductCount);
-    // @ts-ignore
-    cartButton.addEventListener("click", this.onCartButtonClick);
+    cartButton.addEventListener("click", () => {
+      this.onCartButtonClick({
+        ...this.getProduct(),
+        count: this.getProductCount(),
+      });
+    });
   }
 
   /**
