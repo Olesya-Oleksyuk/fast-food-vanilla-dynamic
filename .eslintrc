@@ -13,7 +13,8 @@
     "no-new": 0,
     "eslint-consistent-return": "off",
     "react/require-render-return": "off",
-    "jsdoc/no-undefined-types": 1
+    "jsdoc/no-undefined-types": 1,
+    "no-console": "off"
   },
    "plugins": [
     "import",
