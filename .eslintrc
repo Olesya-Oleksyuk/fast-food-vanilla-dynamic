@@ -20,7 +20,8 @@
     "eslint-consistent-return": "off",
     "react/require-render-return": "off",
     "jsdoc/no-undefined-types": 1,
-    "no-console": "off"
+    "no-console": "off",
+    "no-debugger": "off"
   },
   "plugins": [
     "only-warn",
