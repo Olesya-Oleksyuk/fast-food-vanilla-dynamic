@@ -87,7 +87,10 @@ export function getObjectFromFormData(form) {
   Array.from(formData.entries()).forEach(([key, currValue]) => {
     if (formObject[key]) {
       const oldValue = formObject[key];
-      formObject[key] = [oldValue, currValue];
+      const newValue = Array.isArray(oldValue)
+        ? [...oldValue, currValue]
+        : [oldValue, currValue];
+      formObject[key] = newValue;
     } else {
       formObject[key] = currValue;
     }

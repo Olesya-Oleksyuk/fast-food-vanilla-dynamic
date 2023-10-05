@@ -134,19 +134,25 @@ export default class ProductModalComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
+    this.onCloseModal = obj.onCloseModal;
+    this.productSupplements = this.store.getState().productSupplements;
     this.currProductInModal = this.store.getState().currentProductInModal;
+    this.useInternalState();
 
     this.store.subscribeValue("modal", (modal) => {
       this.currProductInModal = this.store.getState().currentProductInModal;
       const productInModalInfo = modal[this.currProductInModal];
       if (!productInModalInfo) return;
 
-      this.renderFooter(productInModalInfo.price);
+      const componentsCost = this.calculateComponentsCost(
+        productInModalInfo.components,
+      );
+
+      this.renderFooter(
+        productInModalInfo.price * productInModalInfo.count + componentsCost,
+      );
     });
 
-    this.onCloseModal = obj.onCloseModal;
-    this.productSupplements = this.store.getState().productSupplements;
-    this.useInternalState();
     this.stepMapper = ProductModalComponent.createStepMapper();
 
     this.buildDOMElements();
@@ -156,6 +162,34 @@ export default class ProductModalComponent extends Component {
 
   getStepNumber() {
     return Number(this.getStep().slice(-1)) - 1;
+  }
+
+  /**
+   * @param {Object} components - selected components per product
+   */
+  calculateComponentsCost(components) {
+    const productComponentsPrice = Object.entries(components).reduce(
+      (overallAcc, curr) => {
+        const [component, componentTypeValue] = curr;
+        if (Array.isArray(componentTypeValue)) {
+          const componentsPrice = componentTypeValue.reduce(
+            (acc, componentType) => {
+              const currentComponentTypePrice =
+                this.productSupplements[component][componentType].price;
+              return currentComponentTypePrice + acc;
+            },
+            0,
+          );
+          return componentsPrice + overallAcc;
+        }
+        const currentComponentTypePrice =
+          this.productSupplements[component][componentTypeValue].price;
+        return currentComponentTypePrice + overallAcc;
+      },
+      0,
+    );
+
+    return productComponentsPrice;
   }
 
   useInternalState() {
@@ -180,6 +214,7 @@ export default class ProductModalComponent extends Component {
 
     productModalForm.addEventListener("change", () => {
       const newFormData = getObjectFromFormData(productModalForm);
+      debugger;
       const currProductInModal = this.store.getState().currentProductInModal;
       this.store.dispatch(
         updateProductInModal({
