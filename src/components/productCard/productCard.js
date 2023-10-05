@@ -19,6 +19,7 @@ export default class ProductCardComponent extends Component {
    * onCartButtonClick: Function
    * }} obj product catalog data
    * @return ProductCatalogComponent
+   * @param obj
    */
   constructor(obj) {
     super();

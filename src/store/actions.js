@@ -1,6 +1,7 @@
 export const Action = {
   SetCategoryFilter: "setCategoryFilter",
   AddToModal: "addToModal",
+  UpdateComponentsOfProductInModal: "updateComponentsOfProductInModal",
   SetCurrentProductInModal: "setCurrentProductInModal",
 };
 
@@ -19,5 +20,10 @@ export const addToModal = (payload) => ({
 
 export const setCurrentProductInModal = (payload) => ({
   type: Action.SetCurrentProductInModal,
+  payload,
+});
+
+export const updateProductInModal = (payload) => ({
+  type: Action.UpdateComponentsOfProductInModal,
   payload,
 });

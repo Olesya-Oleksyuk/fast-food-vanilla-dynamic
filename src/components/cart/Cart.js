@@ -1,5 +1,6 @@
 import { html } from "../../utils/utils";
 import "./style.css";
+import CartLogo from "../../public/i/others/cart-logo.png";
 
 /**
  * Cart component.
@@ -26,7 +27,7 @@ export default class CartComponent {
     this.cartElement.innerHTML = html`
       <h2 class="cart__title">
         <span class="cart-logo">
-          <img src="i/others/cart-logo.png" alt="Корзина" />
+          <img src=${CartLogo} alt="Корзина" />
         </span>
         <span class="cart-title__text">Корзина</span>
       </h2>

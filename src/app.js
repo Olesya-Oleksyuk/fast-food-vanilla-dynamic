@@ -12,15 +12,14 @@ import Store from "./store/store";
 /**
  * App entry point
  */
-export default class App {
+class App {
   /**
    * @return AppComponent
    */
   constructor() {
-    this.currCategory = PRODUCT_CATEGORIES.SANDWICHES;
     this.fullData = jsonData;
 
-    const initalState = {
+    const initialState = {
       products: this.fullData.menu,
       productSupplements: {
         breads: this.fullData.breads,
@@ -35,7 +34,7 @@ export default class App {
       currentProductInModal: null,
     };
 
-    const store = new Store(reducer, initalState);
+    const store = new Store(reducer, initialState);
 
     this.markets = new Markets(this.fullData.markets);
     App.renderApp(store);
@@ -46,12 +45,6 @@ export default class App {
     App.renderProductNav(store);
     App.renderCart();
     App.renderProductModal(store);
-  }
-
-  static async fetchData() {
-    const response = await fetch("data/data.json");
-    const data = await response.json();
-    return data;
   }
 
   /**

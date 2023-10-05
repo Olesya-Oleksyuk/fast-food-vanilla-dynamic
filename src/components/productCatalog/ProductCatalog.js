@@ -25,7 +25,7 @@ export default class ProductCatalogComponent extends Component {
     this.store = obj.store;
 
     /**
-     * Handles the click event of the cart button.
+     * Handles the click event of the cart button in Product Catalog.
      * @param {import('../../jsdocs/typedef').Product} productData
      */
     this.handleCartButtonClick = (productData) => {
@@ -34,8 +34,10 @@ export default class ProductCatalogComponent extends Component {
         .classList.remove("product-modal--closed");
 
       this.store.dispatch(setCurrentProductInModal(productData.name));
+
+      const productInModal = { ...productData, components: {} };
       this.store.dispatch(
-        addToModal({ productName: productData.name, productData }),
+        addToModal({ productName: productData.name, productInModal }),
       );
     };
 

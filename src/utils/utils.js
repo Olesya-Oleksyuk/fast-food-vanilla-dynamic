@@ -22,6 +22,30 @@ export function sortAndFilterDuplicates(arr, order) {
 }
 
 /**
+ * @typedef {Object} ElementBySelector
+ * @property {Element} element the matching element
+ * @property {number} index the matching element's index
+ */
+
+/**
+ * Gets an item by selector in a NodeList.
+ *
+ * @param {NodeList} nodeList - The NodeList to search in.
+ * @param {string} selector - The CSS selector to use for searching.
+ * @return {ElementBySelector|null} The matching element or null if not found.
+ */
+export function getElementBySelector(nodeList, selector) {
+  return (
+    Array.from(nodeList).reduce((result, currElement, index) => {
+      if (currElement.classList.contains(selector)) {
+        return { element: currElement, index };
+      }
+      return result;
+    }, {}) || null
+  );
+}
+
+/**
  * Generates a class selectors list string
  *
  * @param {Object} obj
@@ -56,3 +80,17 @@ export const capitalize = (string) =>
     typeof string === "string" &&
     string[0].toUpperCase() + string.slice(1)) ||
   "";
+
+export function getObjectFromFormData(form) {
+  const formData = new FormData(form);
+  const formObject = {};
+  Array.from(formData.entries()).forEach(([key, currValue]) => {
+    if (formObject[key]) {
+      const oldValue = formObject[key];
+      formObject[key] = [oldValue, currValue];
+    } else {
+      formObject[key] = currValue;
+    }
+  });
+  return formObject;
+}

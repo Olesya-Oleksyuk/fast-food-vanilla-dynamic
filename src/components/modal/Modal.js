@@ -1,5 +1,10 @@
+import { updateProductInModal } from "../../store/actions";
 import Store from "../../store/store";
-import { capitalize } from "../../utils/utils";
+import {
+  capitalize,
+  getElementBySelector,
+  getObjectFromFormData,
+} from "../../utils/utils";
 import Component from "../baseComponent/baseComponent";
 import ButtonControl from "../buttons/control/Control";
 import ButtonPrimary from "../buttons/primary/Primary";
@@ -38,7 +43,15 @@ export default class ProductModalComponent extends Component {
     return crossButton;
   }
 
-  // type = 'forward' | 'back'
+  /**
+   * @typedef {"back" | "forward"} NavButtonType
+   */
+  /**
+   * @param {NavButtonType} type
+   * @param {Boolean} isSingle
+   * @returns {null|string}
+   */
+  // type = 'forward' | 'plus'
   static buildNavigationButton(type, isSingle = true) {
     const getModifiers = (buttonType) => {
       const modifiers = ["orange"];
@@ -121,10 +134,11 @@ export default class ProductModalComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
+    this.currProductInModal = this.store.getState().currentProductInModal;
 
     this.store.subscribeValue("modal", (modal) => {
-      const currProductInModal = this.store.getState().currentProductInModal;
-      const productInModalInfo = modal[currProductInModal];
+      this.currProductInModal = this.store.getState().currentProductInModal;
+      const productInModalInfo = modal[this.currProductInModal];
       if (!productInModalInfo) return;
 
       this.renderFooter(productInModalInfo.price);
@@ -138,7 +152,10 @@ export default class ProductModalComponent extends Component {
     this.buildDOMElements();
 
     this.render();
-    this.addEventListeners();
+  }
+
+  getStepNumber() {
+    return Number(this.getStep().slice(-1)) - 1;
   }
 
   useInternalState() {
@@ -157,13 +174,58 @@ export default class ProductModalComponent extends Component {
   }
 
   addEventListeners() {
-    this.closeModalButton = this.containerElement.querySelector(
+    const productModalForm = this.containerElement.querySelector(
+      ".product-modal-options",
+    );
+
+    productModalForm.addEventListener("change", () => {
+      const newFormData = getObjectFromFormData(productModalForm);
+      const currProductInModal = this.store.getState().currentProductInModal;
+      this.store.dispatch(
+        updateProductInModal({
+          productName: currProductInModal,
+          productData: newFormData,
+        }),
+      );
+    });
+
+    const closeModalButton = this.containerElement.querySelector(
       ".product-modal__close-button",
     );
 
-    this.closeModalButton.addEventListener("click", () => {
+    closeModalButton.addEventListener("click", () => {
       this.onCloseModal();
     });
+
+    const forwardStepButton = this.containerElement.querySelector(
+      ".product-modal__forward-button",
+    );
+
+    if (forwardStepButton) {
+      forwardStepButton.addEventListener("click", () => {
+        const nextStepNumber = Number(this.getStep().slice(-1)) + 1;
+        if (nextStepNumber > Object.keys(EDITING_NAV_STEPS).length) return;
+        this.modalOptionsSection
+          .querySelector(".options-fieldset--active")
+          .classList.remove("options-fieldset--active");
+        this.setStep(`edit-nav-step-${nextStepNumber}`);
+      });
+    }
+
+    const backStepButton = this.containerElement.querySelector(
+      ".product-modal__back-button",
+    );
+
+    if (backStepButton) {
+      backStepButton.addEventListener("click", () => {
+        const nextStepNumber = Number(this.getStep().slice(-1)) - 1;
+        if (nextStepNumber < 1) return;
+        this.modalOptionsSection
+          .querySelector(".options-fieldset--active")
+          .classList.remove("options-fieldset--active");
+        this.setStep(`edit-nav-step-${nextStepNumber}`);
+      });
+    }
   }
 
   buildContent() {
@@ -326,6 +388,25 @@ export default class ProductModalComponent extends Component {
     modalFooterElement.innerText = `Итого: ${price} руб.`;
   }
 
+  /**
+   * Renders the navigation list
+   *
+   */
+  renderNavigationList() {
+    const activeItemSelector = "product-modal-nav__item--active";
+    const navItemsNodeList = this.modalContainerElement.querySelectorAll(
+      ".product-modal-nav__item",
+    );
+
+    const { element: prevSelectedNavItem } = getElementBySelector(
+      navItemsNodeList,
+      activeItemSelector,
+    );
+    prevSelectedNavItem.classList.remove(activeItemSelector);
+    const currentSelectedNavItem = navItemsNodeList[this.getStepNumber()];
+    currentSelectedNavItem.classList.add(activeItemSelector);
+  }
+
   render() {
     document
       .getElementById(this.getStep())
@@ -333,5 +414,7 @@ export default class ProductModalComponent extends Component {
 
     this.renderHeader();
     this.renderBackForwardNav();
+    this.renderNavigationList();
+    this.addEventListeners();
   }
 }

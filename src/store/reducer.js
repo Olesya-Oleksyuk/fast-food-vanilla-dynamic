@@ -25,7 +25,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         modal: {
           ...state.modal,
-          [action.payload.productName]: action.payload.productData,
+          [action.payload.productName]: action.payload.productInModal,
+        },
+      };
+    case Action.UpdateComponentsOfProductInModal:
+      return {
+        ...state,
+        modal: {
+          ...state.modal,
+          [action.payload.productName]: {
+            ...state.modal[action.payload.productName],
+            components: {
+              ...state.modal[action.payload.productName].components,
+              ...action.payload.productData,
+            },
+          },
         },
       };
     case Action.SetCurrentProductInModal:
