@@ -3,12 +3,18 @@
   "parserOptions": {
     "requireConfigFile": false
   },
-  "extends": ["airbnb", "prettier"],
+  "extends": [
+    "airbnb",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
   "env": {
     "browser": true
   },
   "rules": {
-    "prettier/prettier": ["error"],
+    "prettier/prettier": [
+      "warn"
+    ],
     "import/no-absolute-path": "off",
     "no-new": 0,
     "eslint-consistent-return": "off",
@@ -16,7 +22,8 @@
     "jsdoc/no-undefined-types": 1,
     "no-console": "off"
   },
-   "plugins": [
+  "plugins": [
+    "only-warn",
     "import",
     "prettier",
     "jsdoc"
@@ -24,7 +31,10 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "moduleDirectory": ["node_modules", "src/"]
+        "moduleDirectory": [
+          "node_modules",
+          "src/"
+        ]
       }
     }
   }
