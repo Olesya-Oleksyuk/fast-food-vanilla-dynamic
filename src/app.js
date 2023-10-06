@@ -1,5 +1,4 @@
 import CartComponent from "./components/cart/Cart";
-import ProductModalComponent from "./components/modal/Modal";
 import ProductCatalogComponent from "./components/productCatalog/ProductCatalog";
 import ProductNavComponent from "./components/productNav/ProductNav";
 import "./css/style.css";
@@ -44,7 +43,6 @@ class App {
     App.renderProductCatalog(store);
     App.renderProductNav(store);
     App.renderCart();
-    App.renderProductModal(store);
   }
 
   /**
@@ -70,25 +68,6 @@ class App {
 
     new CartComponent({
       containerElement: cartSection,
-    });
-  }
-
-  /**
-   * @return ModalComponent
-   */
-  static renderProductModal(store) {
-    const productModalElement = document.querySelector(
-      '[data-container="product-modal"]',
-    );
-
-    const closeModalHandler = () => {
-      productModalElement.classList.add("product-modal--closed");
-    };
-
-    new ProductModalComponent({
-      containerElement: productModalElement,
-      store,
-      onCloseModal: closeModalHandler,
     });
   }
 

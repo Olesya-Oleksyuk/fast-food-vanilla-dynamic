@@ -1,4 +1,5 @@
 import { Action } from "./actions";
+
 /**
  * The initial state of the application.
  * @constant {Object}
@@ -10,6 +11,8 @@ const initialState = {
   products: [],
   markets: [],
   categoryFilter: "",
+  modal: {},
+  currentProductInModal: null,
 };
 
 // eslint-disable-next-line default-param-last
@@ -27,6 +30,11 @@ const reducer = (state = initialState, action) => {
           ...state.modal,
           [action.payload.productName]: action.payload.productInModal,
         },
+      };
+    case Action.RemoveFromModal:
+      return {
+        ...state,
+        modal: {},
       };
     case Action.UpdateComponentsOfProductInModal:
       return {

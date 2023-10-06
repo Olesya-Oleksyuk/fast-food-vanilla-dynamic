@@ -1,8 +1,13 @@
-import { addToModal, setCurrentProductInModal } from "../../store/actions";
+import {
+  addToModal,
+  removeFromModal,
+  setCurrentProductInModal,
+} from "../../store/actions";
 import Store from "../../store/store";
 import Component from "../baseComponent/baseComponent";
 import ProductCardComponent from "../productCard/productCard";
 import "./style.css";
+import ProductModalComponent from "../modal/Modal";
 
 /**
  * Product Catalog component. We call this a component as its behaviour is a
@@ -29,9 +34,11 @@ export default class ProductCatalogComponent extends Component {
      * @param {import('../../jsdocs/typedef').Product} productData
      */
     this.handleCartButtonClick = (productData) => {
-      document
-        .querySelector('[data-container="product-modal"]')
-        .classList.remove("product-modal--closed");
+      const productModalElement = document.querySelector(
+        '[data-container="product-modal"]',
+      );
+
+      productModalElement.classList.remove("product-modal--closed");
 
       this.store.dispatch(setCurrentProductInModal(productData.name));
 
@@ -39,6 +46,18 @@ export default class ProductCatalogComponent extends Component {
       this.store.dispatch(
         addToModal({ productName: productData.name, productInModal }),
       );
+
+      const closeModalHandler = (modalElement) => {
+        productModalElement.classList.add("product-modal--closed");
+        this.store.dispatch(removeFromModal());
+        modalElement.remove();
+      };
+
+      new ProductModalComponent({
+        containerElement: productModalElement,
+        store: this.store,
+        onCloseModal: closeModalHandler,
+      });
     };
 
     this.updateProperties();

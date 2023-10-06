@@ -3,11 +3,9 @@ export const Action = {
   AddToModal: "addToModal",
   UpdateComponentsOfProductInModal: "updateComponentsOfProductInModal",
   SetCurrentProductInModal: "setCurrentProductInModal",
+  RemoveFromModal: "removeFromModal",
 };
 
-/**
- * @param {string} payload
- */
 export const setProductCategoryFilter = (payload) => ({
   type: Action.SetCategoryFilter,
   payload,
@@ -16,6 +14,10 @@ export const setProductCategoryFilter = (payload) => ({
 export const addToModal = (payload) => ({
   type: Action.AddToModal,
   payload,
+});
+
+export const removeFromModal = () => ({
+  type: Action.RemoveFromModal,
 });
 
 export const setCurrentProductInModal = (payload) => ({

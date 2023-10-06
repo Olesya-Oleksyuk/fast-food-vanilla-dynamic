@@ -139,25 +139,14 @@ export default class ProductModalComponent extends Component {
     this.currProductInModal = this.store.getState().currentProductInModal;
     this.useInternalState();
 
-    this.store.subscribeValue("modal", (modal) => {
-      this.currProductInModal = this.store.getState().currentProductInModal;
-      const productInModalInfo = modal[this.currProductInModal];
-      if (!productInModalInfo) return;
-
-      const componentsCost = this.calculateComponentsCost(
-        productInModalInfo.components,
-      );
-
-      this.renderFooter(
-        productInModalInfo.price * productInModalInfo.count + componentsCost,
-      );
+    this.store.subscribeValue("modal", () => {
+      this.renderFooter();
     });
 
     this.stepMapper = ProductModalComponent.createStepMapper();
-
     this.buildDOMElements();
-
     this.render();
+    this.renderFooter();
   }
 
   getStepNumber() {
@@ -214,7 +203,6 @@ export default class ProductModalComponent extends Component {
 
     productModalForm.addEventListener("change", () => {
       const newFormData = getObjectFromFormData(productModalForm);
-      debugger;
       const currProductInModal = this.store.getState().currentProductInModal;
       this.store.dispatch(
         updateProductInModal({
@@ -229,7 +217,7 @@ export default class ProductModalComponent extends Component {
     );
 
     closeModalButton.addEventListener("click", () => {
-      this.onCloseModal();
+      this.onCloseModal(this.modalContainerElement);
     });
 
     const forwardStepButton = this.containerElement.querySelector(
@@ -409,12 +397,27 @@ export default class ProductModalComponent extends Component {
       ProductModalComponent.buildNavigationButton("forward", false);
   }
 
+  renderFooter() {
+    const { modal } = this.store.getState();
+    this.currProductInModal = this.store.getState().currentProductInModal;
+    const productInModalInfo = modal[this.currProductInModal];
+    if (!productInModalInfo) return;
+
+    const componentsCost = this.calculateComponentsCost(
+      productInModalInfo.components,
+    );
+
+    this.renderFooterInfo(
+      productInModalInfo.price * productInModalInfo.count + componentsCost,
+    );
+  }
+
   /**
    * Renders the footer of the modal with the given price.
    *
    * @param {number} price - The price to be displayed in the footer
    */
-  renderFooter(price) {
+  renderFooterInfo(price) {
     const modalFooterElement = this.modalContainerElement.querySelector(
       ".product-modal__footer",
     );

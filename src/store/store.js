@@ -32,7 +32,9 @@ export default class Store {
   }
 
   /**
-   *  @typedef {{ type: string; payload: string; }} Action
+   * @typedef {Object} Action
+   * @property {string} type
+   * @property {string} [payload]
    */
 
   /**
