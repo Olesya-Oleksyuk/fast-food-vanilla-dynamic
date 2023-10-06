@@ -1,4 +1,7 @@
-import { updateProductInModal } from "../../store/actions";
+import {
+  setProductCountInModal,
+  updateProductInModal,
+} from "../../store/actions";
 import Store from "../../store/store";
 import {
   capitalize,
@@ -17,6 +20,7 @@ import {
   radiosSteps,
 } from "./constants";
 import "./style.css";
+import CountPanelComponent from "../countPanel/CountPanel";
 
 /**
  * Product Modal component. We call this a component as its behaviour is a
@@ -153,6 +157,7 @@ export default class ProductModalComponent extends Component {
     this.useInternalState();
 
     this.store.subscribeValue("modal", () => {
+      debugger;
       this.renderFooter();
     });
 
@@ -161,7 +166,6 @@ export default class ProductModalComponent extends Component {
       ProductModalComponent.createSupplementMapper().getSupplementName;
     this.buildDOMElements();
     this.render();
-    this.renderFooter();
   }
 
   getStepNumber() {
@@ -200,6 +204,14 @@ export default class ProductModalComponent extends Component {
     const [getStep, setStep] = this.useState(Object.keys(EDITING_NAV_STEPS)[0]);
     this.getStep = getStep;
     this.setStep = setStep;
+
+    const [getProductCount, setProductCount] = this.useState(
+      this.store.getState().modal[this.currProductInModal].count,
+    );
+    this.getProductCount = getProductCount;
+    this.setProductCount = setProductCount;
+
+    this.markets = this.store.getState().markets;
   }
 
   buildDOMElements() {
@@ -217,6 +229,7 @@ export default class ProductModalComponent extends Component {
     );
 
     productModalForm.addEventListener("change", () => {
+      debugger;
       const newFormData = getObjectFromFormData(productModalForm);
       const currProductInModal = this.store.getState().currentProductInModal;
       this.store.dispatch(
@@ -514,8 +527,46 @@ export default class ProductModalComponent extends Component {
       ".product-modal__footer",
     );
 
-    modalFooterElement.innerText = "";
-    modalFooterElement.innerText = `Итого: ${price} руб.`;
+    modalFooterElement.innerHTML = "";
+
+    if (this.getStep() === "edit-nav-step-6") {
+      const incrementProductCount = () => {
+        debugger;
+        this.store.dispatch(
+          setProductCountInModal({
+            productName: this.currProductInModal,
+            count: this.getProductCount() + 1,
+          }),
+        );
+        this.setProductCount(this.getProductCount() + 1);
+      };
+
+      const decrementProductCount = () => {
+        this.store.dispatch(
+          setProductCountInModal({
+            productName: this.currProductInModal,
+            count: this.getProductCount() - 1,
+          }),
+        );
+        this.setProductCount(this.getProductCount() - 1);
+      };
+
+      new CountPanelComponent({
+        containerElement: modalFooterElement,
+        count: this.getProductCount(),
+        onIncrement: incrementProductCount,
+        onDecrement: decrementProductCount,
+      });
+    }
+
+    const footerWrapper = document.createElement("div");
+    footerWrapper.classList.add("product-modal__footer-wrapper");
+
+    const totalPriceElement = document.createElement("span");
+    totalPriceElement.innerText = `Итого: ${price} руб.`;
+    footerWrapper.appendChild(totalPriceElement);
+
+    modalFooterElement.appendChild(footerWrapper);
   }
 
   /**
@@ -554,6 +605,7 @@ export default class ProductModalComponent extends Component {
       .classList.add("options-fieldset--active");
 
     this.renderHeader();
+    this.renderFooter();
     this.renderBackForwardNav();
     this.renderNavigationList();
     this.renderResultFieldset();

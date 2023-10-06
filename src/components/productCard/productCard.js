@@ -5,6 +5,7 @@ import ButtonControl from "../buttons/control/Control";
 import ButtonPrimary from "../buttons/primary/Primary";
 import ProductViewComponent from "../productView/productView";
 import "./style.css";
+import CountPanelComponent from "../countPanel/CountPanel";
 
 /**
  * Product Card component
@@ -30,28 +31,10 @@ export default class ProductCardComponent extends Component {
   }
 
   addListeners() {
-    const decrementButtonElement = this.productElement.querySelector(
-      ".count-control__decrement",
-    );
-
-    const incrementButtonElement = this.productElement.querySelector(
-      ".count-control__increment",
-    );
-
     const cartButton = this.productElement.querySelector(
       ".product-card-info__to-cart-button",
     );
 
-    const incrementProductCount = () => {
-      this.setProductCount(this.getProductCount() + 1);
-    };
-
-    const decrementProductCount = () => {
-      this.setProductCount(this.getProductCount() - 1);
-    };
-
-    decrementButtonElement.addEventListener("click", decrementProductCount);
-    incrementButtonElement.addEventListener("click", incrementProductCount);
     cartButton.addEventListener("click", () => {
       this.onCartButtonClick({
         ...this.getProduct(),
@@ -93,9 +76,20 @@ export default class ProductCardComponent extends Component {
       product,
     });
 
-    const productCountMarkup = this.renderProductCountPanel();
+    const incrementProductCount = () => {
+      this.setProductCount(this.getProductCount() + 1);
+    };
 
-    this.productElement.insertAdjacentHTML("beforeend", productCountMarkup);
+    const decrementProductCount = () => {
+      this.setProductCount(this.getProductCount() - 1);
+    };
+
+    new CountPanelComponent({
+      containerElement: this.productElement,
+      count: this.getProductCount(),
+      onIncrement: incrementProductCount.bind(this),
+      onDecrement: decrementProductCount.bind(this),
+    });
 
     this.productToCartButtonMarkup = ButtonPrimary.render(
       "В корзину",
@@ -123,50 +117,6 @@ export default class ProductCardComponent extends Component {
       <img src="${productImgSrc}" alt="${market} лого" />
     `;
     return productMarket.outerHTML;
-  }
-
-  /**
-   * @return string
-   */
-  renderProductCountPanel() {
-    const isDecrementDisabled = this.getProductCount() <= 1;
-    const countButtonClass = "product-count-button";
-
-    const incrementButton = ButtonControl.render({
-      icon: "plus",
-      classBlockName: countButtonClass,
-    });
-
-    const decrementButton = ButtonControl.render({
-      icon: "minus",
-      classBlockName: countButtonClass,
-      isDisabled: isDecrementDisabled,
-    });
-
-    return html`
-      <div class="product-card-info__count">
-        <label for="product-count" class="product-card-info__count-label"
-          >Количество
-        </label>
-        <div class="count-control">
-          <div class="count-control__decrement">
-            ${decrementButton.outerHTML}
-          </div>
-          <input
-            placeholder="1"
-            type="text"
-            id="product-count"
-            name="product-count"
-            class="product-count-input"
-            readonly
-            value=${this.getProductCount()}
-          />
-          <div class="count-control__increment">
-            ${incrementButton.outerHTML}
-          </div>
-        </div>
-      </div>
-    `;
   }
 
   render() {

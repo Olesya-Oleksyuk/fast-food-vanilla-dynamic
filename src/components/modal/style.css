@@ -60,7 +60,7 @@
 
 .product-modal__header,
 .product-modal__footer {
-  min-height: 4rem;
+  padding: 1.4rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,11 +90,9 @@
 }
 
 .product-modal__footer {
+  flex-direction: column;
   background-color: var(--white);
   color: var(--orange);
-}
-
-.product-modal__footer {
   font-size: 1.6rem;
   font-weight: 700;
   height: fit-content;

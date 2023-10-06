@@ -50,6 +50,17 @@ const reducer = (state = initialState, action) => {
           },
         },
       };
+    case Action.SetProductCountInModal:
+      return {
+        ...state,
+        modal: {
+          ...state.modal,
+          [action.payload.productName]: {
+            ...state.modal[action.payload.productName],
+            count: action.payload.count,
+          },
+        },
+      };
     case Action.SetCurrentProductInModal:
       return {
         ...state,
