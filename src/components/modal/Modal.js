@@ -27,6 +27,9 @@ import "./style.css";
 export default class ProductModalComponent extends Component {
   static createStepMapper() {
     function getStepName(key) {
+      if (key === "ready") {
+        return `${EDITING_NAV_STEPS_DICTIONARY[key]}!`;
+      }
       return EDITING_NAV_STEPS_DICTIONARY[key];
     }
 
