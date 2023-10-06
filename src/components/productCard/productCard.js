@@ -11,15 +11,12 @@ import "./style.css";
  */
 export default class ProductCardComponent extends Component {
   /**
-   // eslint-disable-next-line jsdoc/no-undefined-types
-   * @param {{
-   * product: import('../../jsdocs/typedef').Product
-   * containerElement: Element,
-   * store: Store,
-   * onCartButtonClick: Function
-   * }} obj product catalog data
-   * @return ProductCatalogComponent
-   * @param obj
+   * @param {Object} obj - The object containing the properties for rendering the Product Card Component.
+   * @param {Element} obj.containerElement
+   * @param {import('../../jsdocs/typedef').Product} obj.product
+   * @param {Store} obj.store
+   * @param {Function} obj.onCartButtonClick
+   * @return {HTMLElement} - The rendered button element.
    */
   constructor(obj) {
     super();
@@ -30,7 +27,6 @@ export default class ProductCardComponent extends Component {
     this.buildDOMElements();
     this.render();
     this.containerElement.appendChild(this.productElement);
-    this.addListeners();
   }
 
   addListeners() {
