@@ -28,3 +28,7 @@
  * @property {string} sauce
  * @property {Array.<*>} filling
  */
+
+/**
+ * @typedef {"checkbox" | "radio"} InputType
+ */

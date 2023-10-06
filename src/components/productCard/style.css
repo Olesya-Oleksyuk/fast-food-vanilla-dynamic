@@ -74,6 +74,10 @@
   margin-bottom: 1rem;
 }
 
+.product-card__photo--photo-only {
+  height: fit-content;
+}
+
 .product-card__photo-inner {
   display: flex;
   align-items: center;
@@ -171,14 +175,14 @@
 }
 
 /* Chrome, Safari, Edge, Opera */
-product-count-input::-webkit-outer-spin-button,
-product-count-input::-webkit-inner-spin-button {
+.product-count-input::-webkit-outer-spin-button,
+.product-count-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-product-count-input[type=number] {
+.product-count-input[type=number] {
   -moz-appearance: textfield;
 }
 

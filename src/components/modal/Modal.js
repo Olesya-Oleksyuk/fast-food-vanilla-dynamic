@@ -4,6 +4,7 @@ import {
   capitalize,
   getElementBySelector,
   getObjectFromFormData,
+  html,
 } from "../../utils/utils";
 import Component from "../baseComponent/baseComponent";
 import ButtonControl from "../buttons/control/Control";
@@ -34,6 +35,14 @@ export default class ProductModalComponent extends Component {
     }
 
     return { getStepName };
+  }
+
+  static createSupplementMapper() {
+    function getSupplementName(supplementType, supplementValue) {
+      return this.productSupplements[supplementType][supplementValue].name;
+    }
+
+    return { getSupplementName };
   }
 
   static buildCloseButton() {
@@ -99,7 +108,7 @@ export default class ProductModalComponent extends Component {
     return modalFooterElement;
   }
 
-  static buildOptionCard(inputValue, inputName, product, type = "radio") {
+  static buildOptionCard(inputValue, inputName, supplement, type = "radio") {
     const labelElement = document.createElement("label");
 
     const inputElement = document.createElement("input");
@@ -117,7 +126,7 @@ export default class ProductModalComponent extends Component {
 
     new ProductViewComponent({
       containerElement: cardInput,
-      product,
+      product: supplement,
       variant: "short",
     });
 
@@ -137,6 +146,7 @@ export default class ProductModalComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
+    console.log(this.store);
     this.onCloseModal = obj.onCloseModal;
     this.productSupplements = this.store.getState().productSupplements;
     this.currProductInModal = this.store.getState().currentProductInModal;
@@ -147,6 +157,8 @@ export default class ProductModalComponent extends Component {
     });
 
     this.stepMapper = ProductModalComponent.createStepMapper();
+    this.supplementMapper =
+      ProductModalComponent.createSupplementMapper().getSupplementName;
     this.buildDOMElements();
     this.render();
     this.renderFooter();
@@ -264,9 +276,8 @@ export default class ProductModalComponent extends Component {
     this.modalOptionsSection = document.createElement("form");
     this.modalOptionsSection.classList.add("product-modal-options");
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const [key, value] of Object.entries(EDITING_NAV_STEPS)) {
-      const inputsType = radiosSteps.includes(key) ? "radio" : "checkbox";
+    Object.entries(EDITING_NAV_STEPS).forEach(([key, value]) => {
+      const inputType = radiosSteps.includes(key) ? "radio" : "checkbox";
       const currentStepName = value;
       const activeStep = this.getStep();
 
@@ -279,30 +290,89 @@ export default class ProductModalComponent extends Component {
         modalFieldset.classList.add("options-fieldset--active");
       }
 
-      const optionList = document.createElement("div");
-      optionList.classList.add("options-fieldset__list");
-
       const isLastStep = key === Object.keys(EDITING_NAV_STEPS).pop();
       if (!isLastStep) {
-        Object.entries(this.productSupplements[value]).forEach(
-          ([item, supplement]) => {
-            const optionCard = ProductModalComponent.buildOptionCard(
-              item,
-              currentStepName,
-              supplement,
-              inputsType,
-            );
-            optionList.appendChild(optionCard);
-          },
+        const optionList = this.renderComponentOptionsList(
+          currentStepName,
+          inputType,
         );
+        modalFieldset.appendChild(optionList);
       }
-
-      modalFieldset.appendChild(optionList);
       this.modalOptionsSection.appendChild(modalFieldset);
-    }
+    });
 
     this.modalContentElement.appendChild(this.modalOptionsSection);
     return this.modalContentElement;
+  }
+
+  /**
+   *
+   * @param {string} productSupplementType
+   * @param {import("../jsdocs/typedef").InputType} inputType
+   * @returns {HTMLDivElement}
+   */
+
+  renderFinalProductResult() {
+    const renderPhoto = () => {
+      const product = this.store.getState().modal[this.currProductInModal];
+      const resultPhoto = document.createElement("div");
+      resultPhoto.classList.add("result__photo");
+
+      new ProductViewComponent({
+        containerElement: resultPhoto,
+        product,
+        variant: "photo-only",
+      });
+      return resultPhoto;
+    };
+
+    const renderInfo = () => {
+      const getSupplementsString = (product, supplementType) => {
+        const getSupplementsList = (type, supplementValue) => {
+          if (Array.isArray(supplementValue)) {
+            return supplementValue
+              .map((value) => capitalize(this.supplementMapper(type, value)))
+              .join(", ");
+          }
+          return capitalize(this.supplementMapper(type, supplementValue));
+        };
+
+        const supplementValue = product.components[supplementType];
+        return supplementValue
+          ? getSupplementsList(supplementType, supplementValue)
+          : "Нет";
+      };
+
+      const product = this.store.getState().modal[this.currProductInModal];
+      const resultInfo = document.createElement("div");
+      resultInfo.classList.add("result__info");
+
+      const infoMarkup = html`
+        <p class="result__info-header">Ваш сендвич готов!</p>
+        <div class="result__info-supplements">
+          ${Object.keys(EDITING_NAV_STEPS_DICTIONARY)
+            .slice(0, -1)
+            .map((supplementType) => {
+              return html`
+                <p class="result__info-supplement-item">
+                  ${capitalize(EDITING_NAV_STEPS_DICTIONARY[supplementType])}:
+                  ${getSupplementsString(product, supplementType)}
+                </p>
+              `;
+            })
+            .join("")}
+        </div>
+        <p class="result__info-name">${product.name}</p>
+      `;
+      resultInfo.innerHTML = infoMarkup;
+      return resultInfo;
+    };
+    const resultContainer = document.createElement("div");
+    resultContainer.classList.add("options-fieldset__result");
+    resultContainer.appendChild(renderPhoto());
+    resultContainer.appendChild(renderInfo());
+
+    return resultContainer;
   }
 
   buildNavigationPanel() {
@@ -364,6 +434,25 @@ export default class ProductModalComponent extends Component {
     });
 
     return itemElement;
+  }
+
+  renderComponentOptionsList(productSupplementType, inputType) {
+    const optionList = document.createElement("div");
+    optionList.classList.add("options-fieldset__list");
+
+    Object.entries(this.productSupplements[productSupplementType]).forEach(
+      ([item, supplement]) => {
+        const optionCard = ProductModalComponent.buildOptionCard(
+          item,
+          productSupplementType,
+          supplement,
+          inputType,
+        );
+        optionList.appendChild(optionCard);
+      },
+    );
+
+    return optionList;
   }
 
   renderHeader() {
@@ -448,6 +537,17 @@ export default class ProductModalComponent extends Component {
     currentSelectedNavItem.classList.add(activeItemSelector);
   }
 
+  renderResultFieldset() {
+    const resultFieldset = this.modalOptionsSection.querySelector(
+      "#edit-nav-step-6.options-fieldset",
+    );
+    if (resultFieldset) {
+      resultFieldset.innerHTML = "";
+    }
+    const resultContainer = this.renderFinalProductResult();
+    resultFieldset.appendChild(resultContainer);
+  }
+
   render() {
     document
       .getElementById(this.getStep())
@@ -456,6 +556,7 @@ export default class ProductModalComponent extends Component {
     this.renderHeader();
     this.renderBackForwardNav();
     this.renderNavigationList();
+    this.renderResultFieldset();
     this.addEventListeners();
   }
 }
