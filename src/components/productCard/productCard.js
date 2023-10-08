@@ -1,11 +1,10 @@
 import Store from "../../store/store";
 import { html } from "../../utils/utils";
 import Component from "../baseComponent/baseComponent";
-import ButtonControl from "../buttons/control/Control";
 import ButtonPrimary from "../buttons/primary/Primary";
 import ProductViewComponent from "../productView/productView";
-import "./style.css";
 import CountPanelComponent from "../countPanel/CountPanel";
+import "./style.css";
 
 /**
  * Product Card component

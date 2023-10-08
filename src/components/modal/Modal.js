@@ -157,7 +157,6 @@ export default class ProductModalComponent extends Component {
     this.useInternalState();
 
     this.store.subscribeValue("modal", () => {
-      debugger;
       this.renderFooter();
     });
 
@@ -210,8 +209,6 @@ export default class ProductModalComponent extends Component {
     );
     this.getProductCount = getProductCount;
     this.setProductCount = setProductCount;
-
-    this.markets = this.store.getState().markets;
   }
 
   buildDOMElements() {
@@ -229,7 +226,6 @@ export default class ProductModalComponent extends Component {
     );
 
     productModalForm.addEventListener("change", () => {
-      debugger;
       const newFormData = getObjectFromFormData(productModalForm);
       const currProductInModal = this.store.getState().currentProductInModal;
       this.store.dispatch(
@@ -318,12 +314,66 @@ export default class ProductModalComponent extends Component {
     return this.modalContentElement;
   }
 
-  /**
-   *
-   * @param {string} productSupplementType
-   * @param {import("../jsdocs/typedef").InputType} inputType
-   * @returns {HTMLDivElement}
-   */
+  buildNavigationPanel() {
+    if (!this.modalContentElement) return;
+
+    this.navStepElement = document.createElement("nav");
+    this.navStepElement.classList.add("product-modal-nav");
+    const navStepListElement = document.createElement("ul");
+    navStepListElement.classList.add("product-modal-nav__list");
+
+    const stepIds = Object.keys(EDITING_NAV_STEPS);
+
+    stepIds.forEach((id, index) => {
+      const isFirstStep = index === 0;
+      navStepListElement.appendChild(
+        this.buildNavigationStep(
+          id,
+          this.stepMapper.getStepName(EDITING_NAV_STEPS[id]),
+          isFirstStep,
+        ),
+      );
+    });
+
+    this.modalContentElement.innerHTML = "";
+    this.navStepElement.appendChild(navStepListElement);
+
+    this.modalBackForwardNav = document.createElement("div");
+    this.modalBackForwardNav.classList.add("product-modal-nav__back-forward");
+    this.navStepElement.appendChild(this.modalBackForwardNav);
+    // eslint-disable-next-line consistent-return
+    return this.navStepElement;
+  }
+
+  buildNavigationStep(id, name, isActive = false) {
+    const activeItemClass = "product-modal-nav__item--active";
+
+    const itemElement = document.createElement("li");
+    itemElement.classList.add("product-modal-nav__item");
+    if (isActive) {
+      itemElement.classList.add(activeItemClass);
+    }
+    itemElement.innerText = name;
+    itemElement.addEventListener("click", (event) => {
+      const isSameSelected =
+        event.currentTarget.classList.contains(activeItemClass);
+      if (isSameSelected) return;
+      const prevSelectedItem = this.navStepElement.querySelector(
+        `.${activeItemClass}`,
+      );
+
+      prevSelectedItem.classList.remove(activeItemClass);
+      itemElement.classList.add(activeItemClass);
+
+      this.modalOptionsSection
+        .querySelector(".options-fieldset--active")
+        .classList.remove("options-fieldset--active");
+
+      this.setStep(id);
+    });
+
+    return itemElement;
+  }
 
   renderFinalProductResult() {
     const renderPhoto = () => {
@@ -386,67 +436,6 @@ export default class ProductModalComponent extends Component {
     resultContainer.appendChild(renderInfo());
 
     return resultContainer;
-  }
-
-  buildNavigationPanel() {
-    if (!this.modalContentElement) return;
-
-    this.navStepElement = document.createElement("nav");
-    this.navStepElement.classList.add("product-modal-nav");
-    const navStepListElement = document.createElement("ul");
-    navStepListElement.classList.add("product-modal-nav__list");
-
-    const stepIds = Object.keys(EDITING_NAV_STEPS);
-
-    stepIds.forEach((id, index) => {
-      const isFirstStep = index === 0;
-      navStepListElement.appendChild(
-        this.buildNavigationStep(
-          id,
-          this.stepMapper.getStepName(EDITING_NAV_STEPS[id]),
-          isFirstStep,
-        ),
-      );
-    });
-
-    this.modalContentElement.innerHTML = "";
-    this.navStepElement.appendChild(navStepListElement);
-
-    this.modalBackForwardNav = document.createElement("div");
-    this.modalBackForwardNav.classList.add("product-modal-nav__back-forward");
-    this.navStepElement.appendChild(this.modalBackForwardNav);
-    // eslint-disable-next-line consistent-return
-    return this.navStepElement;
-  }
-
-  buildNavigationStep(id, name, isActive = false) {
-    const activeItemClass = "product-modal-nav__item--active";
-
-    const itemElement = document.createElement("li");
-    itemElement.classList.add("product-modal-nav__item");
-    if (isActive) {
-      itemElement.classList.add(activeItemClass);
-    }
-    itemElement.innerText = name;
-    itemElement.addEventListener("click", (event) => {
-      const isSameSelected =
-        event.currentTarget.classList.contains(activeItemClass);
-      if (isSameSelected) return;
-      const prevSelectedItem = this.navStepElement.querySelector(
-        `.${activeItemClass}`,
-      );
-
-      prevSelectedItem.classList.remove(activeItemClass);
-      itemElement.classList.add(activeItemClass);
-
-      this.modalOptionsSection
-        .querySelector(".options-fieldset--active")
-        .classList.remove("options-fieldset--active");
-
-      this.setStep(id);
-    });
-
-    return itemElement;
   }
 
   renderComponentOptionsList(productSupplementType, inputType) {
@@ -523,15 +512,28 @@ export default class ProductModalComponent extends Component {
    * @param {number} price - The price to be displayed in the footer
    */
   renderFooterInfo(price) {
+    const overallElement = (isResultStep) => {
+      const totalPriceElement = document.createElement("span");
+      totalPriceElement.classList.add("product-modal__overall");
+      totalPriceElement.innerText = `${
+        isResultStep ? "Цена:" : "Итого:"
+      } ${price} руб.`;
+      return totalPriceElement;
+    };
+
     const modalFooterElement = this.modalContainerElement.querySelector(
       ".product-modal__footer",
     );
 
     modalFooterElement.innerHTML = "";
 
-    if (this.getStep() === "edit-nav-step-6") {
+    const footerWrapper = document.createElement("div");
+    footerWrapper.classList.add("product-modal__footer-wrapper");
+
+    const isResultStep = this.getStep() === "edit-nav-step-6";
+
+    if (isResultStep) {
       const incrementProductCount = () => {
-        debugger;
         this.store.dispatch(
           setProductCountInModal({
             productName: this.currProductInModal,
@@ -557,15 +559,17 @@ export default class ProductModalComponent extends Component {
         onIncrement: incrementProductCount,
         onDecrement: decrementProductCount,
       });
+
+      const productToCartButtonMarkup = ButtonPrimary.render(
+        "В корзину",
+        "product-card-info__to-cart-button",
+        ["yellow"],
+      );
+
+      footerWrapper.insertAdjacentHTML("beforeend", productToCartButtonMarkup);
     }
 
-    const footerWrapper = document.createElement("div");
-    footerWrapper.classList.add("product-modal__footer-wrapper");
-
-    const totalPriceElement = document.createElement("span");
-    totalPriceElement.innerText = `Итого: ${price} руб.`;
-    footerWrapper.appendChild(totalPriceElement);
-
+    footerWrapper.prepend(overallElement(isResultStep));
     modalFooterElement.appendChild(footerWrapper);
   }
 
@@ -588,7 +592,7 @@ export default class ProductModalComponent extends Component {
     currentSelectedNavItem.classList.add(activeItemSelector);
   }
 
-  renderResultFieldset() {
+  renderResultStep() {
     const resultFieldset = this.modalOptionsSection.querySelector(
       "#edit-nav-step-6.options-fieldset",
     );
@@ -608,7 +612,7 @@ export default class ProductModalComponent extends Component {
     this.renderFooter();
     this.renderBackForwardNav();
     this.renderNavigationList();
-    this.renderResultFieldset();
+    this.renderResultStep();
     this.addEventListeners();
   }
 }

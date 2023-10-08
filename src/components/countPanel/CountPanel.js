@@ -14,7 +14,7 @@ export default class CountPanelComponent {
    * @param {number} obj.count
    * @param {Function} obj.onIncrement
    * @param {Function} obj.onDecrement
-   * @param {string} [obj.classBlockName='product-card-info__count']
+   * @param {string} [obj.classBlockName='product-panel-count']
    * @param {string} [obj.classPositioning='']
    * @param {Array<string>} [obj.classModifiers=[]]
    * @return CountPanelComponent
@@ -26,7 +26,7 @@ export default class CountPanelComponent {
     this.onDecrement = obj.onDecrement;
 
     this.fullContainerClass = composeClassList({
-      classBlockName: obj.classBlockName || "product-card-info__count",
+      classBlockName: obj.classBlockName || "product-panel-count",
       classModifiers: obj.classModifiers,
       classPositioning: obj.classPositioning,
     });
@@ -58,7 +58,7 @@ export default class CountPanelComponent {
     });
 
     const panelMarkup = html`
-      <label for="product-count" class="product-card-info__count-label"
+      <label for="product-count" class="product-panel-count-label"
         >Количество
       </label>
       <div class="count-control">

@@ -142,7 +142,7 @@
 }
 
 
-.product-card-info__count {
+.product-panel-count {
   margin-bottom: 0.5rem;
 }
 
@@ -151,7 +151,7 @@
   align-items: center;
 }
 
-.product-card-info__count-label {
+.product-panel-count-label {
   display: block;
   margin: 0.8rem 0 0.2rem;
   font-weight: 700;
