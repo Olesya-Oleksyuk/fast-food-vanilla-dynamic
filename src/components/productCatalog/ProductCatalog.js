@@ -1,13 +1,15 @@
 import {
+  addToCart,
   addToModal,
   removeFromModal,
   setCurrentProductInModal,
 } from "../../store/actions";
-import Store from "../../store/store";
 import Component from "../baseComponent/baseComponent";
 import ProductCardComponent from "../productCard/productCard";
 import "./style.css";
 import ProductModalComponent from "../modal/Modal";
+import { PRODUCT_CATEGORIES } from "../../store/constants";
+import Store from "../../store/store";
 
 /**
  * Product Catalog component. We call this a component as its behaviour is a
@@ -31,9 +33,20 @@ export default class ProductCatalogComponent extends Component {
 
     /**
      * Handles the click event of the cart button in Product Catalog.
-     * @param {import('../../jsdocs/typedef').Product} productData
+     * @param {import("../../jsdocs/typedef").Product} productData
      */
     this.handleCartButtonClick = (productData) => {
+      const currentCategory = this.store.getState().categoryFilter;
+      if (currentCategory !== PRODUCT_CATEGORIES.SANDWICHES) {
+        const totalPrice = productData.price * productData.count;
+        this.store.dispatch(
+          addToCart({
+            product: productData,
+            totalPrice,
+          }),
+        );
+        return;
+      }
       const productModalElement = document.querySelector(
         '[data-container="product-modal"]',
       );
