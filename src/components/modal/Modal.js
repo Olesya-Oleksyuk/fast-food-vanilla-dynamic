@@ -13,6 +13,7 @@ import {
 import Component from "../baseComponent/baseComponent";
 import ButtonControl from "../buttons/control/Control";
 import ButtonPrimary from "../buttons/primary/Primary";
+import CountPanelComponent from "../countPanel/CountPanel";
 import ProductViewComponent from "../productView/productView";
 import {
   EDITING_HEADERS_STEPS,
@@ -21,7 +22,6 @@ import {
   radiosSteps,
 } from "./constants";
 import "./style.css";
-import CountPanelComponent from "../countPanel/CountPanel";
 
 /**
  * Product Modal component. We call this a component as its behaviour is a
@@ -151,20 +151,20 @@ export default class ProductModalComponent extends Component {
     super();
     this.containerElement = obj.containerElement;
     this.store = obj.store;
-    console.log(this.store);
     this.onCloseModal = obj.onCloseModal;
     this.productSupplements = this.store.getState().productSupplements;
     this.currProductInModal = this.store.getState().currentProductInModal;
+    this.stepMapper = ProductModalComponent.createStepMapper();
+    this.supplementMapper =
+      ProductModalComponent.createSupplementMapper().getSupplementName;
     this.useInternalState();
+
+    this.buildDOMElements();
 
     this.store.subscribeValue("modal", () => {
       this.renderFooter();
     });
 
-    this.stepMapper = ProductModalComponent.createStepMapper();
-    this.supplementMapper =
-      ProductModalComponent.createSupplementMapper().getSupplementName;
-    this.buildDOMElements();
     this.render();
   }
 
@@ -198,6 +198,24 @@ export default class ProductModalComponent extends Component {
     );
 
     return productComponentsPrice;
+  }
+
+  /**
+   * Calculate product overall cost
+   */
+  calculateProductCost() {
+    const { modal } = this.store.getState();
+    this.currProductInModal = this.store.getState().currentProductInModal;
+    const productInModalInfo = modal[this.currProductInModal];
+    if (!productInModalInfo) return 0;
+
+    const componentsCost = this.calculateComponentsCost(
+      productInModalInfo.components,
+    );
+
+    const overallPrice =
+      productInModalInfo.price * productInModalInfo.count + componentsCost;
+    return overallPrice;
   }
 
   useInternalState() {
@@ -286,6 +304,7 @@ export default class ProductModalComponent extends Component {
         this.store.dispatch(
           addToCart({
             product: resultProduct,
+            totalPrice: this.calculateProductCost(),
           }),
         );
         this.onCloseModal(this.modalContainerElement);
@@ -365,7 +384,6 @@ export default class ProductModalComponent extends Component {
 
   buildNavigationStep(id, name, isActive = false) {
     const activeItemClass = "product-modal-nav__item--active";
-
     const itemElement = document.createElement("li");
     itemElement.classList.add("product-modal-nav__item");
     if (isActive) {
@@ -514,18 +532,8 @@ export default class ProductModalComponent extends Component {
   }
 
   renderFooter() {
-    const { modal } = this.store.getState();
-    this.currProductInModal = this.store.getState().currentProductInModal;
-    const productInModalInfo = modal[this.currProductInModal];
-    if (!productInModalInfo) return;
-
-    const componentsCost = this.calculateComponentsCost(
-      productInModalInfo.components,
-    );
-
-    this.renderFooterInfo(
-      productInModalInfo.price * productInModalInfo.count + componentsCost,
-    );
+    const price = this.calculateProductCost();
+    this.renderFooterInfo(price);
   }
 
   /**
@@ -627,9 +635,9 @@ export default class ProductModalComponent extends Component {
   }
 
   render() {
-    document
-      .getElementById(this.getStep())
-      .classList.add("options-fieldset--active");
+    const currentFieldset = document.getElementById(this.getStep());
+    if (!currentFieldset) return;
+    currentFieldset.classList.add("options-fieldset--active");
 
     this.renderHeader();
     this.renderFooter();

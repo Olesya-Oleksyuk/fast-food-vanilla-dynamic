@@ -5,6 +5,7 @@ export const Action = {
   SetCurrentProductInModal: "setCurrentProductInModal",
   RemoveFromModal: "removeFromModal",
   SetProductCountInModal: "SetProductCountInModal",
+  SetProductOverallPriceInModal: "SetProductOverallPriceInModal",
   AddToCart: "addToCart",
 };
 
