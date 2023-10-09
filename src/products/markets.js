@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Markets model
  */
@@ -25,6 +24,7 @@ export default class Markets {
    */
   getMarketLogo(marketName) {
     if (!marketName) return;
+    // eslint-disable-next-line consistent-return
     return this.list[marketName].image;
   }
 }

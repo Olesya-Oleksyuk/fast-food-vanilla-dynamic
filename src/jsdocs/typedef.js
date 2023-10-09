@@ -7,8 +7,17 @@
  * @property {string} category,
  * @property {string} market,
  * @property {string} type,
- * @property {number} weight
+ * @property {number} weight,
+ * @property {number} [count],
  * @property {Components} [components]
+ */
+
+/**
+ * @typedef {Object} ProductView
+ * @property {string} image
+ * @property {string} [name]
+ * @property {string} [description]
+ * @property {number} [price]
  */
 
 /**
@@ -18,4 +27,8 @@
  * @property {string} vegetable
  * @property {string} sauce
  * @property {Array.<*>} filling
+ */
+
+/**
+ * @typedef {"checkbox" | "radio"} InputType
  */

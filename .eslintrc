@@ -1,0 +1,42 @@
+{
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false
+  },
+  "extends": [
+    "airbnb",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "prettier/prettier": [
+      "warn"
+    ],
+    "import/no-absolute-path": "off",
+    "no-new": 0,
+    "eslint-consistent-return": "off",
+    "react/require-render-return": "off",
+    "jsdoc/no-undefined-types": 1,
+    "no-console": "off",
+    "no-debugger": "off"
+  },
+  "plugins": [
+    "only-warn",
+    "import",
+    "prettier",
+    "jsdoc"
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": [
+          "node_modules",
+          "src/"
+        ]
+      }
+    }
+  }
+}

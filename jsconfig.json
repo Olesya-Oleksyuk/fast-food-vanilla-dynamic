@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+     "target": "ES6",
+    "baseUrl": "./",
     "module": "NodeNext",
     "checkJs": true,
     "resolveJsonModule": true,
+    "sourceMap": true
   },
   "exclude": ["node_modules", "**/node_modules/*"]
 }

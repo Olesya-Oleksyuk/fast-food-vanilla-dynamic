@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Product model
  */
@@ -36,13 +35,13 @@ export default class ProductModel {
    */
   static getFields() {
     return [
-      'name',
-      'description',
-      'image',
-      'price',
-      'market',
-      'type',
-      'weight',
+      "name",
+      "description",
+      "image",
+      "price",
+      "market",
+      "type",
+      "weight",
     ];
   }
 }

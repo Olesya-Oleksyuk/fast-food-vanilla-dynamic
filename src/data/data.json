@@ -1301,40 +1301,6 @@
       "image": "i/ingredients/products/turkey-ham.png"
     }
   },
-  "volumes": {
-    "S": {
-      "name": "0.4 Л",
-      "short_name": "0.4"
-    },
-    "M": {
-      "name": "0.5 Л",
-      "short_name": "0.5"
-    },
-    "L": {
-      "name": "0.8 Л",
-      "short_name": "0.8"
-    },
-    "cheese": {
-      "name": "сырный",
-      "short_name": "сырный"
-    },
-    "garlic": {
-      "name": "чесночный",
-      "short_name": "чесночный"
-    },
-    "sweet-and-sour": {
-      "name": "кисло-сладкий",
-      "short_name": "кисло-сладкий"
-    },
-    "curry": {
-      "name": "карри",
-      "short_name": "карри"
-    },
-    "bbq": {
-      "name": "барбекю",
-      "short_name": "барбекю"
-    }
-  },
   "sizes": {
     "1x": {
       "name": "15 См",
