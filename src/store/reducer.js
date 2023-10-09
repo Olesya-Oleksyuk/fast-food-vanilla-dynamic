@@ -70,6 +70,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         cart: {
+          cartItems: [
+            ...state.cart.cartItems.filter(
+              (item) => item.name !== action.payload.product.name,
+            ),
+            action.payload.product,
+          ],
+          totalPrice: state.cart.totalPrice + action.payload.totalPrice,
+        },
+      };
+    case Action.AddSandwichToCart:
+      return {
+        ...state,
+        cart: {
           cartItems: [...state.cart.cartItems, action.payload.product],
           totalPrice: state.cart.totalPrice + action.payload.totalPrice,
         },

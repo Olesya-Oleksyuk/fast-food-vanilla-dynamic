@@ -1,5 +1,5 @@
 import {
-  addToCart,
+  addSandwichToCart,
   setProductCountInModal,
   updateProductInModal,
 } from "../../store/actions";
@@ -301,8 +301,9 @@ export default class ProductModalComponent extends Component {
       toCartButton.addEventListener("click", () => {
         const resultProduct =
           this.store.getState().modal[this.currProductInModal];
+
         this.store.dispatch(
-          addToCart({
+          addSandwichToCart({
             product: resultProduct,
             totalPrice: this.calculateProductCost(),
           }),

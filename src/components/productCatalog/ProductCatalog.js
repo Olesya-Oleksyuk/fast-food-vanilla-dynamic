@@ -38,6 +38,25 @@ export default class ProductCatalogComponent extends Component {
     this.handleCartButtonClick = (productData) => {
       const currentCategory = this.store.getState().categoryFilter;
       if (currentCategory !== PRODUCT_CATEGORIES.SANDWICHES) {
+        const productInCart = this.store
+          .getState()
+          .cart.cartItems.find((product) => productData.name === product.name);
+
+        if (productInCart) {
+          const newTotalPrice =
+            productData.price * productData.count +
+            productInCart.price * productInCart.count;
+          const newCount = productData.count + productInCart.count;
+
+          this.store.dispatch(
+            addToCart({
+              product: { ...productData, count: newCount },
+              totalPrice: newTotalPrice,
+            }),
+          );
+          return;
+        }
+
         const totalPrice = productData.price * productData.count;
         this.store.dispatch(
           addToCart({
