@@ -65,7 +65,7 @@ export default class ProductCatalogComponent extends Component {
     this.render();
   }
 
-  filterPorductsByCategory() {
+  filterProductsByCategory() {
     this.filteredByCategoryList = this.store
       .getState()
       .products.filter(
@@ -79,17 +79,17 @@ export default class ProductCatalogComponent extends Component {
    */
   updateProperties() {
     this.currentCategoryFilter = this.store.getState().categoryFilter;
-    this.filterPorductsByCategory();
+    this.filterProductsByCategory();
 
     this.store.subscribeValue("categoryFilter", (category) => {
       this.currentCategoryFilter = category;
-      this.filterPorductsByCategory();
+      this.filterProductsByCategory();
       this.buildDOMElements();
       this.render();
     });
 
     this.store.subscribeValue("products", () => {
-      this.filterPorductsByCategory();
+      this.filterProductsByCategory();
       this.buildDOMElements();
       this.render();
     });
