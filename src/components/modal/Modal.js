@@ -279,18 +279,18 @@ export default class ProductModalComponent extends Component {
       "#modal__to-cart-button",
     );
 
-    console.log("toCartButton", toCartButton);
-
-    toCartButton.addEventListener("click", () => {
-      const resultProduct =
-        this.store.getState().modal[this.currProductInModal];
-      this.store.dispatch(
-        addToCart({
-          product: resultProduct,
-        }),
-      );
-      this.onCloseModal(this.modalContainerElement);
-    });
+    if (toCartButton) {
+      toCartButton.addEventListener("click", () => {
+        const resultProduct =
+          this.store.getState().modal[this.currProductInModal];
+        this.store.dispatch(
+          addToCart({
+            product: resultProduct,
+          }),
+        );
+        this.onCloseModal(this.modalContainerElement);
+      });
+    }
   }
 
   buildContent() {
@@ -472,6 +472,10 @@ export default class ProductModalComponent extends Component {
       },
     );
 
+    const defaultRadioInputs = optionList.querySelectorAll("input[type=radio]");
+    if (defaultRadioInputs.length) {
+      defaultRadioInputs[0].checked = true;
+    }
     return optionList;
   }
 
