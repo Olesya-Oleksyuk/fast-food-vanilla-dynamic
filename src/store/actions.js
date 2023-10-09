@@ -5,6 +5,7 @@ export const Action = {
   SetCurrentProductInModal: "setCurrentProductInModal",
   RemoveFromModal: "removeFromModal",
   SetProductCountInModal: "SetProductCountInModal",
+  AddToCart: "addToCart",
 };
 
 export const setProductCategoryFilter = (payload) => ({
@@ -33,5 +34,10 @@ export const updateProductInModal = (payload) => ({
 
 export const setProductCountInModal = (payload) => ({
   type: Action.SetProductCountInModal,
+  payload,
+});
+
+export const addToCart = (payload) => ({
+  type: Action.AddToCart,
   payload,
 });

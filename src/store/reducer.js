@@ -66,6 +66,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         currentProductInModal: action.payload,
       };
+    case Action.AddToCart:
+      return {
+        ...state,
+        cart: {
+          cartItems: [...state.cart.cartItems, action.payload.product],
+        },
+      };
     default:
       return state;
   }

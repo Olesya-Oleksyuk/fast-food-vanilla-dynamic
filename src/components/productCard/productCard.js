@@ -31,7 +31,7 @@ export default class ProductCardComponent extends Component {
 
   addListeners() {
     const cartButton = this.productElement.querySelector(
-      ".product-card-info__to-cart-button",
+      ".product-info__to-cart-button",
     );
 
     cartButton.addEventListener("click", () => {
@@ -92,7 +92,7 @@ export default class ProductCardComponent extends Component {
 
     this.productToCartButtonMarkup = ButtonPrimary.render(
       "В корзину",
-      "product-card-info__to-cart-button",
+      "product-info__to-cart-button",
       ["yellow"],
     );
 

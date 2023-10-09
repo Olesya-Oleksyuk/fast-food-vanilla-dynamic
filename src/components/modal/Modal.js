@@ -1,4 +1,5 @@
 import {
+  addToCart,
   setProductCountInModal,
   updateProductInModal,
 } from "../../store/actions";
@@ -273,6 +274,23 @@ export default class ProductModalComponent extends Component {
         this.setStep(`edit-nav-step-${nextStepNumber}`);
       });
     }
+
+    const toCartButton = this.modalContainerElement.querySelector(
+      "#modal__to-cart-button",
+    );
+
+    console.log("toCartButton", toCartButton);
+
+    toCartButton.addEventListener("click", () => {
+      const resultProduct =
+        this.store.getState().modal[this.currProductInModal];
+      this.store.dispatch(
+        addToCart({
+          product: resultProduct,
+        }),
+      );
+      this.onCloseModal(this.modalContainerElement);
+    });
   }
 
   buildContent() {
@@ -562,8 +580,9 @@ export default class ProductModalComponent extends Component {
 
       const productToCartButtonMarkup = ButtonPrimary.render(
         "В корзину",
-        "product-card-info__to-cart-button",
+        "product-info__to-cart-button",
         ["yellow"],
+        "modal__to-cart-button",
       );
 
       footerWrapper.insertAdjacentHTML("beforeend", productToCartButtonMarkup);

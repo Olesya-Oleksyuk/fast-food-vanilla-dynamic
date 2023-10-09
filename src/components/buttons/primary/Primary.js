@@ -9,9 +9,10 @@ export default class ButtonPrimary {
    * @param {string} text button text
    * @param {string} classPositioning class to adjust positioning
    * @param {string[]} classModifiers modifier names to adjust button appearance
+   * @param {string} [id]
    * @return string
    */
-  static render(text, classPositioning, classModifiers) {
+  static render(text, classPositioning, classModifiers, id = "") {
     const classBlockName = "button-primary";
 
     const fullClassSelectorsString = composeClassList({
@@ -20,8 +21,11 @@ export default class ButtonPrimary {
       classPositioning,
     });
 
+    const idAttribute = id.length ? `id=${id}` : "";
     return html`
-      <button class="${fullClassSelectorsString}" type="submit">${text}</button>
+      <button class="${fullClassSelectorsString}" type="submit" ${idAttribute}>
+        ${text}
+      </button>
     `;
   }
 }

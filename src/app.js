@@ -31,6 +31,9 @@ class App {
       categoryFilter: PRODUCT_CATEGORIES.SANDWICHES,
       modal: {},
       currentProductInModal: null,
+      cart: {
+        cartItems: [],
+      },
     };
 
     const store = new Store(reducer, initialState);
