@@ -76,7 +76,7 @@ const reducer = (state = initialState, action) => {
             ),
             action.payload.product,
           ],
-          totalPrice: state.cart.totalPrice + action.payload.totalPrice,
+          totalPrice: state.cart.totalPrice + action.payload.totalProductPrice,
         },
       };
     case Action.AddSandwichToCart:
@@ -84,7 +84,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         cart: {
           cartItems: [...state.cart.cartItems, action.payload.product],
-          totalPrice: state.cart.totalPrice + action.payload.totalPrice,
+          totalPrice: state.cart.totalPrice + action.payload.totalProductPrice,
         },
       };
     default:

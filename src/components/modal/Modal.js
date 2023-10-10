@@ -305,7 +305,7 @@ export default class ProductModalComponent extends Component {
         this.store.dispatch(
           addSandwichToCart({
             product: resultProduct,
-            totalPrice: this.calculateProductCost(),
+            totalProductPrice: this.calculateProductCost(),
           }),
         );
         this.onCloseModal(this.modalContainerElement);
