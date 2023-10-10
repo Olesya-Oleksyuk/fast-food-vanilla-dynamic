@@ -7,14 +7,14 @@
   background-color: var(--light-yellow);
 }
 
-.cart__title {
+.cart__header {
   display: flex;
   justify-content: center;
   padding-top: 1.2rem;
   background-color: var(--yellow);
 }
 
-.cart-title__text {
+.cart-header__text {
   margin-left: -1.5rem;
   align-self: baseline;
   font-size: 2rem;
@@ -66,13 +66,17 @@
   width: 100%;
 }
 
-.cart-table__header th {
-  padding: 0.5rem 0;
+.cart-table td,
+.cart-table th
+{
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: var(--yellow) 3px solid;
 }
 
 .cart-table__name {
   text-align: start;
+  max-width: 140px;
 }
 
 .cart-table__count {

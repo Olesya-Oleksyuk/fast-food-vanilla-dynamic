@@ -1,13 +1,15 @@
 import {
+  addToCart,
   addToModal,
   removeFromModal,
   setCurrentProductInModal,
 } from "../../store/actions";
-import Store from "../../store/store";
 import Component from "../baseComponent/baseComponent";
 import ProductCardComponent from "../productCard/productCard";
 import "./style.css";
 import ProductModalComponent from "../modal/Modal";
+import { PRODUCT_CATEGORIES } from "../../store/constants";
+import Store from "../../store/store";
 
 /**
  * Product Catalog component. We call this a component as its behaviour is a
@@ -31,9 +33,39 @@ export default class ProductCatalogComponent extends Component {
 
     /**
      * Handles the click event of the cart button in Product Catalog.
-     * @param {import('../../jsdocs/typedef').Product} productData
+     * @param {import("../../jsdocs/typedef").Product} productData
      */
     this.handleCartButtonClick = (productData) => {
+      const currentCategory = this.store.getState().categoryFilter;
+      if (currentCategory !== PRODUCT_CATEGORIES.SANDWICHES) {
+        const productInCart = this.store
+          .getState()
+          .cart.cartItems.find((product) => productData.name === product.name);
+
+        if (productInCart) {
+          const newTotalPrice =
+            productData.price * productData.count +
+            productInCart.price * productInCart.count;
+          const newCount = productData.count + productInCart.count;
+
+          this.store.dispatch(
+            addToCart({
+              product: { ...productData, count: newCount },
+              totalPrice: newTotalPrice,
+            }),
+          );
+          return;
+        }
+
+        const totalPrice = productData.price * productData.count;
+        this.store.dispatch(
+          addToCart({
+            product: productData,
+            totalPrice,
+          }),
+        );
+        return;
+      }
       const productModalElement = document.querySelector(
         '[data-container="product-modal"]',
       );
@@ -65,7 +97,7 @@ export default class ProductCatalogComponent extends Component {
     this.render();
   }
 
-  filterPorductsByCategory() {
+  filterProductsByCategory() {
     this.filteredByCategoryList = this.store
       .getState()
       .products.filter(
@@ -79,17 +111,17 @@ export default class ProductCatalogComponent extends Component {
    */
   updateProperties() {
     this.currentCategoryFilter = this.store.getState().categoryFilter;
-    this.filterPorductsByCategory();
+    this.filterProductsByCategory();
 
     this.store.subscribeValue("categoryFilter", (category) => {
       this.currentCategoryFilter = category;
-      this.filterPorductsByCategory();
+      this.filterProductsByCategory();
       this.buildDOMElements();
       this.render();
     });
 
     this.store.subscribeValue("products", () => {
-      this.filterPorductsByCategory();
+      this.filterProductsByCategory();
       this.buildDOMElements();
       this.render();
     });

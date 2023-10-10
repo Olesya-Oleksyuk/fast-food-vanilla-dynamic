@@ -8,12 +8,20 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 4px 3px;
 }
 
+.button-primary:disabled {
+  background-color: var(--gray);
+}
+
 .button-primary--yellow {
   background-color: var(--yellow)
 }
 
 .button-primary--grey {
-  background-color: var(--light-gray-2);
+  background-color: var(--gray);
+}
+
+.button-primary--blue {
+  background-color: var(--dark-blue);
 }
 
 .button-primary--orange {

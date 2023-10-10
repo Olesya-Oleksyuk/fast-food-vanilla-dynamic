@@ -33,6 +33,7 @@ class App {
       currentProductInModal: null,
       cart: {
         cartItems: [],
+        totalPrice: 0,
       },
     };
 
@@ -45,7 +46,7 @@ class App {
   static renderApp(store) {
     App.renderProductCatalog(store);
     App.renderProductNav(store);
-    App.renderCart();
+    App.renderCart(store);
   }
 
   /**
@@ -64,13 +65,15 @@ class App {
   }
 
   /**
+   * @param { Store } store
    * @return CartComponent
    */
-  static renderCart() {
+  static renderCart(store) {
     const cartSection = document.querySelector('[data-container="cart"]');
 
     new CartComponent({
       containerElement: cartSection,
+      store,
     });
   }
 
