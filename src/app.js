@@ -7,6 +7,7 @@ import Markets from "./products/markets";
 import { PRODUCT_CATEGORIES } from "./store/constants";
 import reducer from "./store/reducer";
 import Store from "./store/store";
+import ButtonBurgerComponent from "./components/buttons/burger/Burger";
 
 /**
  * App entry point
@@ -41,12 +42,29 @@ class App {
 
     this.markets = new Markets(this.fullData.markets);
     App.renderApp(store);
+    App.addEventListeners();
   }
 
   static renderApp(store) {
     App.renderProductCatalog(store);
     App.renderProductNav(store);
     App.renderCart(store);
+    App.renderBurgerButton();
+  }
+
+  static addEventListeners() {
+    const burgerMenuButton = document.querySelector(".burger-button");
+    const homePage = document.querySelector(".home-page");
+    burgerMenuButton.addEventListener("click", () => {
+      const asideMenu = document.querySelector(".home-page__aside-menu");
+      if (asideMenu.classList.contains("open")) {
+        asideMenu.classList.remove("open");
+        homePage.classList.remove("no-scroll");
+      } else {
+        asideMenu.classList.add("open");
+        homePage.classList.add("no-scroll");
+      }
+    });
   }
 
   /**
@@ -88,6 +106,18 @@ class App {
       containerElement: productNav,
       store,
     });
+  }
+
+  static renderBurgerButton() {
+    const productAside = document.querySelector(
+      '[data-container="product-aside"]',
+    );
+
+    const burgerMarkup = ButtonBurgerComponent.render({
+      classPositioning: "product-aside__button",
+    });
+
+    productAside.prepend(burgerMarkup);
   }
 }
 
