@@ -107,7 +107,7 @@
   border-radius: 50%;
 }
 
-.product-card-info__ingredients {
+.product-card-info__description {
   flex-grow: 1;
   width: 100%;
   text-align: center;
@@ -116,7 +116,11 @@
   border-bottom: var(--gray) solid 2px;
 }
 
-.product-ingredient {
+.product-card-info__description--empty {
+  border-top: none;
+}
+
+.product-description {
   font-size: 0.9rem;
   line-height: 1.2rem;
   font-weight: 700;

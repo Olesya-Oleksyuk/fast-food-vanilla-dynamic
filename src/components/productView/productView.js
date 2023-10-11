@@ -74,8 +74,11 @@ export default class ProductViewComponent {
 
   static buildDescription(description) {
     const productDesription = document.createElement("p");
-    productDesription.classList.add("product-card-info__ingredients");
-    productDesription.innerHTML = html`<span class="product-ingredient">
+    productDesription.classList.add("product-card-info__description");
+    if (!description.length) {
+      productDesription.classList.add("product-card-info__description--empty");
+    }
+    productDesription.innerHTML = html`<span class="product-description">
       ${description}
     </span>`;
 
