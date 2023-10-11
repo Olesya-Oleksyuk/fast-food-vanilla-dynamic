@@ -52,19 +52,27 @@ class App {
     App.renderBurgerButton();
   }
 
+  static handleBurgerMenuClose() {
+    const homePage = document.querySelector(".home-page");
+    const asideMenu = document.querySelector(".home-page__aside-menu");
+
+    const width = window.innerWidth;
+    const burgerNavBreakpoint = 800;
+    if (width >= burgerNavBreakpoint) return;
+
+    if (asideMenu.classList.contains("open")) {
+      asideMenu.classList.remove("open");
+      homePage.classList.remove("no-scroll");
+    } else {
+      asideMenu.classList.add("open");
+      homePage.classList.add("no-scroll");
+    }
+  }
+
   static addEventListeners() {
     const burgerMenuButton = document.querySelector(".burger-button");
-    const homePage = document.querySelector(".home-page");
-    burgerMenuButton.addEventListener("click", () => {
-      const asideMenu = document.querySelector(".home-page__aside-menu");
-      if (asideMenu.classList.contains("open")) {
-        asideMenu.classList.remove("open");
-        homePage.classList.remove("no-scroll");
-      } else {
-        asideMenu.classList.add("open");
-        homePage.classList.add("no-scroll");
-      }
-    });
+
+    burgerMenuButton.addEventListener("click", App.handleBurgerMenuClose);
   }
 
   /**
@@ -104,6 +112,7 @@ class App {
 
     new ProductNavComponent({
       containerElement: productNav,
+      onCategoryChange: this.handleBurgerMenuClose,
       store,
     });
   }
