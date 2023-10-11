@@ -44,7 +44,6 @@ const reducer = (state = initialState, action) => {
           [action.payload.productName]: {
             ...state.modal[action.payload.productName],
             components: {
-              ...state.modal[action.payload.productName].components,
               ...action.payload.productData,
             },
           },
