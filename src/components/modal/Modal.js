@@ -214,7 +214,8 @@ export default class ProductModalComponent extends Component {
     );
 
     const overallPrice =
-      productInModalInfo.price * productInModalInfo.count + componentsCost;
+      productInModalInfo.price * productInModalInfo.count +
+      componentsCost * productInModalInfo.count;
     return overallPrice;
   }
 
