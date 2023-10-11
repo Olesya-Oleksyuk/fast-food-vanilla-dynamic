@@ -3,7 +3,7 @@ import ProductCatalogComponent from "./components/productCatalog/ProductCatalog"
 import ProductNavComponent from "./components/productNav/ProductNav";
 import "./css/style.css";
 import jsonData from "./data/data.json";
-import Markets from "./products/markets";
+import Markets from "./models/markets";
 import { PRODUCT_CATEGORIES } from "./store/constants";
 import reducer from "./store/reducer";
 import Store from "./store/store";
