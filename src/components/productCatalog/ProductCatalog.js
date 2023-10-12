@@ -51,7 +51,7 @@ export default class ProductCatalogComponent extends Component {
           this.store.dispatch(
             addToCart({
               product: { ...productData, count: newCount },
-              totalPrice: newTotalPrice,
+              totalProductPrice: newTotalPrice,
             }),
           );
           return;

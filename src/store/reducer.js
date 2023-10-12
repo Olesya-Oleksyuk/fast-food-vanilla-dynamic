@@ -3,7 +3,7 @@ import { Action } from "./actions";
 /**
  * The initial state of the application.
  * @constant {Object}
- * @property {Array} products - The list of products.
+ * @property {Array} products - The list of models.
  * @property {Array} markets - The list of markets.
  * @property {string} categoryFilter - The category filter.
  * */
@@ -44,7 +44,6 @@ const reducer = (state = initialState, action) => {
           [action.payload.productName]: {
             ...state.modal[action.payload.productName],
             components: {
-              ...state.modal[action.payload.productName].components,
               ...action.payload.productData,
             },
           },

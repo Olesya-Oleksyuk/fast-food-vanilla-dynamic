@@ -20,6 +20,7 @@ export default class ProductNavComponent extends Component {
   /**
    * @param {{
    *  containerElement: Element,
+   *  onCategoryChange: Function,
    *  store: Store
    * }} obj navigation data
    * @return ProductNavComponent
@@ -27,6 +28,7 @@ export default class ProductNavComponent extends Component {
   constructor(obj) {
     super();
     this.store = obj.store;
+    this.onCategoryChange = obj.onCategoryChange;
     this.containerElement = obj.containerElement;
     this.categoryNameMapper = ProductNavComponent.createProductCategoryMapper();
 
@@ -132,9 +134,10 @@ export default class ProductNavComponent extends Component {
     );
 
     radios.forEach((radio) =>
-      radio.addEventListener("change", () =>
-        this.handleProductCategoryChange(radio.value),
-      ),
+      radio.addEventListener("change", () => {
+        this.handleProductCategoryChange(radio.value);
+        this.onCategoryChange();
+      }),
     );
   }
 }

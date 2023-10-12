@@ -1,9 +1,10 @@
 /* Cart */
 
 .cart {
-  width: fit-content;
+  width: 100%;
   min-width: 250px;
   height: fit-content;
+  margin: 0 auto;
   background-color: var(--light-yellow);
 }
 
@@ -67,8 +68,7 @@
 }
 
 .cart-table td,
-.cart-table th
-{
+.cart-table th {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   border-bottom: var(--yellow) 3px solid;

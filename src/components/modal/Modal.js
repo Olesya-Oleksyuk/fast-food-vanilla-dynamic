@@ -214,7 +214,8 @@ export default class ProductModalComponent extends Component {
     );
 
     const overallPrice =
-      productInModalInfo.price * productInModalInfo.count + componentsCost;
+      productInModalInfo.price * productInModalInfo.count +
+      componentsCost * productInModalInfo.count;
     return overallPrice;
   }
 
@@ -318,7 +319,7 @@ export default class ProductModalComponent extends Component {
     this.modalContentElement.classList.add("product-modal__content");
     this.buildNavigationPanel();
 
-    this.modalContentElement.appendChild(this.navStepElement);
+    this.modalContainerElement.appendChild(this.navPanel);
 
     this.modalOptionsSection = document.createElement("form");
     this.modalOptionsSection.classList.add("product-modal-options");
@@ -353,10 +354,9 @@ export default class ProductModalComponent extends Component {
   }
 
   buildNavigationPanel() {
-    if (!this.modalContentElement) return;
-
-    this.navStepElement = document.createElement("nav");
-    this.navStepElement.classList.add("product-modal-nav");
+    if (!this.modalContainerElement) return;
+    this.navPanel = document.createElement("nav");
+    this.navPanel.classList.add("product-modal-nav");
     const navStepListElement = document.createElement("ul");
     navStepListElement.classList.add("product-modal-nav__list");
 
@@ -373,14 +373,11 @@ export default class ProductModalComponent extends Component {
       );
     });
 
-    this.modalContentElement.innerHTML = "";
-    this.navStepElement.appendChild(navStepListElement);
+    this.navPanel.appendChild(navStepListElement);
 
     this.modalBackForwardNav = document.createElement("div");
     this.modalBackForwardNav.classList.add("product-modal-nav__back-forward");
-    this.navStepElement.appendChild(this.modalBackForwardNav);
-    // eslint-disable-next-line consistent-return
-    return this.navStepElement;
+    this.navPanel.appendChild(this.modalBackForwardNav);
   }
 
   buildNavigationStep(id, name, isActive = false) {
@@ -395,7 +392,7 @@ export default class ProductModalComponent extends Component {
       const isSameSelected =
         event.currentTarget.classList.contains(activeItemClass);
       if (isSameSelected) return;
-      const prevSelectedItem = this.navStepElement.querySelector(
+      const prevSelectedItem = this.navPanel.querySelector(
         `.${activeItemClass}`,
       );
 
